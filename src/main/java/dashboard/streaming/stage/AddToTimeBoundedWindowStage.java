@@ -42,7 +42,7 @@ public class AddToTimeBoundedWindowStage implements GridStreamerStage<HashTagEnt
             last15Minutes.enqueue(hashTag);
             last60Minutes.enqueue(hashTag);
 
-            log.debug("hash tag [" + hashTag.getText() + "]");
+            //log.debug("hash tag [" + hashTag.getText() + "]");
         }
 
         last5Minutes.pollEvictedAll();

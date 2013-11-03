@@ -1,5 +1,9 @@
 package dashboard.streaming;
 
+import dashboard.model.HashtagAggregate;
+
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: timveil
@@ -10,4 +14,6 @@ package dashboard.streaming;
 public interface TwitterService {
 
     void ingest(int duration);
+
+    List<HashtagAggregate> getHashtagAgregate();
 }

@@ -1,6 +1,7 @@
 package dashboard.streaming;
 
-import com.beust.jcommander.internal.Lists;
+import com.google.common.collect.Lists;
+import dashboard.model.HashtagAggregate;
 import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.GridFactory;
@@ -50,7 +51,7 @@ public class TwitterServiceImpl implements TwitterService {
 
             userStream = twitter.streamingOperations().sample(listeners);
 
-            query();
+
 
             Thread.sleep(duration);
 
@@ -65,79 +66,76 @@ public class TwitterServiceImpl implements TwitterService {
         }
     }
 
-    private void query() {
+    @Override
+    public List<HashtagAggregate> getHashtagAgregate() {
 
-        Timer timer = new Timer();
+        final GridStreamer streamer = grid.streamer("twitter-popular-hashtags");
 
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                final GridStreamer streamer = grid.streamer("twitter-popular-hashtags");
+        assert streamer != null;
 
-                assert streamer != null;
+        List<HashtagAggregate> results = Lists.newArrayList();
 
-                try {
-                    // Send reduce query to all 'popular-numbers' streamers
-                    // running on local and remote noes.
-                    Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> col = streamer.context().reduce(
-                            // This closure will execute on remote nodes.
-                            new GridClosure<GridStreamerContext, Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>>>() {
+        try {
+            // Send reduce query to all 'popular-numbers' streamers
+            // running on local and remote noes.
+            Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> col = streamer.context().reduce(
+                    // This closure will execute on remote nodes.
+                    new GridClosure<GridStreamerContext, Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>>>() {
 
-                                @Override
-                                public Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> apply(GridStreamerContext gridStreamerContext) {
+                        @Override
+                        public Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> apply(GridStreamerContext gridStreamerContext) {
 
-                                    final GridStreamerWindow<HashTagEntity> last5MinutesWindow = gridStreamerContext.window("last5Minutes");
+                            final GridStreamerWindow<HashTagEntity> last5MinutesWindow = gridStreamerContext.window("last5Minutes");
 
-                                    assert last5MinutesWindow != null;
+                            assert last5MinutesWindow != null;
 
-                                    final GridStreamerIndex<HashTagEntity, String, Long> last5MinutesIndex = last5MinutesWindow.index("hashTagCount");
+                            final GridStreamerIndex<HashTagEntity, String, Long> last5MinutesIndex = last5MinutesWindow.index("hashTagCount");
 
-                                    return last5MinutesIndex.entries(0);
+                            return last5MinutesIndex.entries(0);
 
-                                }
-                            },
-                            // The reducer will always execute locally, on the same node
-                            // that submitted the query.
-                            new GridReducer0<Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>>>() {
-                                private List<GridStreamerIndexEntry<HashTagEntity, String, Long>> sorted = new ArrayList<>();
+                        }
+                    },
+                    // The reducer will always execute locally, on the same node
+                    // that submitted the query.
+                    new GridReducer0<Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>>>() {
+                        private List<GridStreamerIndexEntry<HashTagEntity, String, Long>> sorted = new ArrayList<>();
 
 
-                                @Override
-                                public boolean collect(@Nullable Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> gridStreamerIndexEntries) {
-                                    if (gridStreamerIndexEntries != null && !gridStreamerIndexEntries.isEmpty()) {
-                                        // Add result from remote node to sorted set.
-                                        sorted.addAll(gridStreamerIndexEntries);
-                                    }
-
-                                    return true;
-                                }
-
-                                @Override
-                                public Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> apply() {
-                                    Collections.sort(sorted, new Comparator<GridStreamerIndexEntry<HashTagEntity, String, Long>>() {
-
-                                        @Override
-                                        public int compare(GridStreamerIndexEntry<HashTagEntity, String, Long> o1, GridStreamerIndexEntry<HashTagEntity, String, Long> o2) {
-                                            return o2.value().compareTo(o1.value());
-                                        }
-                                    });
-
-                                    // Take only first POPULAR_NUMBERS_CNT values from final sorted set.
-                                    return GridFunc.retain(sorted, true, 10);
-                                }
+                        @Override
+                        public boolean collect(@Nullable Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> gridStreamerIndexEntries) {
+                            if (gridStreamerIndexEntries != null && !gridStreamerIndexEntries.isEmpty()) {
+                                // Add result from remote node to sorted set.
+                                sorted.addAll(gridStreamerIndexEntries);
                             }
-                    );
 
-                    for (GridStreamerIndexEntry<HashTagEntity, String, Long> cntr : col) {
-                        System.out.printf("%s = %d\n", cntr.key(), cntr.value());
+                            return true;
+                        }
+
+                        @Override
+                        public Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> apply() {
+                            Collections.sort(sorted, new Comparator<GridStreamerIndexEntry<HashTagEntity, String, Long>>() {
+
+                                @Override
+                                public int compare(GridStreamerIndexEntry<HashTagEntity, String, Long> o1, GridStreamerIndexEntry<HashTagEntity, String, Long> o2) {
+                                    return o2.value().compareTo(o1.value());
+                                }
+                            });
+
+                            // Take only first POPULAR_NUMBERS_CNT values from final sorted set.
+                            return GridFunc.retain(sorted, true, 10);
+                        }
                     }
+            );
 
-                } catch (GridException e) {
-                    e.printStackTrace();
-                }
+            for (GridStreamerIndexEntry<HashTagEntity, String, Long> cntr : col) {
+                results.add(new HashtagAggregate(cntr.key(), cntr.value()));
             }
-        };
 
-        timer.schedule(task, 3000, 3000);
+        } catch (GridException e) {
+            e.printStackTrace();
+        }
+
+        return results;
+
     }
 }
