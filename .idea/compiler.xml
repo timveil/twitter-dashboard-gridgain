@@ -23,10 +23,12 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="dashboard" />
+        <module name="twitter-dashboard" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="dashboard" target="1.7" />
+      <module name="twitter-dashboard" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -19,13 +19,43 @@
     </listener>
 
     <servlet>
-        <servlet-name>mvc-dispatcher</servlet-name>
-        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
+        <servlet-name>feeds</servlet-name>
+        <servlet-class>org.atmosphere.cpr.MeteorServlet</servlet-class>
+        <init-param>
+            <param-name>org.atmosphere.servlet</param-name>
+            <param-value>org.springframework.web.servlet.DispatcherServlet</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.cpr.broadcasterClass</param-name>
+            <param-value>org.atmosphere.cpr.DefaultBroadcaster</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.resumeOnBroadcast</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.useNative</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.useWebSocket</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>org.atmosphere.useStream</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/servlet-context.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>ZZX
+        <async-supported>true</async-supported>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>mvc-dispatcher</servlet-name>
-        <url-pattern>/mvc/*</url-pattern>
+        <servlet-name>feeds</servlet-name>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
+
 </web-app>
