@@ -1,6 +1,8 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ include file="/WEB-INF/tiles/common/taglibs.jsp" %>
 
+<tiles:importAttribute/>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -54,6 +56,11 @@
         code {
             font-size: 80%;
         }
+
+        .table-nonfluid {
+            width: auto;
+        }
+
     </style>
 </head>
 <body>
@@ -63,9 +70,11 @@
     <tiles:insertAttribute name="header"/>
 
     <div class="container">
-        <div class="page-header">
-            <h1>some title</h1>
-        </div>
+        <c:if test="${! empty title}">
+            <div class="page-header">
+                <h1>${title}</h1>
+            </div>
+        </c:if>
         <tiles:insertAttribute name="body"/>
     </div>
 

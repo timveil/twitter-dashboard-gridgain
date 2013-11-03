@@ -11,6 +11,7 @@
     </definition>
 
     <definition name="*" extends="base">
+        <put-attribute name="title" value="" />
         <put-attribute name="body" value="/WEB-INF/tiles/{1}/body.jsp" />
     </definition>
 

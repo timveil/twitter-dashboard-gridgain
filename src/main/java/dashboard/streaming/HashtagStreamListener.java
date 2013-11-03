@@ -1,28 +1,28 @@
 package dashboard.streaming;
 
-import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.streamer.GridStreamer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.social.twitter.api.*;
+import org.springframework.social.twitter.api.StreamDeleteEvent;
+import org.springframework.social.twitter.api.StreamListener;
+import org.springframework.social.twitter.api.StreamWarningEvent;
+import org.springframework.social.twitter.api.Tweet;
 
-public class TwitterSampleListener implements StreamListener {
+public class HashtagStreamListener implements StreamListener {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private Grid grid;
+    private GridStreamer streamer;
 
-    public TwitterSampleListener(Grid grid) {
-        this.grid = grid;
+    public HashtagStreamListener(GridStreamer streamer) {
+        this.streamer = streamer;
     }
 
     @Override
     public void onTweet(Tweet tweet) {
-        GridStreamer streamer = grid.streamer("twitter-popular-hashtags");
 
         try {
-            assert streamer != null;
 
             if (tweet.getEntities() != null && tweet.getEntities().getHashTags() != null) {
 

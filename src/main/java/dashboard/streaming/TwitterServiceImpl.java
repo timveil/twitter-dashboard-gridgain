@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import dashboard.model.HashtagAggregate;
 import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridException;
-import org.gridgain.grid.GridFactory;
 import org.gridgain.grid.lang.GridClosure;
 import org.gridgain.grid.lang.GridFunc;
 import org.gridgain.grid.lang.GridReducer0;
@@ -13,7 +12,6 @@ import org.gridgain.grid.streamer.GridStreamerContext;
 import org.gridgain.grid.streamer.GridStreamerWindow;
 import org.gridgain.grid.streamer.index.GridStreamerIndex;
 import org.gridgain.grid.streamer.index.GridStreamerIndexEntry;
-import org.gridgain.grid.typedef.F;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.social.twitter.api.*;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.util.*;
 
@@ -45,20 +42,27 @@ public class TwitterServiceImpl implements TwitterService {
 
         Stream userStream = null;
 
+        final GridStreamer streamer = grid.streamer("twitter-popular-hashtags");
+
+        assert streamer != null;
+
         try {
             List<StreamListener> listeners = Lists.newArrayList();
-            listeners.add(new TwitterSampleListener(grid));
+            listeners.add(new HashtagStreamListener(streamer));
 
             userStream = twitter.streamingOperations().sample(listeners);
 
-
-
-            Thread.sleep(duration);
+            if (duration != 0) {
+                Thread.sleep(duration);
+            }
 
         } catch (InterruptedException e) {
             log.error("stream thread interrupted...", e);
         } finally {
             log.debug("closing stream");
+
+            streamer.reset();
+
 
             if (userStream != null) {
                 userStream.close();
