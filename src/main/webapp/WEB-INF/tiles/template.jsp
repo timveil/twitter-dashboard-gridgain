@@ -34,7 +34,6 @@
             background-color: #f5f5f5;
         }
 
-
             /* Custom page CSS
             -------------------------------------------------- */
             /* Not required for template or sticky footer method. */
@@ -42,6 +41,7 @@
         #wrap > .container {
             padding: 60px 15px 0;
         }
+
         .container .credit {
             margin: 20px 0;
         }
@@ -71,7 +71,6 @@
 
 
 </div>
-
 
 
 <div id="footer">
