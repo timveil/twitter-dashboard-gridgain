@@ -1,0 +1,1 @@
+<p class="text-muted credit">COPYRIGHT &copy; 2005-2013 GRIDGAIN SYSTEMS, INC. ALL RIGHTS RESERVED.</p>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="grid.cfg" class="org.gridgain.grid.GridConfigurationAdapter" scope="singleton">
+
+        <property name="localHost" value="127.0.0.1"/>
+        <property name="gridName" value="dashboard-grid"/>
+        <property name="restEnabled" value="false"/>
+
+        <property name="cacheConfiguration">
+            <list>
+                <bean class="org.gridgain.grid.cache.GridCacheConfigurationAdapter">
+                    <property name="name" value="tweets"/>
+                    <property name="cacheMode" value="PARTITIONED"/>
+                </bean>
+            </list>
+        </property>
+
+        <property name="streamerConfiguration">
+            <list>
+                <bean class="org.gridgain.grid.streamer.GridStreamerConfigurationAdapter">
+                    <property name="name" value="twitter-popular-hashtags"/>
+
+                    <property name="windows">
+                        <list>
+                            <bean class="org.gridgain.grid.streamer.window.GridStreamerBoundedTimeWindow">
+                                <property name="name" value="last5Minutes"/>
+                                <property name="timeInterval" value="#{5 * 60 * 1000}"/>
+                                <property name="indexes">
+                                    <list>
+                                        <bean class="org.gridgain.grid.streamer.index.tree.GridStreamerTreeIndexProvider">
+                                            <property name="name" value="hashTagCount"/>
+
+                                            <property name="updater">
+                                                <bean class="dashboard.streaming.index.updater.HashTagCountUpdater"/>
+                                            </property>
+                                        </bean>
+                                    </list>
+                                </property>
+                            </bean>
+                            <bean class="org.gridgain.grid.streamer.window.GridStreamerBoundedTimeWindow">
+                                <property name="name" value="last15Minutes"/>
+                                <property name="timeInterval" value="#{15 * 60 * 1000}"/>
+                                <property name="indexes">
+                                    <list>
+                                        <bean class="org.gridgain.grid.streamer.index.tree.GridStreamerTreeIndexProvider">
+                                            <property name="name" value="hashtagCount"/>
+
+                                            <property name="updater">
+                                                <bean class="dashboard.streaming.index.updater.HashTagCountUpdater"/>
+                                            </property>
+                                        </bean>
+                                    </list>
+                                </property>
+                            </bean>
+                            <bean class="org.gridgain.grid.streamer.window.GridStreamerBoundedTimeWindow">
+                                <property name="name" value="last60Minutes"/>
+                                <property name="timeInterval" value="#{60 * 60 * 1000}"/>
+                                <property name="indexes">
+                                    <list>
+                                        <bean class="org.gridgain.grid.streamer.index.tree.GridStreamerTreeIndexProvider">
+                                            <property name="name" value="hashtagCount"/>
+
+                                            <property name="updater">
+                                                <bean class="dashboard.streaming.index.updater.HashTagCountUpdater"/>
+                                            </property>
+                                        </bean>
+                                    </list>
+                                </property>
+                            </bean>
+                        </list>
+                    </property>
+
+                    <property name="stages">
+                        <list>
+                            <bean class="dashboard.streaming.stage.AddToTimeBoundedWindowStage"/>
+                        </list>
+                    </property>
+
+                    <property name="router">
+                        <bean class="org.gridgain.grid.streamer.router.GridStreamerLocalEventRouter"/>
+                    </property>
+                </bean>
+            </list>
+        </property>
+
+        <property name="indexingSpi">
+            <list>
+                <bean class="org.gridgain.grid.spi.indexing.h2.GridH2IndexingSpi">
+                    <property name="defaultIndexPrimitiveKey" value="true"/>
+                </bean>
+            </list>
+        </property>
+
+        <property name="discoverySpi">
+            <bean class="org.gridgain.grid.spi.discovery.tcp.GridTcpDiscoverySpi">
+                <property name="ipFinder">
+                    <bean class="org.gridgain.grid.spi.discovery.tcp.ipfinder.vm.GridTcpDiscoveryVmIpFinder">
+                        <property name="addresses">
+                            <list>
+                                <value>127.0.0.1:47500</value>
+                            </list>
+                        </property>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+</beans>
