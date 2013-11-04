@@ -3,7 +3,7 @@
 
 <div class="row">
 
-    <div class="col-mid-4">
+    <div class="col-lg-4">
 
         <h3>Popular Hashtags
             <small>last 5 minutes</small>
@@ -12,8 +12,8 @@
         <table class="table table-nonfluid table-condensed table-striped">
             <thead>
             <tr>
-                <th class="col-mid-2">HashTag</th>
-                <th class="col-mid-1">Count</th>
+                <th class="col-lg-2">HashTag</th>
+                <th class="col-lg-1">Count</th>
             </tr>
             </thead>
             <tbody id="last5">
@@ -21,7 +21,7 @@
         </table>
     </div>
 
-    <div class="col-mid-4">
+    <div class="col-lg-4">
 
         <h3>Popular Hashtags
             <small>last 15 minutes</small>
@@ -30,8 +30,8 @@
         <table class="table table-nonfluid table-condensed table-striped">
             <thead>
             <tr>
-                <th class="col-mid-2">HashTag</th>
-                <th class="col-mid-1">Count</th>
+                <th class="col-lg-2">HashTag</th>
+                <th class="col-lg-1">Count</th>
             </tr>
             </thead>
             <tbody id="last15">
@@ -39,7 +39,7 @@
         </table>
     </div>
 
-    <div class="col-mid-4">
+    <div class="col-lg-4">
 
         <h3>Popular Hashtags
             <small>last 60 minutes</small>
@@ -48,8 +48,8 @@
         <table class="table table-nonfluid table-condensed table-striped">
             <thead>
             <tr>
-                <th class="col-mid-2">HashTag</th>
-                <th class="col-mid-1">Count</th>
+                <th class="col-lg-2">HashTag</th>
+                <th class="col-lg-1">Count</th>
             </tr>
             </thead>
             <tbody id="last60">
