@@ -11,7 +11,6 @@
 
         <property name="localHost" value="127.0.0.1"/>
         <property name="gridName" ref="gridName"/>
-        <property name="restEnabled" value="false"/>
 
         <property name="marshaller">
             <bean class="org.gridgain.grid.marshaller.optimized.GridOptimizedMarshaller">
@@ -43,7 +42,7 @@
                     </property>
                     <property name="evictionPolicy">
                         <bean class="org.gridgain.grid.cache.eviction.fifo.GridCacheFifoEvictionPolicy">
-                            <property name="maxSize" value="1000000"/>
+                            <property name="maxSize" value="2000000"/>
                         </bean>
                     </property>
                 </bean>
@@ -139,7 +138,7 @@
 
         <property name="indexingSpi">
             <bean class="org.gridgain.grid.spi.indexing.h2.GridH2IndexingSpi">
-                <property name="longQueryExecutionTimeout" value="500"/>
+                <property name="longQueryExecutionTimeout" value="200"/>
                 <property name="longQueryExplain" value="true"/>
                 <property name="maxOffHeapMemory" value="-1"/>
                 <property name="defaultIndexFixedTyping" value="true"/>
