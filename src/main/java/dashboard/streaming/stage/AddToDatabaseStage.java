@@ -41,7 +41,7 @@ public class AddToDatabaseStage implements GridStreamerStage<Tweet> {
         GridCache<Long, TweetVO> cache = grid.cache(TweetVO.class.getName());
 
         for (Tweet tweet : tweets) {
-            cache.put(tweet.getId(), new TweetVO(tweet));
+            cache.putAsync(tweet.getId(), new TweetVO(tweet));
         }
 
 
