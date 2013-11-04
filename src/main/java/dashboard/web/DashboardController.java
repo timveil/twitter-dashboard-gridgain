@@ -2,10 +2,7 @@ package dashboard.web;
 
 import dashboard.streaming.StreamerWindow;
 import dashboard.streaming.TwitterService;
-import org.atmosphere.cpr.AtmosphereResource;
-import org.atmosphere.cpr.AtmosphereResourceEvent;
-import org.atmosphere.cpr.AtmosphereResourceEventListenerAdapter;
-import org.atmosphere.cpr.Broadcaster;
+import org.atmosphere.cpr.*;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,37 +36,40 @@ public class DashboardController {
     @RequestMapping(value = "/counts/lastFive")
     @ResponseBody
     public void fiveMinuteCount(AtmosphereResource atmosphereResource) {
-        broadcastCounts(atmosphereResource, StreamerWindow.FIVE_MIN);
+        broadcastCounts(atmosphereResource, StreamerWindow.FIVE_MIN, 20, "/counts/lastFive");
     }
 
     @RequestMapping(value = "/counts/lastFifteen")
     @ResponseBody
     public void fifteenMinuteCount(AtmosphereResource atmosphereResource) {
-        broadcastCounts(atmosphereResource, StreamerWindow.FIFTEEN_MIN);
+        broadcastCounts(atmosphereResource, StreamerWindow.FIFTEEN_MIN, 20, "/counts/lastFifteen");
     }
 
     @RequestMapping(value = "/counts/lastSixty")
     @ResponseBody
     public void sixtyMinuteCount(AtmosphereResource atmosphereResource) {
-        broadcastCounts(atmosphereResource, StreamerWindow.SIXTY_MIN);
+        broadcastCounts(atmosphereResource, StreamerWindow.SIXTY_MIN, 20, "/counts/lastSixty");
     }
 
-    private void broadcastCounts(AtmosphereResource atmosphereResource, final StreamerWindow window) {
+    private void broadcastCounts(AtmosphereResource atmosphereResource, final StreamerWindow window, int broadcastFrequencySeconds, String url) {
         final ObjectMapper mapper = new ObjectMapper();
 
         this.suspend(atmosphereResource);
 
-        final Broadcaster bc = atmosphereResource.getBroadcaster();
+        final Broadcaster bc = BroadcasterFactory.getDefault().get(url);
+        bc.addAtmosphereResource(atmosphereResource);
+
+        log.debug("ID = " + bc.getID());
+        log.debug("SCOPE = " + bc.getScope());
 
         bc.scheduleFixedBroadcast(new Callable<String>() {
 
-            //@Override
             public String call() throws Exception {
 
                 return mapper.writeValueAsString(twitterService.getHashtagSummary(window));
             }
 
-        }, 10, TimeUnit.SECONDS);
+        }, broadcastFrequencySeconds, TimeUnit.SECONDS);
     }
 
     private void suspend(final AtmosphereResource resource) {
@@ -77,11 +77,30 @@ public class DashboardController {
         resource.addEventListener(new AtmosphereResourceEventListenerAdapter() {
             @Override
             public void onSuspend(AtmosphereResourceEvent event) {
+                log.info("Suspending Client..." + resource.uuid());
                 countDownLatch.countDown();
                 resource.removeEventListener(this);
             }
+
+            @Override
+            public void onDisconnect(AtmosphereResourceEvent event) {
+                log.info("Disconnecting Client..." + resource.uuid());
+                super.onDisconnect(event);
+            }
+
+            @Override
+            public void onBroadcast(AtmosphereResourceEvent event) {
+                log.info("Client is broadcasting..." + resource.uuid());
+                super.onBroadcast(event);
+            }
         });
-        resource.suspend();
+
+        if (AtmosphereResource.TRANSPORT.LONG_POLLING.equals(resource.transport())) {
+            resource.resumeOnBroadcast(true).suspend(-1);
+        } else {
+            resource.suspend(-1);
+        }
+
         try {
             countDownLatch.await();
         } catch (InterruptedException e) {

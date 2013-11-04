@@ -9,14 +9,42 @@
     <bean id="grid.cfg" class="org.gridgain.grid.GridConfigurationAdapter" scope="singleton">
 
         <property name="localHost" value="127.0.0.1"/>
-        <property name="gridName" value="dashboard-grid"/>
+        <property name="gridName" value="twitter-grid"/>
         <property name="restEnabled" value="false"/>
+
+        <property name="marshaller">
+            <bean class="org.gridgain.grid.marshaller.optimized.GridOptimizedMarshaller">
+
+                <property name="requireSerializable" value="true"/>
+
+                <property name="classNames">
+                    <list>
+                        <value>dashboard.model.TweetVO</value>
+                    </list>
+                </property>
+            </bean>
+        </property>
 
         <property name="cacheConfiguration">
             <list>
                 <bean class="org.gridgain.grid.cache.GridCacheConfigurationAdapter">
-                    <property name="name" value="tweets"/>
+                    <property name="name" value="dashboard.model.TweetVO"/>
                     <property name="cacheMode" value="PARTITIONED"/>
+                    <property name="startSize" value="1000000"/>
+                    <property name="queryIndexEnabled" value="true"/>
+                    <property name="atomicityMode" value="ATOMIC"/>
+                    <property name="writeSynchronizationMode" value="PRIMARY_SYNC"/>
+                    <property name="partitionedDistributionMode" value="PARTITIONED_ONLY"/>
+                    <property name="affinity">
+                        <bean class="org.gridgain.grid.cache.affinity.partitioned.GridCachePartitionedAffinity">
+                            <property name="keyBackups" value="0"/>
+                        </bean>
+                    </property>
+                    <property name="evictionPolicy">
+                        <bean class="org.gridgain.grid.cache.eviction.fifo.GridCacheFifoEvictionPolicy">
+                            <property name="maxSize" value="1000000"/>
+                        </bean>
+                    </property>
                 </bean>
             </list>
         </property>
@@ -86,6 +114,25 @@
                         <bean class="org.gridgain.grid.streamer.router.GridStreamerLocalEventRouter"/>
                     </property>
                 </bean>
+                <bean class="org.gridgain.grid.streamer.GridStreamerConfigurationAdapter">
+                    <property name="name" value="#{T(dashboard.streaming.Streamer).TWEETS.name()}"/>
+
+                    <property name="stages">
+                        <list>
+                            <bean class="dashboard.streaming.stage.AddToDatabaseStage"/>
+                        </list>
+                    </property>
+
+                    <property name="windows">
+                        <list>
+                            <bean class="org.gridgain.grid.streamer.window.GridStreamerUnboundedWindow"/>
+                        </list>
+                    </property>
+
+                    <property name="router">
+                        <bean class="org.gridgain.grid.streamer.router.GridStreamerLocalEventRouter"/>
+                    </property>
+                </bean>
             </list>
         </property>
 
@@ -110,5 +157,7 @@
                 </property>
             </bean>
         </property>
+
     </bean>
+
 </beans>

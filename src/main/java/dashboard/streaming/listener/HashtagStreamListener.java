@@ -1,13 +1,10 @@
-package dashboard.streaming;
+package dashboard.streaming.listener;
 
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.streamer.GridStreamer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.social.twitter.api.StreamDeleteEvent;
-import org.springframework.social.twitter.api.StreamListener;
-import org.springframework.social.twitter.api.StreamWarningEvent;
-import org.springframework.social.twitter.api.Tweet;
+import org.springframework.social.twitter.api.*;
 
 public class HashtagStreamListener implements StreamListener {
 
@@ -24,12 +21,10 @@ public class HashtagStreamListener implements StreamListener {
 
         try {
 
-            if (tweet.getEntities() != null && tweet.getEntities().getHashTags() != null) {
+            final Entities entities = tweet.getEntities();
 
-                streamer.addEvents(tweet.getEntities().getHashTags());
-
-            } else {
-                log.warn("tweet had no hash tags");
+            if (entities != null && entities.getHashTags() != null && !entities.getHashTags().isEmpty()) {
+                streamer.addEvents(entities.getHashTags());
             }
         } catch (GridException e) {
             log.error("error adding event... " + e);

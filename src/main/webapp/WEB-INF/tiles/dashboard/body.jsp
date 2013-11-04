@@ -1,6 +1,10 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ include file="/WEB-INF/tiles/common/taglibs.jsp" %>
 
+<h2>Twitter Data
+    <small>as of <fmt:formatDate value="${sessionScope.startTime}" type="both" dateStyle="short" timeStyle="long"/></small>
+</h2>
+
 <div class="row">
 
     <div class="col-lg-4">
@@ -68,9 +72,8 @@
 </script>
 
 <script type="text/javascript">
-    var socket = $.atmosphere;
 
-    $( document ).ready(function() {
+    $(document).ready(function () {
 
         getStreamingData('<c:url value="/counts/lastFive"/>', '#last5');
         getStreamingData('<c:url value="/counts/lastFifteen"/>', '#last15');
@@ -80,6 +83,8 @@
 
     function getStreamingData(url, divId) {
 
+        var socket = $.atmosphere;
+
         var request = new $.atmosphere.AtmosphereRequest();
         request.transport = 'websocket';
         request.url = url;
@@ -87,35 +92,37 @@
         request.fallbackTransport = 'streaming';
 
         request.onMessage = function (response) {
-            buildTemplate(response);
+            buildTemplate(response, divId);
         };
 
-        var subSocket = socket.subscribe(request);
-
-        function buildTemplate(response) {
-
-            if (response.state = "messageReceived") {
-
-                var data = response.responseBody;
-
-                if (data) {
-
-                    try {
-                        var result = $.parseJSON(data);
-
-                        //console.log(result);
-
-                        $(divId).empty();
-
-                        $("#template").tmpl(result).appendTo(divId);
+        socket.subscribe(request);
 
 
-                    } catch (error) {
-                        console.log("An error occurred: " + error);
-                    }
-                } else {
-                    console.log("response.responseBody is null - ignoring.");
+    }
+
+    function buildTemplate(response, divId) {
+
+        if (response.state = "messageReceived") {
+
+            var data = response.responseBody;
+
+            if (data) {
+
+                try {
+                    var result = $.parseJSON(data);
+
+                    console.log("result for divId [" + divId + "]  " + result);
+
+                    $(divId).empty();
+
+                    $("#template").tmpl(result).appendTo(divId);
+
+
+                } catch (error) {
+                    console.log("An error occurred: " + error);
                 }
+            } else {
+                console.log("response.responseBody is null - ignoring.");
             }
         }
     }

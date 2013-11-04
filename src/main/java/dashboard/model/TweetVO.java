@@ -3,6 +3,10 @@ package dashboard.model;
 import org.gridgain.grid.cache.query.GridCacheQuerySqlField;
 import org.springframework.social.twitter.api.Tweet;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.Date;
 
 /**
@@ -12,18 +16,22 @@ import java.util.Date;
  * Time: 5:18 PM
  * To change this template use File | Settings | File Templates.
  */
-public class TweetVO {
+public class TweetVO implements Externalizable {
 
 
     @GridCacheQuerySqlField(unique = true)
-    private final long id;
+    private long id;
 
     @GridCacheQuerySqlField
-    private final String text;
+    private String text;
 
 
-    private final Date createdAt;
-    private final String fromUser;
+    private Date createdAt;
+    private String fromUser;
+
+    // required for Externalizable
+    TweetVO() {
+    }
 
     public TweetVO(Tweet tweet) {
         this.id = tweet.getId();
@@ -46,5 +54,21 @@ public class TweetVO {
 
     public String getFromUser() {
         return fromUser;
+    }
+
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeLong(id);
+        out.writeObject(text);
+        out.writeObject(createdAt);
+        out.writeObject(fromUser);
+    }
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        this.id = in.readLong();
+        this.text = (String) in.readObject();
+        this.createdAt = (Date) in.readObject();
+        this.fromUser = (String) in.readObject();
     }
 }

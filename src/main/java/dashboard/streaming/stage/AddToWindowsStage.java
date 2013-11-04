@@ -38,17 +38,14 @@ public class AddToWindowsStage implements GridStreamerStage<HashTagEntity> {
         assert last60Minutes != null;
 
         for (HashTagEntity hashTag : hashTagEntities) {
-
             last5Minutes.enqueue(hashTag);
             last15Minutes.enqueue(hashTag);
             last60Minutes.enqueue(hashTag);
-
-            //log.debug("hash tag [" + hashTag.getText() + "]");
         }
 
-        last5Minutes.pollEvictedAll();
-        last15Minutes.pollEvictedAll();
-        last60Minutes.pollEvictedAll();
+        last5Minutes.clearEvicted();
+        last15Minutes.clearEvicted();
+        last60Minutes.clearEvicted();
 
 
         return Collections.<String, Collection<?>>singletonMap(gridStreamerContext.nextStageName(), hashTagEntities);

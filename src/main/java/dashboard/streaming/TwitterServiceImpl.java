@@ -2,8 +2,11 @@ package dashboard.streaming;
 
 import com.google.common.collect.Lists;
 import dashboard.model.HashtagSummary;
+import dashboard.streaming.listener.HashtagStreamListener;
+import dashboard.streaming.listener.TweetStreamListener;
 import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridException;
+import org.gridgain.grid.GridFactory;
 import org.gridgain.grid.lang.GridClosure;
 import org.gridgain.grid.lang.GridFunc;
 import org.gridgain.grid.lang.GridReducer0;
@@ -30,9 +33,6 @@ public class TwitterServiceImpl implements TwitterService {
     @Autowired
     private Twitter twitter;
 
-    @Autowired
-    private Grid grid;
-
 
     @Override
     @Async
@@ -42,26 +42,32 @@ public class TwitterServiceImpl implements TwitterService {
 
         Stream userStream = null;
 
-        final GridStreamer streamer = grid.streamer(Streamer.HASHTAGS.name());
+        Grid grid = GridFactory.grid("twitter-grid");
 
-        assert streamer != null;
+        final GridStreamer hashtagStreamer = grid.streamer(Streamer.HASHTAGS.name());
+        final GridStreamer tweetStreamer = grid.streamer(Streamer.TWEETS.name());
 
         try {
             List<StreamListener> listeners = Lists.newArrayList();
-            listeners.add(new HashtagStreamListener(streamer));
+            listeners.add(new HashtagStreamListener(hashtagStreamer));
+            listeners.add(new TweetStreamListener(tweetStreamer));
 
             userStream = twitter.streamingOperations().sample(listeners);
 
-            if (duration != 0) {
-                Thread.sleep(duration);
-            }
+            Thread.sleep(duration);
 
         } catch (InterruptedException e) {
             log.error("stream thread interrupted...", e);
         } finally {
             log.debug("closing stream");
 
-            streamer.reset();
+            if (tweetStreamer != null) {
+                tweetStreamer.reset();
+            }
+
+            if (hashtagStreamer != null) {
+                hashtagStreamer.reset();
+            }
 
 
             if (userStream != null) {
@@ -72,6 +78,8 @@ public class TwitterServiceImpl implements TwitterService {
 
     @Override
     public List<HashtagSummary> getHashtagSummary(final StreamerWindow window) {
+
+        Grid grid = GridFactory.grid("twitter-grid");
 
         final GridStreamer streamer = grid.streamer(Streamer.HASHTAGS.name());
 
@@ -89,13 +97,13 @@ public class TwitterServiceImpl implements TwitterService {
                         @Override
                         public Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> apply(GridStreamerContext gridStreamerContext) {
 
-                            final GridStreamerWindow<HashTagEntity> last5MinutesWindow = gridStreamerContext.window(window.name());
+                            final GridStreamerWindow<HashTagEntity> gridStreamerWindow = gridStreamerContext.window(window.name());
 
-                            assert last5MinutesWindow != null;
+                            assert gridStreamerWindow != null;
 
-                            final GridStreamerIndex<HashTagEntity, String, Long> last5MinutesIndex = last5MinutesWindow.index(StreamerIndex.HASHTAG_COUNT.name());
+                            final GridStreamerIndex<HashTagEntity, String, Long> index = gridStreamerWindow.index(StreamerIndex.HASHTAG_COUNT.name());
 
-                            return last5MinutesIndex.entries(0);
+                            return index.entries(0);
 
                         }
                     },
@@ -136,7 +144,7 @@ public class TwitterServiceImpl implements TwitterService {
             }
 
         } catch (GridException e) {
-            e.printStackTrace();
+            log.error("grid exception occurred...", e);
         }
 
         return results;
