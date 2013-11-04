@@ -1,24 +1,18 @@
 package dashboard.model;
 
-/**
- * Created with IntelliJ IDEA.
- * User: timveil
- * Date: 11/3/13
- * Time: 2:35 PM
- * To change this template use File | Settings | File Templates.
- */
-public class HashtagSummary {
 
-    private String hashtag;
+public class HashTagSummary {
+
+    private String hashTag;
     private long count;
 
-    public HashtagSummary(String hashtag, long count) {
-        this.hashtag = hashtag;
+    public HashTagSummary(String hashTag, long count) {
+        this.hashTag = hashTag;
         this.count = count;
     }
 
-    public String getHashtag() {
-        return hashtag;
+    public String getHashTag() {
+        return hashTag;
     }
 
     public long getCount() {

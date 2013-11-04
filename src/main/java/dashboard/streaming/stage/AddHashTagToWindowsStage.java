@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.Map;
 
 
-public class AddToWindowsStage implements GridStreamerStage<HashTagEntity> {
+public class AddHashTagToWindowsStage implements GridStreamerStage<HashTagEntity> {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -44,14 +44,14 @@ public class AddToWindowsStage implements GridStreamerStage<HashTagEntity> {
         for (HashTagEntity hashTag : hashTagEntities) {
             try {
                 streamerWindow.enqueue(hashTag);
-            } catch (GridException e) {
+            } catch (Exception e) {
                 log.error("error adding hashTag to window...", e);
             }
         }
 
         try {
             streamerWindow.clearEvicted();
-        } catch (GridException e) {
+        } catch (Exception e) {
             log.error("error clearing evicted hashTag from window...", e);
         }
 

@@ -2,17 +2,14 @@ package dashboard.streaming.listener;
 
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.streamer.GridStreamer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.social.twitter.api.*;
+import org.springframework.social.twitter.api.Entities;
+import org.springframework.social.twitter.api.Tweet;
 
-public class HashtagStreamListener implements StreamListener {
-
-    private final Logger log = LoggerFactory.getLogger(getClass());
+public class HashTagStreamListener extends BaseListener {
 
     private GridStreamer streamer;
 
-    public HashtagStreamListener(GridStreamer streamer) {
+    public HashTagStreamListener(GridStreamer streamer) {
         this.streamer = streamer;
     }
 
@@ -26,24 +23,11 @@ public class HashtagStreamListener implements StreamListener {
             if (entities != null && entities.getHashTags() != null && !entities.getHashTags().isEmpty()) {
                 streamer.addEvents(entities.getHashTags());
             }
+
         } catch (GridException e) {
-            log.error("error adding event... " + e);
+            log.error("error adding HashTag to streamer... " + e);
         }
 
     }
 
-    @Override
-    public void onDelete(StreamDeleteEvent deleteEvent) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void onLimit(int numberOfLimitedTweets) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public void onWarning(StreamWarningEvent warningEvent) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
 }

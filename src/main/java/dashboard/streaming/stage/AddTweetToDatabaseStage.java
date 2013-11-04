@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.Map;
 
 
-public class AddToDatabaseStage implements GridStreamerStage<Tweet> {
+public class AddTweetToDatabaseStage implements GridStreamerStage<Tweet> {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 

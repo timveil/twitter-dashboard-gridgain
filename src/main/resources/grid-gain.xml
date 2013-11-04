@@ -106,7 +106,7 @@
 
                     <property name="stages">
                         <list>
-                            <bean class="dashboard.streaming.stage.AddToWindowsStage"/>
+                            <bean class="dashboard.streaming.stage.AddHashTagToWindowsStage"/>
                         </list>
                     </property>
 
@@ -119,7 +119,7 @@
 
                     <property name="stages">
                         <list>
-                            <bean class="dashboard.streaming.stage.AddToDatabaseStage"/>
+                            <bean class="dashboard.streaming.stage.AddTweetToDatabaseStage"/>
                         </list>
                     </property>
 
