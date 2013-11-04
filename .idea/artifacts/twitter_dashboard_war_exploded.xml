@@ -49,12 +49,12 @@
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.5" />
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-log4j12:1.6.4" />
           <element id="library" level="project" name="Maven: log4j:log4j:1.2.16" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-aop:3.2.3.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aop:3.2.4.RELEASE" />
           <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-beans:3.2.3.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-core:3.2.3.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-context:3.2.3.RELEASE" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-expression:3.2.3.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-beans:3.2.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:3.2.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:3.2.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:3.2.4.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:3.2.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.gridgain.jidepatch:jidepatch:1.0" />
           <element id="library" level="project" name="Maven: org.gridgain.snaptree-gg:snaptree-gg:1.1" />
@@ -129,9 +129,9 @@
           <element id="library" level="project" name="Maven: org.mongodb:mongo-java-driver:2.11.1" />
           <element id="library" level="project" name="Maven: com.romix:java-concurrent-hash-trie-map:0.0.1" />
           <element id="library" level="project" name="Maven: org.pcollections:pcollections:2.1.2" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-web:3.2.3.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-web:3.2.4.RELEASE" />
           <element id="library" level="project" name="Maven: javax.servlet:jstl:1.2" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:3.2.3.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:3.2.4.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.social:spring-social-core:1.1.0.M4" />
           <element id="library" level="project" name="Maven: org.springframework.social:spring-social-twitter:1.1.0.M4" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-crypto:3.1.4.RELEASE" />
