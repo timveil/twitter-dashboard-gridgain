@@ -32,7 +32,7 @@ public class TweetVO implements Externalizable {
     private long userId;
 
     @GridCacheQuerySqlField
-    private String screename;
+    private String screenName;
 
     @GridCacheQuerySqlField
     private String languageCode;
@@ -45,7 +45,7 @@ public class TweetVO implements Externalizable {
         this.id = tweet.getId();
         this.text = tweet.getText();
         this.createdAt = tweet.getCreatedAt();
-        this.screename = tweet.getUser().getScreenName();
+        this.screenName = tweet.getUser().getScreenName();
         this.userId = tweet.getUser().getId();
         this.languageCode = tweet.getLanguageCode();
     }
@@ -67,8 +67,8 @@ public class TweetVO implements Externalizable {
         return userId;
     }
 
-    public String getScreename() {
-        return screename;
+    public String getScreenName() {
+        return screenName;
     }
 
     public String getLanguageCode() {
@@ -81,7 +81,7 @@ public class TweetVO implements Externalizable {
         out.writeObject(text);
         out.writeObject(createdAt);
         out.writeLong(userId);
-        out.writeObject(screename);
+        out.writeObject(screenName);
         out.writeObject(languageCode);
     }
 
@@ -90,7 +90,7 @@ public class TweetVO implements Externalizable {
         this.id = in.readLong();
         this.text = (String) in.readObject();
         this.createdAt = (Date) in.readObject();
-        this.screename = (String) in.readObject();
+        this.screenName = (String) in.readObject();
         this.languageCode = (String) in.readObject();
         this.userId = in.readLong();
     }
