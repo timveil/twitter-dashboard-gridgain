@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.NumberFormat;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -116,7 +117,7 @@ public class DashboardController {
                 new Callable<String>() {
 
                     public String call() throws Exception {
-                        return mapper.writeValueAsString(twitterService.getTotalTweetsWithHashTag());
+                        return mapper.writeValueAsString(NumberFormat.getInstance().format(twitterService.getTotalTweetsWithHashTag()));
                     }
 
                 }
@@ -135,7 +136,7 @@ public class DashboardController {
                 new Callable<String>() {
 
                     public String call() throws Exception {
-                        return mapper.writeValueAsString(twitterService.getTotalTweets());
+                        return mapper.writeValueAsString(NumberFormat.getInstance().format(twitterService.getTotalTweets()));
                     }
 
                 }

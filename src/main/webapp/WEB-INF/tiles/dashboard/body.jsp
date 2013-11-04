@@ -2,24 +2,26 @@
 <%@ include file="/WEB-INF/tiles/common/taglibs.jsp" %>
 
 <fmt:formatDate var="startTimeFormatted" value="${sessionScope.startTime}" type="both" dateStyle="short" timeStyle="short"/>
-<%--
-<h3>Twitter Data
+
+<h3>Twitter Sample Stream Data
     <small>as of ${startTimeFormatted}</small>
-</h3>--%>
+</h3>
+
+<hr/>
 
 <div class="row">
 
     <div class="col-lg-6">
 
-        <h4>Total Tweets Stored in Memory <small>as of ${startTimeFormatted}</small></h4>
-        <div id="totalCounter"><input type="hidden" name="counter-value" value="0" /></div>
+        <h4>Total Tweets <small>stored in memory</small></h4>
+        <span id="totalCounter" class="counter"></span>
 
     </div>
 
     <div class="col-lg-6">
 
-        <h4>Total Tweets with HashTags <small>as of ${startTimeFormatted}</small></h4>
-        <div id="totalTags"><input type="hidden" name="counter-value" value="0" /></div>
+        <h4>Total Tweets <small>with HashTags</small></h4>
+        <span id="totalTags" class="counter"></span>
 
     </div>
 </div>
@@ -89,9 +91,7 @@
 <div class="row">
     <div class="col-lg-4">
 
-        <h4>Top Tweeters
-            <small>since ${startTimeFormatted}</small>
-        </h4>
+        <h4>Top Tweeters</h4>
 
         <table class="table table-nonfluid table-condensed table-striped">
             <thead>
@@ -128,8 +128,6 @@
 
     $(document).ready(function () {
 
-        $("#totalCounter").flipCounter({imagePath:"<c:url value="/static/script/flipCounter-medium.png"/>", easing: jQuery.easing.easeOutCubic, duration: 500});
-        $("#totalTags").flipCounter({imagePath:"<c:url value="/static/script/flipCounter-medium.png"/>", easing: jQuery.easing.easeOutCubic, duration: 500});
 
         getStreamingData('<c:url value="/counts/lastFive"/>', '#last5', "#hashTagTemplate");
         getStreamingData('<c:url value="/counts/lastFifteen"/>', '#last15', "#hashTagTemplate");
@@ -181,7 +179,7 @@
 
                         console.log("result for divId [" + divId + "]  " + result);
 
-                        $(divId).flipCounter("renderCounter",result)
+                        $(divId).html(result)
 
 
                     } catch (error) {

@@ -61,6 +61,19 @@
             width: auto;
         }
 
+        .counter {
+            font-size: 200%;
+            font-weight: bold;
+            color: #CCC;
+        }
+
+        .navbar-brand {
+            padding-left: 15px;
+            padding-right: 15px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
     </style>
 </head>
 <body>
