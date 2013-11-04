@@ -1,6 +1,9 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ include file="/WEB-INF/tiles/common/taglibs.jsp" %>
 
+
+<h3>Configure Ingest</h3>
+
 <form class="form-horizontal" role="form" action="<c:url value="/ingest"/>" method="post">
     <div class="form-group">
         <label for="duration" class="col-lg-2 control-label">Duration</label>

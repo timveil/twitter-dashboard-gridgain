@@ -156,7 +156,7 @@ public class DashboardController {
             log.debug("broadcasting for url [" + url + "], id [" + bc.getID() + "], scope [" + bc.getScope() + "], atmosphere uuid [" + atmosphereResource.uuid() + "]");
         }
 
-        bc.scheduleFixedBroadcast(callable, broadcastFrequencySeconds, TimeUnit.SECONDS);
+        bc.scheduleFixedBroadcast(callable, 5, broadcastFrequencySeconds, TimeUnit.SECONDS);
     }
 
     private void suspend(final AtmosphereResource resource) {
