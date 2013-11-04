@@ -1,8 +1,7 @@
 package dashboard.service;
 
 import com.google.common.collect.Lists;
-import dashboard.model.HashTagSummary;
-import dashboard.model.TopTweeterSummary;
+import dashboard.model.KeyValuePair;
 import dashboard.model.TweetVO;
 import dashboard.streaming.listener.HashTagStreamListener;
 import dashboard.streaming.listener.TweetStreamListener;
@@ -10,10 +9,10 @@ import dashboard.utils.GridUtils;
 import dashboard.utils.Streamer;
 import dashboard.utils.StreamerIndex;
 import dashboard.utils.StreamerWindow;
+import org.apache.commons.lang.StringUtils;
 import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.cache.GridCache;
-import org.gridgain.grid.cache.query.GridCacheQueryType;
 import org.gridgain.grid.lang.GridClosure;
 import org.gridgain.grid.lang.GridFunc;
 import org.gridgain.grid.lang.GridReducer0;
@@ -33,10 +32,13 @@ import org.springframework.social.twitter.api.StreamListener;
 import org.springframework.social.twitter.api.Twitter;
 import org.springframework.stereotype.Service;
 
+import java.text.NumberFormat;
 import java.util.*;
 
 @Service
 public class TwitterServiceImpl implements TwitterService {
+
+    public static final int MAX_NUM_RETURNED = 5;
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -84,7 +86,7 @@ public class TwitterServiceImpl implements TwitterService {
     }
 
     @Override
-    public List<HashTagSummary> getHashTagSummary(final StreamerWindow window) {
+    public List<KeyValuePair> getHashTagSummary(final StreamerWindow window) {
 
         Grid grid = GridUtils.getGrid();
 
@@ -92,7 +94,7 @@ public class TwitterServiceImpl implements TwitterService {
 
         assert streamer != null;
 
-        List<HashTagSummary> results = Lists.newArrayList();
+        List<KeyValuePair> results = Lists.newArrayList();
 
 
         final GridClosure<GridStreamerContext, Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>>> gridClosure = new GridClosure<GridStreamerContext, Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>>>() {
@@ -134,7 +136,7 @@ public class TwitterServiceImpl implements TwitterService {
                     }
                 });
 
-                return GridFunc.retain(sorted, true, 10);
+                return GridFunc.retain(sorted, true, MAX_NUM_RETURNED);
             }
         };
 
@@ -143,7 +145,7 @@ public class TwitterServiceImpl implements TwitterService {
             Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> reduceResults = streamer.context().reduce(gridClosure, gridReducer);
 
             for (GridStreamerIndexEntry<HashTagEntity, String, Long> entry : reduceResults) {
-                results.add(new HashTagSummary(entry.key(), entry.value()));
+                results.add(new KeyValuePair(StringUtils.abbreviate(entry.key(), 50), NumberFormat.getNumberInstance().format(entry.value())));
             }
 
         } catch (GridException e) {
@@ -156,24 +158,25 @@ public class TwitterServiceImpl implements TwitterService {
 
 
     @Override
-    public List<TopTweeterSummary> getTopTweeters() {
+    public List<KeyValuePair> getTopTweeters() {
 
         Grid grid = GridUtils.getGrid();
 
         GridCache<Long, TweetVO> cache = grid.cache(TweetVO.class.getName());
         assert cache != null;
 
-        List<TopTweeterSummary> topTweeters = Lists.newArrayList();
+        List<KeyValuePair> topTweeters = Lists.newArrayList();
 
         try {
-            final Collection<List<Object>> results = cache.createFieldsQuery("select screenName, count(*) from TweetVO group by screenName having count(*) > 0 order by count(*) desc limit 10")
+            final Collection<List<Object>> results = cache.createFieldsQuery("select screenName, count(*) from TweetVO group by screenName having count(*) > 0 order by count(*) desc limit ?")
+                    .queryArguments(MAX_NUM_RETURNED)
                     .execute(grid)
                     .get();
 
             for (List<Object> result : results) {
-                final String screenName = (String)result.get(0);
-                final Long count = (Long)result.get(1);
-                topTweeters.add(new TopTweeterSummary(screenName, count));
+                final String screenName = (String) result.get(0);
+                final Long count = (Long) result.get(1);
+                topTweeters.add(new KeyValuePair(StringUtils.abbreviate(screenName, 50), NumberFormat.getNumberInstance().format(count)));
             }
 
         } catch (GridException e) {
@@ -183,6 +186,52 @@ public class TwitterServiceImpl implements TwitterService {
         return topTweeters;
 
 
+    }
+
+    @Override
+    public long getTotalTweets() {
+
+        Grid grid = GridUtils.getGrid();
+
+        GridCache<Long, TweetVO> cache = grid.cache(TweetVO.class.getName());
+        assert cache != null;
+
+        try {
+           Long queryResult = (Long)cache.createFieldsQuery("select count(id) from TweetVO")
+                    .executeSingleField(grid)
+                    .get();
+
+            if (queryResult != null) {
+                return queryResult;
+            }
+        } catch (GridException e) {
+           log.error("error getting total tweets", e);
+        }
+
+        return 0L;
+    }
+
+    @Override
+    public long getTotalTweetsWithHashTag() {
+        Grid grid = GridUtils.getGrid();
+
+        GridCache<Long, TweetVO> cache = grid.cache(TweetVO.class.getName());
+        assert cache != null;
+
+        try {
+            Long queryResult = (Long)cache.createFieldsQuery("select count(id) from TweetVO where hashTagCount > 0")
+                    .executeSingleField(grid)
+                    .get();
+
+            if (queryResult != null) {
+                return queryResult;
+            }
+
+        } catch (GridException e) {
+            log.error("error getting tweets with hashtags", e);
+        }
+
+        return 0L;
     }
 
 }

@@ -13,4 +13,6 @@
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
 <script src="<c:url value="/static/script/jquery.atmosphere.js"/>"></script>
 <script src="<c:url value="/static/script/jquery.tmpl.js"/>"></script>
+<script src="<c:url value="/static/script/jquery.easing.1.3.js"/>" type="text/javascript"></script>
+<script src="<c:url value="/static/script/jquery.flipCounter.1.2.pack.js"/>" type="text/javascript"></script>
 

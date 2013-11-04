@@ -103,6 +103,46 @@ public class DashboardController {
         );
     }
 
+
+    @RequestMapping(value = "/counts/tweetsWithHashTag")
+    @ResponseBody
+    public void tweetsWithHashTags(AtmosphereResource atmosphereResource) {
+
+        final ObjectMapper mapper = new ObjectMapper();
+
+        broadcast(atmosphereResource,
+                10,
+                "/counts/tweetsWithHashTag",
+                new Callable<String>() {
+
+                    public String call() throws Exception {
+                        return mapper.writeValueAsString(twitterService.getTotalTweetsWithHashTag());
+                    }
+
+                }
+        );
+    }
+
+    @RequestMapping(value = "/counts/totalTweets")
+    @ResponseBody
+    public void totalTweets(AtmosphereResource atmosphereResource) {
+
+        final ObjectMapper mapper = new ObjectMapper();
+
+        broadcast(atmosphereResource,
+                10,
+                "/counts/totalTweets",
+                new Callable<String>() {
+
+                    public String call() throws Exception {
+                        return mapper.writeValueAsString(twitterService.getTotalTweets());
+                    }
+
+                }
+        );
+    }
+
+
     private void broadcast(AtmosphereResource atmosphereResource, int broadcastFrequencySeconds, String url, Callable<String> callable) {
 
 

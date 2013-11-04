@@ -2,10 +2,29 @@
 <%@ include file="/WEB-INF/tiles/common/taglibs.jsp" %>
 
 <fmt:formatDate var="startTimeFormatted" value="${sessionScope.startTime}" type="both" dateStyle="short" timeStyle="short"/>
-
+<%--
 <h3>Twitter Data
     <small>as of ${startTimeFormatted}</small>
-</h3>
+</h3>--%>
+
+<div class="row">
+
+    <div class="col-lg-6">
+
+        <h4>Total Tweets Stored in Memory <small>as of ${startTimeFormatted}</small></h4>
+        <div id="totalCounter"><input type="hidden" name="counter-value" value="0" /></div>
+
+    </div>
+
+    <div class="col-lg-6">
+
+        <h4>Total Tweets with HashTags <small>as of ${startTimeFormatted}</small></h4>
+        <div id="totalTags"><input type="hidden" name="counter-value" value="0" /></div>
+
+    </div>
+</div>
+
+<hr/>
 
 <div class="row">
 
@@ -65,6 +84,8 @@
 
 </div>
 
+<hr/>
+
 <div class="row">
     <div class="col-lg-4">
 
@@ -90,16 +111,16 @@
 
 <script id="hashTagTemplate" type="text/x-jquery-tmpl">
     <tr>
-        <td>\${hashTag}</td>
-        <td>\${count}</td>
+        <td>\${key}</td>
+        <td>\${value}</td>
     </tr>
 </script>
 
 
 <script id="topTweetsTemplate" type="text/x-jquery-tmpl">
     <tr>
-        <td>\${screenName}</td>
-        <td>\${count}</td>
+        <td><a href="https://twitter.com/\${key}" target="_blank">@\${key}</a></td>
+        <td>\${value}</td>
     </tr>
 </script>
 
@@ -107,10 +128,15 @@
 
     $(document).ready(function () {
 
+        $("#totalCounter").flipCounter({imagePath:"<c:url value="/static/script/flipCounter-medium.png"/>", easing: jQuery.easing.easeOutCubic, duration: 500});
+        $("#totalTags").flipCounter({imagePath:"<c:url value="/static/script/flipCounter-medium.png"/>", easing: jQuery.easing.easeOutCubic, duration: 500});
+
         getStreamingData('<c:url value="/counts/lastFive"/>', '#last5', "#hashTagTemplate");
         getStreamingData('<c:url value="/counts/lastFifteen"/>', '#last15', "#hashTagTemplate");
         getStreamingData('<c:url value="/counts/lastSixty"/>', '#last60', "#hashTagTemplate");
         getStreamingData('<c:url value="/counts/topTweets"/>', '#topTweets', "#topTweetsTemplate");
+        getStreamingDataSingle('<c:url value="/counts/totalTweets"/>', '#totalCounter');
+        getStreamingDataSingle('<c:url value="/counts/tweetsWithHashTag"/>', '#totalTags');
 
     });
 
@@ -126,6 +152,45 @@
 
         request.onMessage = function (response) {
             buildTemplate(response, divId, templateId);
+        };
+
+        socket.subscribe(request);
+
+
+    }
+
+    function getStreamingDataSingle(url, divId) {
+
+        var socket = $.atmosphere;
+
+        var request = new $.atmosphere.AtmosphereRequest();
+        request.transport = 'websocket';
+        request.url = url;
+        request.contentType = "application/json";
+        request.fallbackTransport = 'streaming';
+
+        request.onMessage = function (response) {
+            if (response.state = "messageReceived") {
+
+                var data = response.responseBody;
+
+                if (data) {
+
+                    try {
+                        var result = $.parseJSON(data);
+
+                        console.log("result for divId [" + divId + "]  " + result);
+
+                        $(divId).flipCounter("renderCounter",result)
+
+
+                    } catch (error) {
+                        console.log("An error occurred: " + error);
+                    }
+                } else {
+                    console.log("response.responseBody is null - ignoring.");
+                }
+            }
         };
 
         socket.subscribe(request);
