@@ -21,7 +21,7 @@
     </repositories>
 
     <properties>
-        <spring.version>3.2.3.RELEASE</spring.version>
+        <spring.version>3.2.4.RELEASE</spring.version>
         <tiles.version>3.0.1</tiles.version>
         <gg.version>5.2.1</gg.version>
         <servlet.version>3.0.1</servlet.version>

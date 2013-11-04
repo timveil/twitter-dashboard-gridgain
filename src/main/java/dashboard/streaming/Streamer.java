@@ -8,5 +8,5 @@ package dashboard.streaming;
  * To change this template use File | Settings | File Templates.
  */
 public enum Streamer {
-    HASHTAGS,TWEETS;
+    HASHTAGS,TWEETS
 }

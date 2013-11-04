@@ -5,6 +5,7 @@ import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.GridFactory;
 import org.gridgain.grid.cache.GridCache;
+import org.gridgain.grid.lang.GridPredicate;
 import org.gridgain.grid.streamer.GridStreamerContext;
 import org.gridgain.grid.streamer.GridStreamerStage;
 import org.jetbrains.annotations.Nullable;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.social.twitter.api.Tweet;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -39,12 +41,13 @@ public class AddToDatabaseStage implements GridStreamerStage<Tweet> {
         Grid grid = GridFactory.grid("twitter-grid");
 
         GridCache<Long, TweetVO> cache = grid.cache(TweetVO.class.getName());
+        assert cache != null;
 
         for (Tweet tweet : tweets) {
-            cache.putAsync(tweet.getId(), new TweetVO(tweet));
+            cache.putAsync(tweet.getId(), new TweetVO(tweet), (GridPredicate)null);
         }
 
 
-        return null;
+        return Collections.<String, Collection<?>>singletonMap(gridStreamerContext.nextStageName(), tweets);
     }
 }

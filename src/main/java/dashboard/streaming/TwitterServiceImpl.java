@@ -40,7 +40,7 @@ public class TwitterServiceImpl implements TwitterService {
 
         log.debug("duration of sample will be " + duration + " milliseconds.");
 
-        Stream userStream = null;
+        Stream sampleStream = null;
 
         Grid grid = GridFactory.grid("twitter-grid");
 
@@ -52,7 +52,7 @@ public class TwitterServiceImpl implements TwitterService {
             listeners.add(new HashtagStreamListener(hashtagStreamer));
             listeners.add(new TweetStreamListener(tweetStreamer));
 
-            userStream = twitter.streamingOperations().sample(listeners);
+            sampleStream = twitter.streamingOperations().sample(listeners);
 
             Thread.sleep(duration);
 
@@ -70,8 +70,8 @@ public class TwitterServiceImpl implements TwitterService {
             }
 
 
-            if (userStream != null) {
-                userStream.close();
+            if (sampleStream != null) {
+                sampleStream.close();
             }
         }
     }

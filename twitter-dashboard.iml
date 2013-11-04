@@ -29,9 +29,10 @@
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea" />
       <excludeFolder url="file://$MODULE_DIR$/classes" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
@@ -78,12 +79,12 @@
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.5" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-log4j12:1.6.4" level="project" />
     <orderEntry type="library" name="Maven: log4j:log4j:1.2.16" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.2.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-aop:3.2.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.2.3.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.2.3.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.2.3.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.2.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-beans:3.2.4.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-core:3.2.4.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context:3.2.4.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-expression:3.2.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:3.2.2.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.gridgain.jidepatch:jidepatch:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.gridgain.snaptree-gg:snaptree-gg:1.1" level="project" />
@@ -160,11 +161,11 @@
     <orderEntry type="library" name="Maven: org.mongodb:mongo-java-driver:2.11.1" level="project" />
     <orderEntry type="library" name="Maven: com.romix:java-concurrent-hash-trie-map:0.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.pcollections:pcollections:2.1.2" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-web:3.2.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-web:3.2.4.RELEASE" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet.jsp:jsp-api:2.2" level="project" />
     <orderEntry type="library" name="Maven: javax.servlet:jstl:1.2" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.2.3.RELEASE" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-test:3.2.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.2.4.RELEASE" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-test:3.2.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.social:spring-social-core:1.1.0.M4" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.social:spring-social-twitter:1.1.0.M4" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-crypto:3.1.4.RELEASE" level="project" />
