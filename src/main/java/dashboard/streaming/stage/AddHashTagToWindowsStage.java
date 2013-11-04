@@ -45,14 +45,22 @@ public class AddHashTagToWindowsStage implements GridStreamerStage<HashTagEntity
             try {
                 streamerWindow.enqueue(hashTag);
             } catch (Exception e) {
-                log.error("error adding hashTag to window...", e);
+                log.error("error adding hashTag [" + hashTag.getText() + "] to window " + window + "...", e);
             }
         }
 
-        try {
-            streamerWindow.clearEvicted();
-        } catch (Exception e) {
-            log.error("error clearing evicted hashTag from window...", e);
+
+        final int evictionSize = streamerWindow.evictionQueueSize();
+
+        if (evictionSize > 0) {
+
+            log.debug("eviction queue size in window " + window + " is " + evictionSize);
+
+            try {
+                streamerWindow.clearEvicted();
+            } catch (Exception e) {
+                log.error("error clearing evicted hashTags from window " + window + "...", e);
+            }
         }
 
     }
