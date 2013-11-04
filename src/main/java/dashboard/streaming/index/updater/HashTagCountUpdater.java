@@ -6,13 +6,7 @@ import org.gridgain.grid.streamer.index.GridStreamerIndexUpdater;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.social.twitter.api.HashTagEntity;
 
-/**
- * Created with IntelliJ IDEA.
- * User: timveil
- * Date: 11/1/13
- * Time: 4:00 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class HashTagCountUpdater implements GridStreamerIndexUpdater<HashTagEntity, String, Long> {
 
     @Nullable

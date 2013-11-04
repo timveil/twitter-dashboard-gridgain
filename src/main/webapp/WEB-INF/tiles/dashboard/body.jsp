@@ -66,7 +66,7 @@
 
 <script id="template" type="text/x-jquery-tmpl">
     <tr>
-        <td>\${hashtag}</td>
+        <td>\${hashTag}</td>
         <td>\${count}</td>
     </tr>
 </script>

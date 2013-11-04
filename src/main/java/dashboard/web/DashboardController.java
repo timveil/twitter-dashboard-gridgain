@@ -26,7 +26,6 @@ public class DashboardController {
     private TwitterService twitterService;
 
 
-
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
     public String get(ModelMap model) {
         return "dashboard";
@@ -56,18 +55,18 @@ public class DashboardController {
 
         this.suspend(atmosphereResource);
 
-        final Broadcaster bc =  BroadcasterFactory.getDefault().lookup(url, true);
+        final Broadcaster bc = BroadcasterFactory.getDefault().lookup(url, true);
 
         bc.addAtmosphereResource(atmosphereResource);
 
-        log.debug("ID = " + bc.getID());
-        log.debug("SCOPE = " + bc.getScope());
+        if (log.isDebugEnabled()) {
+            log.debug("broadcasting for url [" + url + "], id [" + bc.getID() + "], scope [" + bc.getScope() + "], atmosphere guid [" + atmosphereResource.uuid() + "]");
+        }
 
         bc.scheduleFixedBroadcast(new Callable<String>() {
 
             public String call() throws Exception {
-
-                return mapper.writeValueAsString(twitterService.getHashtagSummary(window));
+                return mapper.writeValueAsString(twitterService.getHashTagSummary(window));
             }
 
         }, broadcastFrequencySeconds, TimeUnit.SECONDS);
@@ -78,20 +77,27 @@ public class DashboardController {
         resource.addEventListener(new AtmosphereResourceEventListenerAdapter() {
             @Override
             public void onSuspend(AtmosphereResourceEvent event) {
-                log.info("Suspending Client..." + resource.uuid());
+                if (log.isDebugEnabled()) {
+                    log.debug("Suspending Client..." + resource.uuid());
+                }
+
                 countDownLatch.countDown();
                 resource.removeEventListener(this);
             }
 
             @Override
             public void onDisconnect(AtmosphereResourceEvent event) {
-                log.info("Disconnecting Client..." + resource.uuid());
+                if (log.isDebugEnabled()) {
+                    log.debug("Disconnecting Client..." + resource.uuid());
+                }
                 super.onDisconnect(event);
             }
 
             @Override
             public void onBroadcast(AtmosphereResourceEvent event) {
-                log.info("Client is broadcasting..." + resource.uuid());
+                if (log.isDebugEnabled()) {
+                    log.debug("Client is broadcasting..." + resource.uuid());
+                }
                 super.onBroadcast(event);
             }
         });
@@ -105,7 +111,7 @@ public class DashboardController {
         try {
             countDownLatch.await();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.error("suspend issue...", e);
         }
     }
 

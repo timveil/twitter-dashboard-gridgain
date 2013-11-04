@@ -1,8 +1,8 @@
 package dashboard.streaming;
 
 import com.google.common.collect.Lists;
-import dashboard.model.HashtagSummary;
-import dashboard.streaming.listener.HashtagStreamListener;
+import dashboard.model.HashTagSummary;
+import dashboard.streaming.listener.HashTagStreamListener;
 import dashboard.streaming.listener.TweetStreamListener;
 import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridException;
@@ -20,7 +20,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.social.twitter.api.*;
+import org.springframework.social.twitter.api.HashTagEntity;
+import org.springframework.social.twitter.api.Stream;
+import org.springframework.social.twitter.api.StreamListener;
+import org.springframework.social.twitter.api.Twitter;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -38,18 +41,16 @@ public class TwitterServiceImpl implements TwitterService {
     @Async
     public void ingest(int duration) {
 
-        log.debug("duration of sample will be " + duration + " milliseconds.");
-
         Stream sampleStream = null;
 
         Grid grid = GridFactory.grid("twitter-grid");
 
-        final GridStreamer hashtagStreamer = grid.streamer(Streamer.HASHTAGS.name());
+        final GridStreamer hashTagStreamer = grid.streamer(Streamer.HASHTAGS.name());
         final GridStreamer tweetStreamer = grid.streamer(Streamer.TWEETS.name());
 
         try {
             List<StreamListener> listeners = Lists.newArrayList();
-            listeners.add(new HashtagStreamListener(hashtagStreamer));
+            listeners.add(new HashTagStreamListener(hashTagStreamer));
             listeners.add(new TweetStreamListener(tweetStreamer));
 
             sampleStream = twitter.streamingOperations().sample(listeners);
@@ -65,10 +66,9 @@ public class TwitterServiceImpl implements TwitterService {
                 tweetStreamer.reset();
             }
 
-            if (hashtagStreamer != null) {
-                hashtagStreamer.reset();
+            if (hashTagStreamer != null) {
+                hashTagStreamer.reset();
             }
-
 
             if (sampleStream != null) {
                 sampleStream.close();
@@ -77,7 +77,7 @@ public class TwitterServiceImpl implements TwitterService {
     }
 
     @Override
-    public List<HashtagSummary> getHashtagSummary(final StreamerWindow window) {
+    public List<HashTagSummary> getHashTagSummary(final StreamerWindow window) {
 
         Grid grid = GridFactory.grid("twitter-grid");
 
@@ -85,13 +85,10 @@ public class TwitterServiceImpl implements TwitterService {
 
         assert streamer != null;
 
-        List<HashtagSummary> results = Lists.newArrayList();
+        List<HashTagSummary> results = Lists.newArrayList();
 
         try {
-            // Send reduce query to all 'popular-numbers' streamers
-            // running on local and remote noes.
-            Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> col = streamer.context().reduce(
-                    // This closure will execute on remote nodes.
+            Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> reduceResults = streamer.context().reduce(
                     new GridClosure<GridStreamerContext, Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>>>() {
 
                         @Override
@@ -107,8 +104,6 @@ public class TwitterServiceImpl implements TwitterService {
 
                         }
                     },
-                    // The reducer will always execute locally, on the same node
-                    // that submitted the query.
                     new GridReducer0<Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>>>() {
                         private List<GridStreamerIndexEntry<HashTagEntity, String, Long>> sorted = new ArrayList<>();
 
@@ -116,7 +111,6 @@ public class TwitterServiceImpl implements TwitterService {
                         @Override
                         public boolean collect(@Nullable Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> gridStreamerIndexEntries) {
                             if (gridStreamerIndexEntries != null && !gridStreamerIndexEntries.isEmpty()) {
-                                // Add result from remote node to sorted set.
                                 sorted.addAll(gridStreamerIndexEntries);
                             }
 
@@ -133,14 +127,13 @@ public class TwitterServiceImpl implements TwitterService {
                                 }
                             });
 
-                            // Take only first POPULAR_NUMBERS_CNT values from final sorted set.
                             return GridFunc.retain(sorted, true, 10);
                         }
                     }
             );
 
-            for (GridStreamerIndexEntry<HashTagEntity, String, Long> cntr : col) {
-                results.add(new HashtagSummary(cntr.key(), cntr.value()));
+            for (GridStreamerIndexEntry<HashTagEntity, String, Long> entry : reduceResults) {
+                results.add(new HashTagSummary(entry.key(), entry.value()));
             }
 
         } catch (GridException e) {

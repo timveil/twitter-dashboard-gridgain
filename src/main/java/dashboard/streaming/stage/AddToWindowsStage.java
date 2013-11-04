@@ -28,27 +28,32 @@ public class AddToWindowsStage implements GridStreamerStage<HashTagEntity> {
     @Override
     public Map<String, Collection<?>> run(GridStreamerContext gridStreamerContext, Collection<HashTagEntity> hashTagEntities) throws GridException {
 
-        final GridStreamerWindow<HashTagEntity> last5Minutes = gridStreamerContext.window(StreamerWindow.FIVE_MIN.name());
-        assert last5Minutes != null;
-
-        final GridStreamerWindow<HashTagEntity> last15Minutes = gridStreamerContext.window(StreamerWindow.FIFTEEN_MIN.name());
-        assert last15Minutes != null;
-
-        final GridStreamerWindow<HashTagEntity> last60Minutes = gridStreamerContext.window(StreamerWindow.SIXTY_MIN.name());
-        assert last60Minutes != null;
-
-        for (HashTagEntity hashTag : hashTagEntities) {
-            last5Minutes.enqueue(hashTag);
-            last15Minutes.enqueue(hashTag);
-            last60Minutes.enqueue(hashTag);
-        }
-
-        last5Minutes.clearEvicted();
-        last15Minutes.clearEvicted();
-        last60Minutes.clearEvicted();
-
+        addToWindow(gridStreamerContext, hashTagEntities, StreamerWindow.FIVE_MIN);
+        addToWindow(gridStreamerContext, hashTagEntities, StreamerWindow.FIFTEEN_MIN);
+        addToWindow(gridStreamerContext, hashTagEntities, StreamerWindow.SIXTY_MIN);
 
         return Collections.<String, Collection<?>>singletonMap(gridStreamerContext.nextStageName(), hashTagEntities);
+
+    }
+
+    private void addToWindow(GridStreamerContext context, Collection<HashTagEntity> hashTagEntities, StreamerWindow window) {
+        final GridStreamerWindow<HashTagEntity> streamerWindow = context.window(window.name());
+        assert streamerWindow != null;
+
+
+        for (HashTagEntity hashTag : hashTagEntities) {
+            try {
+                streamerWindow.enqueue(hashTag);
+            } catch (GridException e) {
+                log.error("error adding hashTag to window...", e);
+            }
+        }
+
+        try {
+            streamerWindow.clearEvicted();
+        } catch (GridException e) {
+            log.error("error clearing evicted hashTag from window...", e);
+        }
 
     }
 }

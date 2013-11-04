@@ -17,13 +17,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
-/**
- * Created with IntelliJ IDEA.
- * User: timveil
- * Date: 11/3/13
- * Time: 7:35 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class AddToDatabaseStage implements GridStreamerStage<Tweet> {
 
     private final Logger log = LoggerFactory.getLogger(getClass());

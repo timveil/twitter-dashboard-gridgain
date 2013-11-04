@@ -9,7 +9,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -37,13 +36,16 @@ public class IngestController {
             duration = Integer.parseInt(minutes) * 60 * 1000;
         }
 
+        if (log.isDebugEnabled()) {
+            log.debug("will ingest twitter data for " + duration + " milliseconds.");
+        }
+
         request.getSession().setAttribute("startTime", new Date());
 
         twitterService.ingest(duration);
 
         return "redirect:/dashboard";
     }
-
 
 
 }

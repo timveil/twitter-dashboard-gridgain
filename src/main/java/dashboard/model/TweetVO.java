@@ -9,13 +9,7 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.Date;
 
-/**
- * Created with IntelliJ IDEA.
- * User: timveil
- * Date: 8/27/13
- * Time: 5:18 PM
- * To change this template use File | Settings | File Templates.
- */
+
 public class TweetVO implements Externalizable {
 
 
