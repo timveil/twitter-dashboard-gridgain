@@ -1,8 +1,10 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ include file="/WEB-INF/tiles/common/taglibs.jsp" %>
 
+<fmt:formatDate var="startTimeFormatted" value="${sessionScope.startTime}" type="both" dateStyle="short" timeStyle="short"/>
+
 <h3>Twitter Data
-    <small>as of <fmt:formatDate value="${sessionScope.startTime}" type="both" dateStyle="short" timeStyle="long"/></small>
+    <small>as of ${startTimeFormatted}</small>
 </h3>
 
 <div class="row">
@@ -63,10 +65,40 @@
 
 </div>
 
+<div class="row">
+    <div class="col-lg-4">
 
-<script id="template" type="text/x-jquery-tmpl">
+        <h4>Top Tweeters
+            <small>since ${startTimeFormatted}</small>
+        </h4>
+
+        <table class="table table-nonfluid table-condensed table-striped">
+            <thead>
+            <tr>
+                <th class="col-lg-2">Screen Name</th>
+                <th class="col-lg-1">Count</th>
+            </tr>
+            </thead>
+            <tbody id="topTweets">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-lg-8">&nbsp;
+    </div>
+</div>
+
+<script id="hashTagTemplate" type="text/x-jquery-tmpl">
     <tr>
         <td>\${hashTag}</td>
+        <td>\${count}</td>
+    </tr>
+</script>
+
+
+<script id="topTweetsTemplate" type="text/x-jquery-tmpl">
+    <tr>
+        <td>\${screenName}</td>
         <td>\${count}</td>
     </tr>
 </script>
@@ -75,13 +107,14 @@
 
     $(document).ready(function () {
 
-        getStreamingData('<c:url value="/counts/lastFive"/>', '#last5');
-        getStreamingData('<c:url value="/counts/lastFifteen"/>', '#last15');
-        getStreamingData('<c:url value="/counts/lastSixty"/>', '#last60');
+        getStreamingData('<c:url value="/counts/lastFive"/>', '#last5', "#hashTagTemplate");
+        getStreamingData('<c:url value="/counts/lastFifteen"/>', '#last15', "#hashTagTemplate");
+        getStreamingData('<c:url value="/counts/lastSixty"/>', '#last60', "#hashTagTemplate");
+        getStreamingData('<c:url value="/counts/topTweets"/>', '#topTweets', "#topTweetsTemplate");
 
     });
 
-    function getStreamingData(url, divId) {
+    function getStreamingData(url, divId, templateId) {
 
         var socket = $.atmosphere;
 
@@ -92,7 +125,7 @@
         request.fallbackTransport = 'streaming';
 
         request.onMessage = function (response) {
-            buildTemplate(response, divId);
+            buildTemplate(response, divId, templateId);
         };
 
         socket.subscribe(request);
@@ -100,7 +133,7 @@
 
     }
 
-    function buildTemplate(response, divId) {
+    function buildTemplate(response, divId, templateId) {
 
         if (response.state = "messageReceived") {
 
@@ -115,7 +148,7 @@
 
                     $(divId).empty();
 
-                    $("#template").tmpl(result).appendTo(divId);
+                    $(templateId).tmpl(result).appendTo(divId);
 
 
                 } catch (error) {

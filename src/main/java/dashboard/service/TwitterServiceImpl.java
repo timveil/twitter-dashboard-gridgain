@@ -2,6 +2,8 @@ package dashboard.service;
 
 import com.google.common.collect.Lists;
 import dashboard.model.HashTagSummary;
+import dashboard.model.TopTweeterSummary;
+import dashboard.model.TweetVO;
 import dashboard.streaming.listener.HashTagStreamListener;
 import dashboard.streaming.listener.TweetStreamListener;
 import dashboard.utils.GridUtils;
@@ -10,6 +12,8 @@ import dashboard.utils.StreamerIndex;
 import dashboard.utils.StreamerWindow;
 import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridException;
+import org.gridgain.grid.cache.GridCache;
+import org.gridgain.grid.cache.query.GridCacheQueryType;
 import org.gridgain.grid.lang.GridClosure;
 import org.gridgain.grid.lang.GridFunc;
 import org.gridgain.grid.lang.GridReducer0;
@@ -90,50 +94,53 @@ public class TwitterServiceImpl implements TwitterService {
 
         List<HashTagSummary> results = Lists.newArrayList();
 
-        try {
-            Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> reduceResults = streamer.context().reduce(
-                    new GridClosure<GridStreamerContext, Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>>>() {
 
-                        @Override
-                        public Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> apply(GridStreamerContext gridStreamerContext) {
+        final GridClosure<GridStreamerContext, Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>>> gridClosure = new GridClosure<GridStreamerContext, Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>>>() {
 
-                            final GridStreamerWindow<HashTagEntity> gridStreamerWindow = gridStreamerContext.window(window.name());
+            @Override
+            public Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> apply(GridStreamerContext gridStreamerContext) {
 
-                            assert gridStreamerWindow != null;
+                final GridStreamerWindow<HashTagEntity> gridStreamerWindow = gridStreamerContext.window(window.name());
 
-                            final GridStreamerIndex<HashTagEntity, String, Long> index = gridStreamerWindow.index(StreamerIndex.HASHTAG_COUNT.name());
+                assert gridStreamerWindow != null;
 
-                            return index.entries(0);
+                final GridStreamerIndex<HashTagEntity, String, Long> index = gridStreamerWindow.index(StreamerIndex.HASHTAG_COUNT.name());
 
-                        }
-                    },
-                    new GridReducer0<Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>>>() {
-                        private List<GridStreamerIndexEntry<HashTagEntity, String, Long>> sorted = new ArrayList<>();
+                return index.entries(0);
+
+            }
+        };
+
+        final GridReducer0<Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>>> gridReducer = new GridReducer0<Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>>>() {
+            private List<GridStreamerIndexEntry<HashTagEntity, String, Long>> sorted = new ArrayList<>();
 
 
-                        @Override
-                        public boolean collect(@Nullable Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> gridStreamerIndexEntries) {
-                            if (gridStreamerIndexEntries != null && !gridStreamerIndexEntries.isEmpty()) {
-                                sorted.addAll(gridStreamerIndexEntries);
-                            }
+            @Override
+            public boolean collect(@Nullable Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> gridStreamerIndexEntries) {
+                if (gridStreamerIndexEntries != null && !gridStreamerIndexEntries.isEmpty()) {
+                    sorted.addAll(gridStreamerIndexEntries);
+                }
 
-                            return true;
-                        }
+                return true;
+            }
 
-                        @Override
-                        public Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> apply() {
-                            Collections.sort(sorted, new Comparator<GridStreamerIndexEntry<HashTagEntity, String, Long>>() {
+            @Override
+            public Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> apply() {
+                Collections.sort(sorted, new Comparator<GridStreamerIndexEntry<HashTagEntity, String, Long>>() {
 
-                                @Override
-                                public int compare(GridStreamerIndexEntry<HashTagEntity, String, Long> o1, GridStreamerIndexEntry<HashTagEntity, String, Long> o2) {
-                                    return o2.value().compareTo(o1.value());
-                                }
-                            });
-
-                            return GridFunc.retain(sorted, true, 10);
-                        }
+                    @Override
+                    public int compare(GridStreamerIndexEntry<HashTagEntity, String, Long> o1, GridStreamerIndexEntry<HashTagEntity, String, Long> o2) {
+                        return o2.value().compareTo(o1.value());
                     }
-            );
+                });
+
+                return GridFunc.retain(sorted, true, 10);
+            }
+        };
+
+        try {
+
+            Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> reduceResults = streamer.context().reduce(gridClosure, gridReducer);
 
             for (GridStreamerIndexEntry<HashTagEntity, String, Long> entry : reduceResults) {
                 results.add(new HashTagSummary(entry.key(), entry.value()));
@@ -146,4 +153,36 @@ public class TwitterServiceImpl implements TwitterService {
         return results;
 
     }
+
+
+    @Override
+    public List<TopTweeterSummary> getTopTweeters() {
+
+        Grid grid = GridUtils.getGrid();
+
+        GridCache<Long, TweetVO> cache = grid.cache(TweetVO.class.getName());
+        assert cache != null;
+
+        List<TopTweeterSummary> topTweeters = Lists.newArrayList();
+
+        try {
+            final Collection<List<Object>> results = cache.createFieldsQuery("select screenName, count(*) from TweetVO group by screenName having count(*) > 0 order by count(*) desc limit 10")
+                    .execute(grid)
+                    .get();
+
+            for (List<Object> result : results) {
+                final String screenName = (String)result.get(0);
+                final Long count = (Long)result.get(1);
+                topTweeters.add(new TopTweeterSummary(screenName, count));
+            }
+
+        } catch (GridException e) {
+            log.error("error executing top tweeters query", e);
+        }
+
+        return topTweeters;
+
+
+    }
+
 }

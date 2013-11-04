@@ -138,11 +138,14 @@
         </property>
 
         <property name="indexingSpi">
-            <list>
-                <bean class="org.gridgain.grid.spi.indexing.h2.GridH2IndexingSpi">
-                    <property name="defaultIndexPrimitiveKey" value="true"/>
-                </bean>
-            </list>
+            <bean class="org.gridgain.grid.spi.indexing.h2.GridH2IndexingSpi">
+                <property name="longQueryExecutionTimeout" value="500"/>
+                <property name="longQueryExplain" value="true"/>
+                <property name="maxOffHeapMemory" value="-1"/>
+                <property name="defaultIndexFixedTyping" value="true"/>
+                <property name="defaultIndexPrimitiveKey" value="true"/>
+                <property name="defaultIndexPrimitiveValue" value="false"/>
+            </bean>
         </property>
 
         <property name="discoverySpi">

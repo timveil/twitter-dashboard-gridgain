@@ -35,23 +35,76 @@ public class DashboardController {
     @RequestMapping(value = "/counts/lastFive")
     @ResponseBody
     public void fiveMinuteCount(AtmosphereResource atmosphereResource) {
-        broadcastCounts(atmosphereResource, StreamerWindow.FIVE_MIN, 20, "/counts/lastFive");
+
+        final ObjectMapper mapper = new ObjectMapper();
+
+        broadcast(atmosphereResource,
+                20,
+                "/counts/lastFive",
+                new Callable<String>() {
+
+                    public String call() throws Exception {
+                        return mapper.writeValueAsString(twitterService.getHashTagSummary(StreamerWindow.FIVE_MIN));
+                    }
+
+                });
     }
 
     @RequestMapping(value = "/counts/lastFifteen")
     @ResponseBody
     public void fifteenMinuteCount(AtmosphereResource atmosphereResource) {
-        broadcastCounts(atmosphereResource, StreamerWindow.FIFTEEN_MIN, 20, "/counts/lastFifteen");
+        final ObjectMapper mapper = new ObjectMapper();
+
+        broadcast(atmosphereResource,
+                20,
+                "/counts/lastFifteen",
+                new Callable<String>() {
+
+                    public String call() throws Exception {
+                        return mapper.writeValueAsString(twitterService.getHashTagSummary(StreamerWindow.FIFTEEN_MIN));
+                    }
+
+                });
     }
 
     @RequestMapping(value = "/counts/lastSixty")
     @ResponseBody
     public void sixtyMinuteCount(AtmosphereResource atmosphereResource) {
-        broadcastCounts(atmosphereResource, StreamerWindow.SIXTY_MIN, 20, "/counts/lastSixty");
+        final ObjectMapper mapper = new ObjectMapper();
+
+        broadcast(atmosphereResource,
+                20,
+                "/counts/lastSixty",
+                new Callable<String>() {
+
+                    public String call() throws Exception {
+                        return mapper.writeValueAsString(twitterService.getHashTagSummary(StreamerWindow.SIXTY_MIN));
+                    }
+
+                });
     }
 
-    private void broadcastCounts(AtmosphereResource atmosphereResource, final StreamerWindow window, int broadcastFrequencySeconds, String url) {
+    @RequestMapping(value = "/counts/topTweets")
+    @ResponseBody
+    public void topTweets(AtmosphereResource atmosphereResource) {
+
         final ObjectMapper mapper = new ObjectMapper();
+
+        broadcast(atmosphereResource,
+                20,
+                "/counts/topTweets",
+                new Callable<String>() {
+
+                    public String call() throws Exception {
+                        return mapper.writeValueAsString(twitterService.getTopTweeters());
+                    }
+
+                }
+        );
+    }
+
+    private void broadcast(AtmosphereResource atmosphereResource, int broadcastFrequencySeconds, String url, Callable<String> callable) {
+
 
         this.suspend(atmosphereResource);
 
@@ -60,16 +113,10 @@ public class DashboardController {
         bc.addAtmosphereResource(atmosphereResource);
 
         if (log.isDebugEnabled()) {
-            log.debug("broadcasting for url [" + url + "], id [" + bc.getID() + "], scope [" + bc.getScope() + "], atmosphere guid [" + atmosphereResource.uuid() + "]");
+            log.debug("broadcasting for url [" + url + "], id [" + bc.getID() + "], scope [" + bc.getScope() + "], atmosphere uuid [" + atmosphereResource.uuid() + "]");
         }
 
-        bc.scheduleFixedBroadcast(new Callable<String>() {
-
-            public String call() throws Exception {
-                return mapper.writeValueAsString(twitterService.getHashTagSummary(window));
-            }
-
-        }, broadcastFrequencySeconds, TimeUnit.SECONDS);
+        bc.scheduleFixedBroadcast(callable, broadcastFrequencySeconds, TimeUnit.SECONDS);
     }
 
     private void suspend(final AtmosphereResource resource) {
