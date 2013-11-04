@@ -56,7 +56,8 @@ public class DashboardController {
 
         this.suspend(atmosphereResource);
 
-        final Broadcaster bc = BroadcasterFactory.getDefault().get(url);
+        final Broadcaster bc =  BroadcasterFactory.getDefault().lookup(url, true);
+
         bc.addAtmosphereResource(atmosphereResource);
 
         log.debug("ID = " + bc.getID());
