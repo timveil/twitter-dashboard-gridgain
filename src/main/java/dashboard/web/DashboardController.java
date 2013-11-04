@@ -1,5 +1,6 @@
 package dashboard.web;
 
+import dashboard.streaming.StreamerWindow;
 import dashboard.streaming.TwitterService;
 import org.atmosphere.cpr.AtmosphereResource;
 import org.atmosphere.cpr.AtmosphereResourceEvent;
@@ -35,23 +36,37 @@ public class DashboardController {
     }
 
 
-    @RequestMapping(value = "/twitter/concurrency")
+    @RequestMapping(value = "/counts/lastFive")
     @ResponseBody
-    public void twitterAsync(AtmosphereResource atmosphereResource) {
+    public void fiveMinuteCount(AtmosphereResource atmosphereResource) {
+        broadcastCounts(atmosphereResource, StreamerWindow.FIVE_MIN);
+    }
+
+    @RequestMapping(value = "/counts/lastFifteen")
+    @ResponseBody
+    public void fifteenMinuteCount(AtmosphereResource atmosphereResource) {
+        broadcastCounts(atmosphereResource, StreamerWindow.FIFTEEN_MIN);
+    }
+
+    @RequestMapping(value = "/counts/lastSixty")
+    @ResponseBody
+    public void sixtyMinuteCount(AtmosphereResource atmosphereResource) {
+        broadcastCounts(atmosphereResource, StreamerWindow.SIXTY_MIN);
+    }
+
+    private void broadcastCounts(AtmosphereResource atmosphereResource, final StreamerWindow window) {
         final ObjectMapper mapper = new ObjectMapper();
 
         this.suspend(atmosphereResource);
 
         final Broadcaster bc = atmosphereResource.getBroadcaster();
 
-        log.info("Atmo Resource Size: " + bc.getAtmosphereResources().size());
-
         bc.scheduleFixedBroadcast(new Callable<String>() {
 
             //@Override
             public String call() throws Exception {
 
-                return mapper.writeValueAsString(twitterService.getHashtagAgregate());
+                return mapper.writeValueAsString(twitterService.getHashtagSummary(window));
             }
 
         }, 10, TimeUnit.SECONDS);

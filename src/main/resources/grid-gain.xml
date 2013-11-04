@@ -24,17 +24,17 @@
         <property name="streamerConfiguration">
             <list>
                 <bean class="org.gridgain.grid.streamer.GridStreamerConfigurationAdapter">
-                    <property name="name" value="twitter-popular-hashtags"/>
+                    <property name="name" value="#{T(dashboard.streaming.Streamer).HASHTAGS.name()}"/>
 
                     <property name="windows">
                         <list>
                             <bean class="org.gridgain.grid.streamer.window.GridStreamerBoundedTimeWindow">
-                                <property name="name" value="last5Minutes"/>
+                                <property name="name" value="#{T(dashboard.streaming.StreamerWindow).FIVE_MIN.name()}"/>
                                 <property name="timeInterval" value="#{5 * 60 * 1000}"/>
                                 <property name="indexes">
                                     <list>
                                         <bean class="org.gridgain.grid.streamer.index.tree.GridStreamerTreeIndexProvider">
-                                            <property name="name" value="hashTagCount"/>
+                                            <property name="name" value="#{T(dashboard.streaming.StreamerIndex).HASHTAG_COUNT.name()}"/>
 
                                             <property name="updater">
                                                 <bean class="dashboard.streaming.index.updater.HashTagCountUpdater"/>
@@ -44,12 +44,12 @@
                                 </property>
                             </bean>
                             <bean class="org.gridgain.grid.streamer.window.GridStreamerBoundedTimeWindow">
-                                <property name="name" value="last15Minutes"/>
+                                <property name="name" value="#{T(dashboard.streaming.StreamerWindow).FIFTEEN_MIN.name()}"/>
                                 <property name="timeInterval" value="#{15 * 60 * 1000}"/>
                                 <property name="indexes">
                                     <list>
                                         <bean class="org.gridgain.grid.streamer.index.tree.GridStreamerTreeIndexProvider">
-                                            <property name="name" value="hashtagCount"/>
+                                            <property name="name" value="#{T(dashboard.streaming.StreamerIndex).HASHTAG_COUNT.name()}"/>
 
                                             <property name="updater">
                                                 <bean class="dashboard.streaming.index.updater.HashTagCountUpdater"/>
@@ -59,12 +59,12 @@
                                 </property>
                             </bean>
                             <bean class="org.gridgain.grid.streamer.window.GridStreamerBoundedTimeWindow">
-                                <property name="name" value="last60Minutes"/>
+                                <property name="name" value="#{T(dashboard.streaming.StreamerWindow).SIXTY_MIN.name()}"/>
                                 <property name="timeInterval" value="#{60 * 60 * 1000}"/>
                                 <property name="indexes">
                                     <list>
                                         <bean class="org.gridgain.grid.streamer.index.tree.GridStreamerTreeIndexProvider">
-                                            <property name="name" value="hashtagCount"/>
+                                            <property name="name" value="#{T(dashboard.streaming.StreamerIndex).HASHTAG_COUNT.name()}"/>
 
                                             <property name="updater">
                                                 <bean class="dashboard.streaming.index.updater.HashTagCountUpdater"/>
@@ -78,7 +78,7 @@
 
                     <property name="stages">
                         <list>
-                            <bean class="dashboard.streaming.stage.AddToTimeBoundedWindowStage"/>
+                            <bean class="dashboard.streaming.stage.AddToWindowsStage"/>
                         </list>
                     </property>
 

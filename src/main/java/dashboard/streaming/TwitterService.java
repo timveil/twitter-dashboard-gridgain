@@ -1,6 +1,6 @@
 package dashboard.streaming;
 
-import dashboard.model.HashtagAggregate;
+import dashboard.model.HashtagSummary;
 
 import java.util.List;
 
@@ -15,5 +15,5 @@ public interface TwitterService {
 
     void ingest(int duration);
 
-    List<HashtagAggregate> getHashtagAgregate();
+    List<HashtagSummary> getHashtagSummary(StreamerWindow window);
 }

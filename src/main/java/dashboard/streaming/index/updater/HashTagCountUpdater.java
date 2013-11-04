@@ -24,7 +24,7 @@ public class HashTagCountUpdater implements GridStreamerIndexUpdater<HashTagEnti
     @Nullable
     @Override
     public Long initialValue(HashTagEntity hashTagEntity, String s) {
-        return 0L;
+        return 1l;
     }
 
     @Nullable
@@ -36,6 +36,6 @@ public class HashTagCountUpdater implements GridStreamerIndexUpdater<HashTagEnti
     @Nullable
     @Override
     public Long onRemoved(GridStreamerIndexEntry<HashTagEntity, String, Long> entry, HashTagEntity hashTagEntity) {
-        return entry.value() - 1 == 0 ? null : entry.value() - 1;
+        return entry.value() - 1 == 0 ? 1L : entry.value() - 1;
     }
 }

@@ -1,7 +1,7 @@
 package dashboard.streaming;
 
 import com.google.common.collect.Lists;
-import dashboard.model.HashtagAggregate;
+import dashboard.model.HashtagSummary;
 import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.lang.GridClosure;
@@ -42,7 +42,7 @@ public class TwitterServiceImpl implements TwitterService {
 
         Stream userStream = null;
 
-        final GridStreamer streamer = grid.streamer("twitter-popular-hashtags");
+        final GridStreamer streamer = grid.streamer(Streamer.HASHTAGS.name());
 
         assert streamer != null;
 
@@ -71,13 +71,13 @@ public class TwitterServiceImpl implements TwitterService {
     }
 
     @Override
-    public List<HashtagAggregate> getHashtagAgregate() {
+    public List<HashtagSummary> getHashtagSummary(final StreamerWindow window) {
 
-        final GridStreamer streamer = grid.streamer("twitter-popular-hashtags");
+        final GridStreamer streamer = grid.streamer(Streamer.HASHTAGS.name());
 
         assert streamer != null;
 
-        List<HashtagAggregate> results = Lists.newArrayList();
+        List<HashtagSummary> results = Lists.newArrayList();
 
         try {
             // Send reduce query to all 'popular-numbers' streamers
@@ -89,11 +89,11 @@ public class TwitterServiceImpl implements TwitterService {
                         @Override
                         public Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> apply(GridStreamerContext gridStreamerContext) {
 
-                            final GridStreamerWindow<HashTagEntity> last5MinutesWindow = gridStreamerContext.window("last5Minutes");
+                            final GridStreamerWindow<HashTagEntity> last5MinutesWindow = gridStreamerContext.window(window.name());
 
                             assert last5MinutesWindow != null;
 
-                            final GridStreamerIndex<HashTagEntity, String, Long> last5MinutesIndex = last5MinutesWindow.index("hashTagCount");
+                            final GridStreamerIndex<HashTagEntity, String, Long> last5MinutesIndex = last5MinutesWindow.index(StreamerIndex.HASHTAG_COUNT.name());
 
                             return last5MinutesIndex.entries(0);
 
@@ -132,7 +132,7 @@ public class TwitterServiceImpl implements TwitterService {
             );
 
             for (GridStreamerIndexEntry<HashTagEntity, String, Long> cntr : col) {
-                results.add(new HashtagAggregate(cntr.key(), cntr.value()));
+                results.add(new HashtagSummary(cntr.key(), cntr.value()));
             }
 
         } catch (GridException e) {

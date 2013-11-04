@@ -7,12 +7,12 @@ package dashboard.model;
  * Time: 2:35 PM
  * To change this template use File | Settings | File Templates.
  */
-public class HashtagAggregate {
+public class HashtagSummary {
 
     private String hashtag;
     private long count;
 
-    public HashtagAggregate(String hashtag, long count) {
+    public HashtagSummary(String hashtag, long count) {
         this.hashtag = hashtag;
         this.count = count;
     }

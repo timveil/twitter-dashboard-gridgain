@@ -1,5 +1,6 @@
 package dashboard.streaming.stage;
 
+import dashboard.streaming.StreamerWindow;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.streamer.GridStreamerContext;
 import org.gridgain.grid.streamer.GridStreamerStage;
@@ -14,7 +15,7 @@ import java.util.Collections;
 import java.util.Map;
 
 
-public class AddToTimeBoundedWindowStage implements GridStreamerStage<HashTagEntity> {
+public class AddToWindowsStage implements GridStreamerStage<HashTagEntity> {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -27,13 +28,13 @@ public class AddToTimeBoundedWindowStage implements GridStreamerStage<HashTagEnt
     @Override
     public Map<String, Collection<?>> run(GridStreamerContext gridStreamerContext, Collection<HashTagEntity> hashTagEntities) throws GridException {
 
-        final GridStreamerWindow<HashTagEntity> last5Minutes = gridStreamerContext.window("last5Minutes");
+        final GridStreamerWindow<HashTagEntity> last5Minutes = gridStreamerContext.window(StreamerWindow.FIVE_MIN.name());
         assert last5Minutes != null;
 
-        final GridStreamerWindow<HashTagEntity> last15Minutes = gridStreamerContext.window("last15Minutes");
+        final GridStreamerWindow<HashTagEntity> last15Minutes = gridStreamerContext.window(StreamerWindow.FIFTEEN_MIN.name());
         assert last15Minutes != null;
 
-        final GridStreamerWindow<HashTagEntity> last60Minutes = gridStreamerContext.window("last60Minutes");
+        final GridStreamerWindow<HashTagEntity> last60Minutes = gridStreamerContext.window(StreamerWindow.SIXTY_MIN.name());
         assert last60Minutes != null;
 
         for (HashTagEntity hashTag : hashTagEntities) {

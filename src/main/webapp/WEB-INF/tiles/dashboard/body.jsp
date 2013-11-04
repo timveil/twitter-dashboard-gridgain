@@ -24,7 +24,7 @@
     <div class="col-mid-4">
 
         <h3>Popular Hashtags
-            <small>last 10 minutes</small>
+            <small>last 15 minutes</small>
         </h3>
 
         <table class="table table-nonfluid table-condensed table-striped">
@@ -34,7 +34,7 @@
                 <th class="col-mid-1">Count</th>
             </tr>
             </thead>
-            <tbody id="last10">
+            <tbody id="last15">
             </tbody>
         </table>
     </div>
@@ -70,43 +70,55 @@
 <script type="text/javascript">
     var socket = $.atmosphere;
 
-    var request = new $.atmosphere.AtmosphereRequest();
-    request.transport = 'websocket';
-    request.url = '<c:url value="/twitter/concurrency"/>';
-    request.contentType = "application/json";
-    request.fallbackTransport = 'streaming';
+    $( document ).ready(function() {
 
-    request.onMessage = function (response) {
-        buildTemplate(response);
-    };
+        getStreamingData('<c:url value="/counts/lastFive"/>', '#last5');
+        getStreamingData('<c:url value="/counts/lastFifteen"/>', '#last15');
+        getStreamingData('<c:url value="/counts/lastSixty"/>', '#last60');
 
-    var subSocket = socket.subscribe(request);
+    });
 
-    function buildTemplate(response) {
+    function getStreamingData(url, divId) {
 
-        if (response.state = "messageReceived") {
+        var request = new $.atmosphere.AtmosphereRequest();
+        request.transport = 'websocket';
+        request.url = url;
+        request.contentType = "application/json";
+        request.fallbackTransport = 'streaming';
 
-            var data = response.responseBody;
+        request.onMessage = function (response) {
+            buildTemplate(response);
+        };
 
-            if (data) {
+        var subSocket = socket.subscribe(request);
 
-                try {
-                    var result = $.parseJSON(data);
+        function buildTemplate(response) {
 
-                    console.log(result);
+            if (response.state = "messageReceived") {
 
-                    $("#last5").empty();
+                var data = response.responseBody;
 
-                    $("#template").tmpl(result).appendTo("#last5");
+                if (data) {
+
+                    try {
+                        var result = $.parseJSON(data);
+
+                        //console.log(result);
+
+                        $(divId).empty();
+
+                        $("#template").tmpl(result).appendTo(divId);
 
 
-                } catch (error) {
-                    console.log("An error ocurred: " + error);
+                    } catch (error) {
+                        console.log("An error occurred: " + error);
+                    }
+                } else {
+                    console.log("response.responseBody is null - ignoring.");
                 }
-            } else {
-                console.log("response.responseBody is null - ignoring.");
             }
         }
     }
+
 
 </script>
