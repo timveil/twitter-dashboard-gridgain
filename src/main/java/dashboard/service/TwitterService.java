@@ -1,6 +1,7 @@
-package dashboard.streaming;
+package dashboard.service;
 
 import dashboard.model.HashTagSummary;
+import dashboard.utils.StreamerWindow;
 
 import java.util.List;
 

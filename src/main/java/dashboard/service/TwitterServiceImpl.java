@@ -1,12 +1,15 @@
-package dashboard.streaming;
+package dashboard.service;
 
 import com.google.common.collect.Lists;
 import dashboard.model.HashTagSummary;
 import dashboard.streaming.listener.HashTagStreamListener;
 import dashboard.streaming.listener.TweetStreamListener;
+import dashboard.utils.GridUtils;
+import dashboard.utils.Streamer;
+import dashboard.utils.StreamerIndex;
+import dashboard.utils.StreamerWindow;
 import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridException;
-import org.gridgain.grid.GridFactory;
 import org.gridgain.grid.lang.GridClosure;
 import org.gridgain.grid.lang.GridFunc;
 import org.gridgain.grid.lang.GridReducer0;
@@ -43,7 +46,7 @@ public class TwitterServiceImpl implements TwitterService {
 
         Stream sampleStream = null;
 
-        Grid grid = GridFactory.grid("twitter-grid");
+        Grid grid = GridUtils.getGrid();
 
         final GridStreamer hashTagStreamer = grid.streamer(Streamer.HASHTAGS.name());
         final GridStreamer tweetStreamer = grid.streamer(Streamer.TWEETS.name());
@@ -79,7 +82,7 @@ public class TwitterServiceImpl implements TwitterService {
     @Override
     public List<HashTagSummary> getHashTagSummary(final StreamerWindow window) {
 
-        Grid grid = GridFactory.grid("twitter-grid");
+        Grid grid = GridUtils.getGrid();
 
         final GridStreamer streamer = grid.streamer(Streamer.HASHTAGS.name());
 

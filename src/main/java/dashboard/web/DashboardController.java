@@ -1,7 +1,7 @@
 package dashboard.web;
 
-import dashboard.streaming.StreamerWindow;
-import dashboard.streaming.TwitterService;
+import dashboard.service.TwitterService;
+import dashboard.utils.StreamerWindow;
 import org.atmosphere.cpr.*;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;

@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="
-        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
+
+    <util:constant id="gridName" static-field="dashboard.utils.GridUtils.GRID_NAME"/>
 
     <bean id="grid.cfg" class="org.gridgain.grid.GridConfigurationAdapter" scope="singleton">
 
         <property name="localHost" value="127.0.0.1"/>
-        <property name="gridName" value="twitter-grid"/>
+        <property name="gridName" ref="gridName"/>
         <property name="restEnabled" value="false"/>
 
         <property name="marshaller">
@@ -52,17 +53,17 @@
         <property name="streamerConfiguration">
             <list>
                 <bean class="org.gridgain.grid.streamer.GridStreamerConfigurationAdapter">
-                    <property name="name" value="#{T(dashboard.streaming.Streamer).HASHTAGS.name()}"/>
+                    <property name="name" value="#{T(dashboard.utils.Streamer).HASHTAGS.name()}"/>
 
                     <property name="windows">
                         <list>
                             <bean class="org.gridgain.grid.streamer.window.GridStreamerBoundedTimeWindow">
-                                <property name="name" value="#{T(dashboard.streaming.StreamerWindow).FIVE_MIN.name()}"/>
+                                <property name="name" value="#{T(dashboard.utils.StreamerWindow).FIVE_MIN.name()}"/>
                                 <property name="timeInterval" value="#{5 * 60 * 1000}"/>
                                 <property name="indexes">
                                     <list>
                                         <bean class="org.gridgain.grid.streamer.index.tree.GridStreamerTreeIndexProvider">
-                                            <property name="name" value="#{T(dashboard.streaming.StreamerIndex).HASHTAG_COUNT.name()}"/>
+                                            <property name="name" value="#{T(dashboard.utils.StreamerIndex).HASHTAG_COUNT.name()}"/>
 
                                             <property name="updater">
                                                 <bean class="dashboard.streaming.index.updater.HashTagCountUpdater"/>
@@ -72,12 +73,12 @@
                                 </property>
                             </bean>
                             <bean class="org.gridgain.grid.streamer.window.GridStreamerBoundedTimeWindow">
-                                <property name="name" value="#{T(dashboard.streaming.StreamerWindow).FIFTEEN_MIN.name()}"/>
+                                <property name="name" value="#{T(dashboard.utils.StreamerWindow).FIFTEEN_MIN.name()}"/>
                                 <property name="timeInterval" value="#{15 * 60 * 1000}"/>
                                 <property name="indexes">
                                     <list>
                                         <bean class="org.gridgain.grid.streamer.index.tree.GridStreamerTreeIndexProvider">
-                                            <property name="name" value="#{T(dashboard.streaming.StreamerIndex).HASHTAG_COUNT.name()}"/>
+                                            <property name="name" value="#{T(dashboard.utils.StreamerIndex).HASHTAG_COUNT.name()}"/>
 
                                             <property name="updater">
                                                 <bean class="dashboard.streaming.index.updater.HashTagCountUpdater"/>
@@ -87,12 +88,12 @@
                                 </property>
                             </bean>
                             <bean class="org.gridgain.grid.streamer.window.GridStreamerBoundedTimeWindow">
-                                <property name="name" value="#{T(dashboard.streaming.StreamerWindow).SIXTY_MIN.name()}"/>
+                                <property name="name" value="#{T(dashboard.utils.StreamerWindow).SIXTY_MIN.name()}"/>
                                 <property name="timeInterval" value="#{60 * 60 * 1000}"/>
                                 <property name="indexes">
                                     <list>
                                         <bean class="org.gridgain.grid.streamer.index.tree.GridStreamerTreeIndexProvider">
-                                            <property name="name" value="#{T(dashboard.streaming.StreamerIndex).HASHTAG_COUNT.name()}"/>
+                                            <property name="name" value="#{T(dashboard.utils.StreamerIndex).HASHTAG_COUNT.name()}"/>
 
                                             <property name="updater">
                                                 <bean class="dashboard.streaming.index.updater.HashTagCountUpdater"/>
@@ -115,7 +116,7 @@
                     </property>
                 </bean>
                 <bean class="org.gridgain.grid.streamer.GridStreamerConfigurationAdapter">
-                    <property name="name" value="#{T(dashboard.streaming.Streamer).TWEETS.name()}"/>
+                    <property name="name" value="#{T(dashboard.utils.Streamer).TWEETS.name()}"/>
 
                     <property name="stages">
                         <list>

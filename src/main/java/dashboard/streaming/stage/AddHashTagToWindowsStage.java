@@ -1,6 +1,6 @@
 package dashboard.streaming.stage;
 
-import dashboard.streaming.StreamerWindow;
+import dashboard.utils.StreamerWindow;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.streamer.GridStreamerContext;
 import org.gridgain.grid.streamer.GridStreamerStage;
@@ -54,7 +54,9 @@ public class AddHashTagToWindowsStage implements GridStreamerStage<HashTagEntity
 
         if (evictionSize > 0) {
 
-            log.debug("eviction queue size in window " + window + " is " + evictionSize);
+            if (log.isTraceEnabled()) {
+                log.trace("eviction queue size in window " + window + " is " + evictionSize);
+            }
 
             try {
                 streamerWindow.clearEvicted();

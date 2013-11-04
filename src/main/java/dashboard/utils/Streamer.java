@@ -1,4 +1,4 @@
-package dashboard.streaming;
+package dashboard.utils;
 
 
 public enum Streamer {

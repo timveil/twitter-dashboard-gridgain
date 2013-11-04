@@ -1,17 +1,17 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ include file="/WEB-INF/tiles/common/taglibs.jsp" %>
 
-<h2>Twitter Data
+<h3>Twitter Data
     <small>as of <fmt:formatDate value="${sessionScope.startTime}" type="both" dateStyle="short" timeStyle="long"/></small>
-</h2>
+</h3>
 
 <div class="row">
 
     <div class="col-lg-4">
 
-        <h3>Popular Hashtags
+        <h4>Popular Hashtags
             <small>last 5 minutes</small>
-        </h3>
+        </h4>
 
         <table class="table table-nonfluid table-condensed table-striped">
             <thead>
@@ -27,9 +27,9 @@
 
     <div class="col-lg-4">
 
-        <h3>Popular Hashtags
+        <h4>Popular Hashtags
             <small>last 15 minutes</small>
-        </h3>
+        </h4>
 
         <table class="table table-nonfluid table-condensed table-striped">
             <thead>
@@ -45,9 +45,9 @@
 
     <div class="col-lg-4">
 
-        <h3>Popular Hashtags
+        <h4>Popular Hashtags
             <small>last 60 minutes</small>
-        </h3>
+        </h4>
 
         <table class="table table-nonfluid table-condensed table-striped">
             <thead>

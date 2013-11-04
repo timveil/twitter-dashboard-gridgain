@@ -1,9 +1,9 @@
 package dashboard.streaming.stage;
 
 import dashboard.model.TweetVO;
+import dashboard.utils.GridUtils;
 import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridException;
-import org.gridgain.grid.GridFactory;
 import org.gridgain.grid.cache.GridCache;
 import org.gridgain.grid.lang.GridPredicate;
 import org.gridgain.grid.streamer.GridStreamerContext;
@@ -32,7 +32,7 @@ public class AddTweetToDatabaseStage implements GridStreamerStage<Tweet> {
     @Override
     public Map<String, Collection<?>> run(GridStreamerContext gridStreamerContext, Collection<Tweet> tweets) throws GridException {
 
-        Grid grid = GridFactory.grid("twitter-grid");
+        Grid grid = GridUtils.getGrid();
 
         GridCache<Long, TweetVO> cache = grid.cache(TweetVO.class.getName());
         assert cache != null;
