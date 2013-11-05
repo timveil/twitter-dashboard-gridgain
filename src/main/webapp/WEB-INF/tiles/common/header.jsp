@@ -9,7 +9,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"><img src="<c:url value="/static/image/gridgain_cube_48x48.png"/>"/> GridGain Twitter Demo</a>
+            <a class="navbar-brand" href="http://www.gridgain.com" target="_blank"><img src="<c:url value="/static/image/gridgain_cube_48x48.png"/>"/> GridGain Twitter Demo</a>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">

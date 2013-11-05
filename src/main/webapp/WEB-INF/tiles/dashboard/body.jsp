@@ -8,8 +8,8 @@
 </h3>
 
 <div class="bs-callout bs-callout-info">
-    <p>This demo ingests the <a href="https://dev.twitter.com/docs/api/1.1/get/statuses/sample" target="_blank">Twitter Sample Stream</a>.  This publicly available stream of data represents roughly <strong>%1</strong> of all real-time Twitter activity.  The Twitter Firehose, which includes all activity, is not publicly available.  As a result, this application applies a <strong>multiplier</strong> to data coming in to simulate a significantly faster stream of data.</p>
-    <p>In this example, only the last <strong>1,000,000</strong> tweets are stored in the In-Memory Database.</p>
+    <p>This demo monitors the <a href="https://dev.twitter.com/docs/api/1.1/get/statuses/sample" target="_blank">Twitter Sample Stream</a> using GridGain's <a href="http://www.gridgain.com/products/in-memory-streaming/" target="_blank">In-Memory Streaming</a> product.  This publicly available stream of data represents roughly <strong>%1</strong> of all real-time Twitter activity.  The <a href="https://dev.twitter.com/docs/api/1.1/get/statuses/firehose" target="_blank">Twitter Firehose</a>, which includes all activity, is not publicly available.  As a result, this application applies a <strong>multiplier</strong> to incoming events to simulate a significantly faster stream of data.</p>
+    <p>In this example, only the last <strong>1,000,000</strong> tweets are stored in the <a href="http://www.gridgain.com/products/in-memory-database/" target="_blank">In-Memory Database</a>.</p>
 </div>
 
 <hr/>
