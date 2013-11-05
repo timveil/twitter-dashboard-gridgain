@@ -133,7 +133,7 @@ public class TwitterServiceImpl implements TwitterService {
             Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> reduceResults = streamer.context().reduce(gridClosure, gridReducer);
 
             for (GridStreamerIndexEntry<HashTagEntity, String, Long> entry : reduceResults) {
-                results.add(new KeyValuePair(StringUtils.abbreviate(entry.key(), 50), NumberFormat.getNumberInstance().format(entry.value())));
+                results.add(new KeyValuePair(StringUtils.abbreviate(entry.key(), 20), NumberFormat.getNumberInstance().format(entry.value())));
             }
 
         } catch (GridException e) {
@@ -204,7 +204,7 @@ public class TwitterServiceImpl implements TwitterService {
             Collection<GridStreamerIndexEntry<Tweet, String, Long>> reduceResults = streamer.context().reduce(gridClosure, gridReducer);
 
             for (GridStreamerIndexEntry<Tweet, String, Long> entry : reduceResults) {
-                results.add(new KeyValuePair(StringUtils.abbreviate(entry.key(), 50), NumberFormat.getNumberInstance().format(entry.value())));
+                results.add(new KeyValuePair(StringUtils.abbreviate(entry.key(), 20), NumberFormat.getNumberInstance().format(entry.value())));
             }
 
         } catch (GridException e) {

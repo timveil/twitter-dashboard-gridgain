@@ -32,8 +32,8 @@ public class TweetVO implements Externalizable {
     @GridCacheQuerySqlField
     private String languageCode;
 
-    @GridCacheQuerySqlField(index = true)
-    private int hashTagCount;
+    @GridCacheQuerySqlField
+    private boolean hasTags;
 
     // required for Externalizable
     public TweetVO() {
@@ -47,8 +47,8 @@ public class TweetVO implements Externalizable {
         this.userId = tweet.getUser().getId();
         this.languageCode = tweet.getLanguageCode();
 
-        if (tweet.getEntities() != null && tweet.getEntities().getHashTags() != null) {
-            this.hashTagCount = tweet.getEntities().getHashTags().size();
+        if (tweet.hasTags()) {
+            this.hasTags = true;
         }
     }
 
@@ -77,8 +77,8 @@ public class TweetVO implements Externalizable {
         return languageCode;
     }
 
-    public int getHashTagCount() {
-        return hashTagCount;
+    public boolean hasTags() {
+        return hasTags;
     }
 
     @Override
@@ -89,7 +89,7 @@ public class TweetVO implements Externalizable {
         out.writeLong(userId);
         out.writeObject(screenName);
         out.writeObject(languageCode);
-        out.writeInt(hashTagCount);
+        out.writeBoolean(hasTags);
     }
 
     @Override
@@ -100,12 +100,12 @@ public class TweetVO implements Externalizable {
         this.screenName = (String) in.readObject();
         this.languageCode = (String) in.readObject();
         this.userId = in.readLong();
-        this.hashTagCount = in.readInt();
+        this.hasTags = in.readBoolean();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id, text, createdAt, userId, screenName, languageCode, hashTagCount);
+        return Objects.hashCode(id, text, createdAt, userId, screenName, languageCode, hasTags);
     }
 
     @Override
@@ -117,6 +117,6 @@ public class TweetVO implements Externalizable {
             return false;
         }
         final TweetVO other = (TweetVO) obj;
-        return Objects.equal(this.id, other.id) && Objects.equal(this.text, other.text) && Objects.equal(this.createdAt, other.createdAt) && Objects.equal(this.userId, other.userId) && Objects.equal(this.screenName, other.screenName) && Objects.equal(this.languageCode, other.languageCode) && Objects.equal(this.hashTagCount, other.hashTagCount);
+        return Objects.equal(this.id, other.id) && Objects.equal(this.text, other.text) && Objects.equal(this.createdAt, other.createdAt) && Objects.equal(this.userId, other.userId) && Objects.equal(this.screenName, other.screenName) && Objects.equal(this.languageCode, other.languageCode) && Objects.equal(this.hasTags, other.hasTags);
     }
 }
