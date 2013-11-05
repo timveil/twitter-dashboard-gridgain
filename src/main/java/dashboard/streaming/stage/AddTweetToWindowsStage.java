@@ -56,13 +56,17 @@ public class AddTweetToWindowsStage implements GridStreamerStage<Tweet> {
         if (evictionSize > 0) {
 
             if (log.isTraceEnabled()) {
-                log.trace("eviction queue size in window " + window + " is " + evictionSize);
+                log.trace("eviction queue size in window " + window + " BEFORE EVICTION is " + evictionSize);
             }
 
             try {
                 streamerWindow.clearEvicted();
             } catch (Exception e) {
                 log.error("error clearing evicted tweet from window " + window + "...", e);
+            }
+
+            if (log.isTraceEnabled()) {
+                log.trace("eviction queue size in window " + window + " AFTER EVICTION is " + streamerWindow.evictionQueueSize());
             }
         }
 
