@@ -15,6 +15,7 @@ import org.springframework.social.twitter.api.Tweet;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 
@@ -47,10 +48,14 @@ public class AddHashTagToWindowsStage implements GridStreamerStage<Tweet> {
         for (Tweet tweet : tweets) {
 
             if (tweet.hasTags()) {
-                try {
-                    streamerWindow.enqueueAll(tweet.getEntities().getHashTags());
-                } catch (Exception e) {
-                    log.error("error adding hashTags [" + tweet.getEntities().getHashTags() + "] to window " + window + "...", e);
+                final List<HashTagEntity> hashTags = tweet.getEntities().getHashTags();
+
+                for (HashTagEntity tag : hashTags) {
+                    try {
+                        streamerWindow.enqueue(tag);
+                    } catch (Exception e) {
+                        log.error("error adding hashTags [" + tag.getText() + "] to window " + window + "...", e);
+                    }
                 }
             }
         }
