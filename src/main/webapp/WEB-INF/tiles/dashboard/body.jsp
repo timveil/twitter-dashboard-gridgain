@@ -18,7 +18,7 @@
 
     <div class="col-lg-6">
 
-        <h4>Total Tweets <small>stored in-memory</small></h4>
+        <h4>Total Tweets <small>stored in GridGain</small></h4>
         <span id="totalCounter" class="counter"></span>
 
     </div>
