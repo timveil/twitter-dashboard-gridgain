@@ -127,15 +127,12 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-
-
         getStreamingData('<c:url value="/counts/lastFive"/>', '#last5', "#hashTagTemplate");
         getStreamingData('<c:url value="/counts/lastFifteen"/>', '#last15', "#hashTagTemplate");
         getStreamingData('<c:url value="/counts/lastSixty"/>', '#last60', "#hashTagTemplate");
         getStreamingData('<c:url value="/counts/topTweets"/>', '#topTweets', "#topTweetsTemplate");
         getStreamingDataSingle('<c:url value="/counts/totalTweets"/>', '#totalCounter');
         getStreamingDataSingle('<c:url value="/counts/tweetsWithHashTag"/>', '#totalTags');
-
     });
 
     function getStreamingData(url, divId, templateId) {
@@ -153,8 +150,6 @@
         };
 
         socket.subscribe(request);
-
-
     }
 
     function getStreamingDataSingle(url, divId) {
@@ -192,8 +187,6 @@
         };
 
         socket.subscribe(request);
-
-
     }
 
     function buildTemplate(response, divId, templateId) {
