@@ -2,7 +2,7 @@
   <configuration default="false" name="Visor" type="Application" factoryName="Application">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
     <option name="MAIN_CLASS_NAME" value="org.gridgain.visor.gui.VisorGuiLauncher" />
-    <option name="VM_PARAMETERS" value="-DVISOR -DGRIDGAIN_SCRIPT -DGRIDGAIN_DEPLOYMENT_MODE_OVERRIDE=ISOLATED -Xms1g  -Xmx1g  -Xss1m  -XX:NewSize=64m  -XX:MaxNewSize=64m  -XX:PermSize=128m -XX:MaxPermSize=128m  -XX:SurvivorRatio=128  -XX:MaxTenuringThreshold=0  -XX:+UseTLAB -XX:+UseParNewGC  -XX:+UseConcMarkSweepGC  -XX:+CMSClassUnloadingEnabled" />
+    <option name="VM_PARAMETERS" value="-DVISOR -DGRIDGAIN_SCRIPT -DGRIDGAIN_DEPLOYMENT_MODE_OVERRIDE=ISOLATED -DGRIDGAIN_PERFORMANCE_SUGGESTIONS_DISABLED=true -Xms1g -Xmx1g -Xss1m -XX:NewSize=64m -XX:MaxNewSize=64m -XX:PermSize=128m -XX:MaxPermSize=128m -XX:SurvivorRatio=128 -XX:MaxTenuringThreshold=0 -XX:+UseTLAB -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled" />
     <option name="PROGRAM_PARAMETERS" value="" />
     <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />

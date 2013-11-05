@@ -8,7 +8,7 @@
           <element id="module-output" name="twitter-dashboard" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="Maven: org.gridgain:gridgain-database:5.2.1" />
+          <element id="library" level="project" name="Maven: org.gridgain:gridgain-database:5.2.2" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjrt:1.7.2" />
           <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.7.2" />
           <element id="library" level="project" name="Maven: commons-beanutils:commons-beanutils:1.8.3" />
@@ -39,10 +39,10 @@
           <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-server:9.0.5.v20130815" />
           <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-util:9.0.5.v20130815" />
           <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-xml:9.0.5.v20130815" />
-          <element id="library" level="project" name="Maven: com.jidesoft:jide-charts:3.5.5" />
-          <element id="library" level="project" name="Maven: com.jidesoft:jide-common:3.5.5" />
-          <element id="library" level="project" name="Maven: com.jidesoft:jide-components:3.5.5" />
-          <element id="library" level="project" name="Maven: com.jidesoft:jide-grids:3.5.5" />
+          <element id="library" level="project" name="Maven: com.jidesoft:jide-charts:3.5.9" />
+          <element id="library" level="project" name="Maven: com.jidesoft:jide-common:3.5.9" />
+          <element id="library" level="project" name="Maven: com.jidesoft:jide-components:3.5.9" />
+          <element id="library" level="project" name="Maven: com.jidesoft:jide-grids:3.5.9" />
           <element id="library" level="project" name="Maven: org.scala-lang:scala-compiler:2.9.3" />
           <element id="library" level="project" name="Maven: org.scala-lang:scala-library:2.9.3" />
           <element id="library" level="project" name="Maven: org.scala-lang:jline:2.9.1" />
