@@ -1,6 +1,7 @@
 package dashboard.service;
 
 import dashboard.model.KeyValuePair;
+import dashboard.model.TweetVO;
 
 import java.util.List;
 
@@ -16,4 +17,7 @@ public interface TwitterService {
     long getTotalTweets();
 
     long getTotalTweetsWithHashTag();
+
+
+    List<TweetVO> findTweets(String text, String screenName);
 }

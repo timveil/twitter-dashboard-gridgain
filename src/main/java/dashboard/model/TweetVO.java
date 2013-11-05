@@ -14,7 +14,7 @@ import java.util.Date;
 public class TweetVO implements Externalizable {
 
 
-    @GridCacheQuerySqlField(unique = true)
+    @GridCacheQuerySqlField(index = true, unique = true)
     private long id;
 
     @GridCacheQuerySqlField(index = true)

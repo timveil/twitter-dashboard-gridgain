@@ -2,6 +2,7 @@ package dashboard.service;
 
 import com.google.common.collect.Lists;
 import dashboard.model.KeyValuePair;
+import dashboard.model.TweetVO;
 import dashboard.streaming.index.provider.HashTagIndexProvider;
 import dashboard.streaming.index.provider.TopTweeterIndexProvider;
 import dashboard.streaming.listener.TweetStreamListener;
@@ -10,6 +11,9 @@ import dashboard.utils.GridUtils;
 import org.apache.commons.lang.StringUtils;
 import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridException;
+import org.gridgain.grid.cache.GridCache;
+import org.gridgain.grid.cache.query.GridCacheQuery;
+import org.gridgain.grid.cache.query.GridCacheQueryType;
 import org.gridgain.grid.lang.GridClosure;
 import org.gridgain.grid.lang.GridFunc;
 import org.gridgain.grid.lang.GridReducer0;
@@ -46,7 +50,7 @@ public class TwitterServiceImpl implements TwitterService {
 
         Stream sampleStream = null;
 
-        Grid grid = GridUtils.getGrid();
+        final Grid grid = GridUtils.getGrid();
 
         final GridStreamer tweetStreamer = grid.streamer(GridUtils.STREAMER_NAME);
 
@@ -76,7 +80,7 @@ public class TwitterServiceImpl implements TwitterService {
     @Override
     public List<KeyValuePair> getHashTagSummary(final Class window) {
 
-        Grid grid = GridUtils.getGrid();
+        final Grid grid = GridUtils.getGrid();
 
         final GridStreamer streamer = grid.streamer(GridUtils.STREAMER_NAME);
 
@@ -147,7 +151,7 @@ public class TwitterServiceImpl implements TwitterService {
 
     @Override
     public List<KeyValuePair> getTopTweeters() {
-        Grid grid = GridUtils.getGrid();
+        final Grid grid = GridUtils.getGrid();
 
         final GridStreamer streamer = grid.streamer(GridUtils.STREAMER_NAME);
 
@@ -218,7 +222,7 @@ public class TwitterServiceImpl implements TwitterService {
     @Override
     public long getTotalTweets() {
 
-        Grid grid = GridUtils.getGrid();
+        final Grid grid = GridUtils.getGrid();
 
         final GridStreamer streamer = grid.streamer(GridUtils.STREAMER_NAME);
 
@@ -236,7 +240,7 @@ public class TwitterServiceImpl implements TwitterService {
 
     @Override
     public long getTotalTweetsWithHashTag() {
-        Grid grid = GridUtils.getGrid();
+        final Grid grid = GridUtils.getGrid();
 
         final GridStreamer streamer = grid.streamer(GridUtils.STREAMER_NAME);
 
@@ -249,6 +253,55 @@ public class TwitterServiceImpl implements TwitterService {
         }
 
         return 0L;
+    }
+
+    @Override
+    public List<TweetVO> findTweets(String text, String screenName) {
+
+        final Grid grid = GridUtils.getGrid();
+
+
+        GridCache<Long, TweetVO> cache = grid.cache(TweetVO.class.getName());
+        assert cache != null;
+
+
+        List<TweetVO> tweets = Lists.newArrayList();
+
+        try {
+
+            List<String> parameters = Lists.newArrayList();
+            StringBuilder s = new StringBuilder("text not like '%-FAKE'");
+
+            if (StringUtils.isNotBlank(text)) {
+                s.append(" and text like ?");
+                parameters.add("%" + text + "%");
+            }
+            if (StringUtils.isNotBlank(screenName)) {
+                s.append(" and screenName = ?");
+                parameters.add(screenName);
+            }
+
+            final String sql = s.toString();
+
+            if (log.isDebugEnabled()) {
+                log.debug("findTweets sql = " + sql);
+            }
+
+            GridCacheQuery<Long, TweetVO> query = cache.createQuery(GridCacheQueryType.SQL, TweetVO.class, sql).queryArguments(parameters.toArray());
+            query.pageSize(250);
+
+            final Collection<Map.Entry<Long, TweetVO>> searchResults = query.execute(grid).get();
+
+            for (Map.Entry<Long, TweetVO> entry : searchResults) {
+                tweets.add(entry.getValue());
+            }
+
+        } catch (GridException e) {
+            log.error("error getting tweets with text [" + text + "]", e);
+        }
+
+
+        return tweets;
     }
 
 }

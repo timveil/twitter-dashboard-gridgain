@@ -14,6 +14,7 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="<c:url value="/dashboard"/>">Dashboard</a></li>
+                <li><a href="<c:url value="/search"/>">Search</a></li>
                 <li><a href="<c:url value="/ingest"/>">Ingest</a></li>
             </ul>
         </div>
