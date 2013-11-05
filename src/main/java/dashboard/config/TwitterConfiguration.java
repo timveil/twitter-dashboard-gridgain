@@ -16,7 +16,7 @@ public class TwitterConfiguration {
 
     @Bean
     public Twitter twitter() {
-       return new TwitterTemplate(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
+        return new TwitterTemplate(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
     }
 
 }

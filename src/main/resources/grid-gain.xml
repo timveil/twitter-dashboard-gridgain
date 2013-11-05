@@ -6,6 +6,7 @@
 
 
     <util:constant id="gridName" static-field="dashboard.utils.GridUtils.GRID_NAME"/>
+    <util:constant id="streamerName" static-field="dashboard.utils.GridUtils.STREAMER_NAME"/>
 
     <bean id="grid.cfg" class="org.gridgain.grid.GridConfigurationAdapter" scope="singleton">
 
@@ -46,7 +47,7 @@
                     </property>
                     <property name="evictionPolicy">
                         <bean class="org.gridgain.grid.cache.eviction.fifo.GridCacheFifoEvictionPolicy">
-                            <property name="maxSize" value="2000000"/>
+                            <property name="maxSize" value="1000000"/>
                         </bean>
                     </property>
                 </bean>
@@ -56,80 +57,23 @@
         <property name="streamerConfiguration">
             <list>
                 <bean class="org.gridgain.grid.streamer.GridStreamerConfigurationAdapter">
-                    <property name="name" value="#{T(dashboard.utils.Streamer).HASHTAGS.name()}"/>
+                    <property name="name" ref="streamerName"/>
 
                     <property name="windows">
                         <list>
-                            <bean class="org.gridgain.grid.streamer.window.GridStreamerBoundedTimeWindow">
-                                <property name="name" value="#{T(dashboard.utils.StreamerWindow).FIVE_MIN.name()}"/>
-                                <property name="timeInterval" value="#{5 * 60 * 1000}"/>
-                                <property name="indexes">
-                                    <list>
-                                        <bean class="org.gridgain.grid.streamer.index.tree.GridStreamerTreeIndexProvider">
-                                            <property name="name" value="#{T(dashboard.utils.StreamerIndex).HASHTAG_COUNT.name()}"/>
-
-                                            <property name="updater">
-                                                <bean class="dashboard.streaming.index.updater.HashTagCountUpdater"/>
-                                            </property>
-                                        </bean>
-                                    </list>
-                                </property>
-                            </bean>
-                            <bean class="org.gridgain.grid.streamer.window.GridStreamerBoundedTimeWindow">
-                                <property name="name" value="#{T(dashboard.utils.StreamerWindow).FIFTEEN_MIN.name()}"/>
-                                <property name="timeInterval" value="#{15 * 60 * 1000}"/>
-                                <property name="indexes">
-                                    <list>
-                                        <bean class="org.gridgain.grid.streamer.index.tree.GridStreamerTreeIndexProvider">
-                                            <property name="name" value="#{T(dashboard.utils.StreamerIndex).HASHTAG_COUNT.name()}"/>
-
-                                            <property name="updater">
-                                                <bean class="dashboard.streaming.index.updater.HashTagCountUpdater"/>
-                                            </property>
-                                        </bean>
-                                    </list>
-                                </property>
-                            </bean>
-                            <bean class="org.gridgain.grid.streamer.window.GridStreamerBoundedTimeWindow">
-                                <property name="name" value="#{T(dashboard.utils.StreamerWindow).SIXTY_MIN.name()}"/>
-                                <property name="timeInterval" value="#{60 * 60 * 1000}"/>
-                                <property name="indexes">
-                                    <list>
-                                        <bean class="org.gridgain.grid.streamer.index.tree.GridStreamerTreeIndexProvider">
-                                            <property name="name" value="#{T(dashboard.utils.StreamerIndex).HASHTAG_COUNT.name()}"/>
-
-                                            <property name="updater">
-                                                <bean class="dashboard.streaming.index.updater.HashTagCountUpdater"/>
-                                            </property>
-                                        </bean>
-                                    </list>
-                                </property>
-                            </bean>
+                            <bean class="dashboard.streaming.window.FiveMinuteWindow"/>
+                            <bean class="dashboard.streaming.window.FifteenMinuteWindow"/>
+                            <bean class="dashboard.streaming.window.SixtyMinuteWindow"/>
+                            <bean class="dashboard.streaming.window.TopTweetersWindow"/>
                         </list>
                     </property>
 
                     <property name="stages">
                         <list>
+                            <bean class="dashboard.streaming.stage.CountTweetsStage"/>
                             <bean class="dashboard.streaming.stage.AddHashTagToWindowsStage"/>
-                        </list>
-                    </property>
-
-                    <property name="router">
-                        <bean class="org.gridgain.grid.streamer.router.GridStreamerLocalEventRouter"/>
-                    </property>
-                </bean>
-                <bean class="org.gridgain.grid.streamer.GridStreamerConfigurationAdapter">
-                    <property name="name" value="#{T(dashboard.utils.Streamer).TWEETS.name()}"/>
-
-                    <property name="stages">
-                        <list>
+                            <bean class="dashboard.streaming.stage.AddTweetToWindowsStage"/>
                             <bean class="dashboard.streaming.stage.AddTweetToDatabaseStage"/>
-                        </list>
-                    </property>
-
-                    <property name="windows">
-                        <list>
-                            <bean class="org.gridgain.grid.streamer.window.GridStreamerUnboundedWindow"/>
                         </list>
                     </property>
 

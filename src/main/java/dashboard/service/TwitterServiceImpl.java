@@ -2,17 +2,14 @@ package dashboard.service;
 
 import com.google.common.collect.Lists;
 import dashboard.model.KeyValuePair;
-import dashboard.model.TweetVO;
-import dashboard.streaming.listener.HashTagStreamListener;
+import dashboard.streaming.index.provider.HashTagIndexProvider;
+import dashboard.streaming.index.provider.TopTweeterIndexProvider;
 import dashboard.streaming.listener.TweetStreamListener;
+import dashboard.streaming.window.TopTweetersWindow;
 import dashboard.utils.GridUtils;
-import dashboard.utils.Streamer;
-import dashboard.utils.StreamerIndex;
-import dashboard.utils.StreamerWindow;
 import org.apache.commons.lang.StringUtils;
 import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridException;
-import org.gridgain.grid.cache.GridCache;
 import org.gridgain.grid.lang.GridClosure;
 import org.gridgain.grid.lang.GridFunc;
 import org.gridgain.grid.lang.GridReducer0;
@@ -26,10 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.social.twitter.api.HashTagEntity;
-import org.springframework.social.twitter.api.Stream;
-import org.springframework.social.twitter.api.StreamListener;
-import org.springframework.social.twitter.api.Twitter;
+import org.springframework.social.twitter.api.*;
 import org.springframework.stereotype.Service;
 
 import java.text.NumberFormat;
@@ -54,12 +48,10 @@ public class TwitterServiceImpl implements TwitterService {
 
         Grid grid = GridUtils.getGrid();
 
-        final GridStreamer hashTagStreamer = grid.streamer(Streamer.HASHTAGS.name());
-        final GridStreamer tweetStreamer = grid.streamer(Streamer.TWEETS.name());
+        final GridStreamer tweetStreamer = grid.streamer(GridUtils.STREAMER_NAME);
 
         try {
             List<StreamListener> listeners = Lists.newArrayList();
-            listeners.add(new HashTagStreamListener(hashTagStreamer));
             listeners.add(new TweetStreamListener(tweetStreamer));
 
             sampleStream = twitter.streamingOperations().sample(listeners);
@@ -75,10 +67,6 @@ public class TwitterServiceImpl implements TwitterService {
                 tweetStreamer.reset();
             }
 
-            if (hashTagStreamer != null) {
-                hashTagStreamer.reset();
-            }
-
             if (sampleStream != null) {
                 sampleStream.close();
             }
@@ -86,11 +74,11 @@ public class TwitterServiceImpl implements TwitterService {
     }
 
     @Override
-    public List<KeyValuePair> getHashTagSummary(final StreamerWindow window) {
+    public List<KeyValuePair> getHashTagSummary(final Class window) {
 
         Grid grid = GridUtils.getGrid();
 
-        final GridStreamer streamer = grid.streamer(Streamer.HASHTAGS.name());
+        final GridStreamer streamer = grid.streamer(GridUtils.STREAMER_NAME);
 
         assert streamer != null;
 
@@ -102,11 +90,11 @@ public class TwitterServiceImpl implements TwitterService {
             @Override
             public Collection<GridStreamerIndexEntry<HashTagEntity, String, Long>> apply(GridStreamerContext gridStreamerContext) {
 
-                final GridStreamerWindow<HashTagEntity> gridStreamerWindow = gridStreamerContext.window(window.name());
+                final GridStreamerWindow<HashTagEntity> gridStreamerWindow = gridStreamerContext.window(window.getName());
 
                 assert gridStreamerWindow != null;
 
-                final GridStreamerIndex<HashTagEntity, String, Long> index = gridStreamerWindow.index(StreamerIndex.HASHTAG_COUNT.name());
+                final GridStreamerIndex<HashTagEntity, String, Long> index = gridStreamerWindow.index(HashTagIndexProvider.class.getName());
 
                 return index.entries(0);
 
@@ -159,32 +147,71 @@ public class TwitterServiceImpl implements TwitterService {
 
     @Override
     public List<KeyValuePair> getTopTweeters() {
-
         Grid grid = GridUtils.getGrid();
 
-        GridCache<Long, TweetVO> cache = grid.cache(TweetVO.class.getName());
-        assert cache != null;
+        final GridStreamer streamer = grid.streamer(GridUtils.STREAMER_NAME);
 
-        List<KeyValuePair> topTweeters = Lists.newArrayList();
+        assert streamer != null;
+
+        List<KeyValuePair> results = Lists.newArrayList();
+
+
+        final GridClosure<GridStreamerContext, Collection<GridStreamerIndexEntry<Tweet, String, Long>>> gridClosure = new GridClosure<GridStreamerContext, Collection<GridStreamerIndexEntry<Tweet, String, Long>>>() {
+
+            @Override
+            public Collection<GridStreamerIndexEntry<Tweet, String, Long>> apply(GridStreamerContext gridStreamerContext) {
+
+                final GridStreamerWindow<Tweet> gridStreamerWindow = gridStreamerContext.window(TopTweetersWindow.class.getName());
+
+                assert gridStreamerWindow != null;
+
+                final GridStreamerIndex<Tweet, String, Long> index = gridStreamerWindow.index(TopTweeterIndexProvider.class.getName());
+
+                return index.entries(0);
+
+            }
+        };
+
+        final GridReducer0<Collection<GridStreamerIndexEntry<Tweet, String, Long>>> gridReducer = new GridReducer0<Collection<GridStreamerIndexEntry<Tweet, String, Long>>>() {
+            private List<GridStreamerIndexEntry<Tweet, String, Long>> sorted = new ArrayList<>();
+
+
+            @Override
+            public boolean collect(@Nullable Collection<GridStreamerIndexEntry<Tweet, String, Long>> gridStreamerIndexEntries) {
+                if (gridStreamerIndexEntries != null && !gridStreamerIndexEntries.isEmpty()) {
+                    sorted.addAll(gridStreamerIndexEntries);
+                }
+
+                return true;
+            }
+
+            @Override
+            public Collection<GridStreamerIndexEntry<Tweet, String, Long>> apply() {
+                Collections.sort(sorted, new Comparator<GridStreamerIndexEntry<Tweet, String, Long>>() {
+
+                    @Override
+                    public int compare(GridStreamerIndexEntry<Tweet, String, Long> o1, GridStreamerIndexEntry<Tweet, String, Long> o2) {
+                        return o2.value().compareTo(o1.value());
+                    }
+                });
+
+                return GridFunc.retain(sorted, true, MAX_NUM_RETURNED);
+            }
+        };
 
         try {
-            final Collection<List<Object>> results = cache.createFieldsQuery("select screenName, count(*) from TweetVO group by screenName having count(*) > 0 order by count(*) desc limit ?")
-                    .queryArguments(MAX_NUM_RETURNED)
-                    .execute(grid)
-                    .get();
 
-            for (List<Object> result : results) {
-                final String screenName = (String) result.get(0);
-                final Long count = (Long) result.get(1);
-                topTweeters.add(new KeyValuePair(StringUtils.abbreviate(screenName, 50), NumberFormat.getNumberInstance().format(count)));
+            Collection<GridStreamerIndexEntry<Tweet, String, Long>> reduceResults = streamer.context().reduce(gridClosure, gridReducer);
+
+            for (GridStreamerIndexEntry<Tweet, String, Long> entry : reduceResults) {
+                results.add(new KeyValuePair(StringUtils.abbreviate(entry.key(), 50), NumberFormat.getNumberInstance().format(entry.value())));
             }
 
         } catch (GridException e) {
-            log.error("error executing top tweeters query", e);
+            log.error("grid exception occurred...", e);
         }
 
-        return topTweeters;
-
+        return results;
 
     }
 
@@ -193,45 +220,23 @@ public class TwitterServiceImpl implements TwitterService {
 
         Grid grid = GridUtils.getGrid();
 
-        GridCache<Long, TweetVO> cache = grid.cache(TweetVO.class.getName());
-        assert cache != null;
+        final GridStreamer streamer = grid.streamer(GridUtils.STREAMER_NAME);
 
-        try {
-           Long queryResult = (Long)cache.createFieldsQuery("select count(id) from TweetVO")
-                    .executeSingleField(grid)
-                    .get();
+        assert streamer != null;
 
-            if (queryResult != null) {
-                return queryResult;
-            }
-        } catch (GridException e) {
-           log.error("error getting total tweets", e);
-        }
+        return (Long) streamer.context().localSpace().get(GridUtils.TOTAL_TWEETS);
 
-        return 0L;
     }
 
     @Override
     public long getTotalTweetsWithHashTag() {
         Grid grid = GridUtils.getGrid();
 
-        GridCache<Long, TweetVO> cache = grid.cache(TweetVO.class.getName());
-        assert cache != null;
+        final GridStreamer streamer = grid.streamer(GridUtils.STREAMER_NAME);
 
-        try {
-            Long queryResult = (Long)cache.createFieldsQuery("select count(id) from TweetVO where hashTagCount > 0")
-                    .executeSingleField(grid)
-                    .get();
+        assert streamer != null;
 
-            if (queryResult != null) {
-                return queryResult;
-            }
-
-        } catch (GridException e) {
-            log.error("error getting tweets with hashtags", e);
-        }
-
-        return 0L;
+        return (Long) streamer.context().localSpace().get(GridUtils.TOTAL_TWEETS_NO_HASH_TAGS);
     }
 
 }

@@ -1,8 +1,6 @@
 package dashboard.streaming.stage;
 
-import dashboard.streaming.window.FifteenMinuteWindow;
-import dashboard.streaming.window.FiveMinuteWindow;
-import dashboard.streaming.window.SixtyMinuteWindow;
+import dashboard.streaming.window.TopTweetersWindow;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.streamer.GridStreamerContext;
 import org.gridgain.grid.streamer.GridStreamerStage;
@@ -10,7 +8,6 @@ import org.gridgain.grid.streamer.GridStreamerWindow;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.social.twitter.api.HashTagEntity;
 import org.springframework.social.twitter.api.Tweet;
 
 import java.util.Collection;
@@ -18,7 +15,7 @@ import java.util.Collections;
 import java.util.Map;
 
 
-public class AddHashTagToWindowsStage implements GridStreamerStage<Tweet> {
+public class AddTweetToWindowsStage implements GridStreamerStage<Tweet> {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -31,16 +28,14 @@ public class AddHashTagToWindowsStage implements GridStreamerStage<Tweet> {
     @Override
     public Map<String, Collection<?>> run(GridStreamerContext gridStreamerContext, Collection<Tweet> tweets) throws GridException {
 
-        addToWindow(gridStreamerContext, tweets, FiveMinuteWindow.class);
-        addToWindow(gridStreamerContext, tweets, FifteenMinuteWindow.class);
-        addToWindow(gridStreamerContext, tweets, SixtyMinuteWindow.class);
+        addToWindow(gridStreamerContext, tweets, TopTweetersWindow.class);
 
         return Collections.<String, Collection<?>>singletonMap(gridStreamerContext.nextStageName(), tweets);
 
     }
 
     private void addToWindow(GridStreamerContext context, Collection<Tweet> tweets, Class window) {
-        final GridStreamerWindow<HashTagEntity> streamerWindow = context.window(window.getName());
+        final GridStreamerWindow<Tweet> streamerWindow = context.window(window.getName());
         assert streamerWindow != null;
 
 
@@ -48,9 +43,9 @@ public class AddHashTagToWindowsStage implements GridStreamerStage<Tweet> {
 
             if (tweet.hasTags()) {
                 try {
-                    streamerWindow.enqueueAll(tweet.getEntities().getHashTags());
+                    streamerWindow.enqueue(tweet);
                 } catch (Exception e) {
-                    log.error("error adding hashTags [" + tweet.getEntities().getHashTags() + "] to window " + window + "...", e);
+                    log.error("error adding tweet [" + tweet.getId() + "] to window " + window + "...", e);
                 }
             }
         }
@@ -67,7 +62,7 @@ public class AddHashTagToWindowsStage implements GridStreamerStage<Tweet> {
             try {
                 streamerWindow.clearEvicted();
             } catch (Exception e) {
-                log.error("error clearing evicted hashTags from window " + window + "...", e);
+                log.error("error clearing evicted tweet from window " + window + "...", e);
             }
         }
 

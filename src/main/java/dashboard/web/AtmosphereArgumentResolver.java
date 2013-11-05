@@ -19,7 +19,7 @@ public class AtmosphereArgumentResolver implements HandlerMethodArgumentResolver
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        HttpServletRequest httpServletRequest= webRequest.getNativeRequest(HttpServletRequest.class);
+        HttpServletRequest httpServletRequest = webRequest.getNativeRequest(HttpServletRequest.class);
         final Meteor build = Meteor.build(httpServletRequest);
         return build.getAtmosphereResource();
     }

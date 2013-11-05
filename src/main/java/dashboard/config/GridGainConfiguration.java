@@ -15,7 +15,7 @@ public class GridGainConfiguration {
         AbstractApplicationContext ctx = new ClassPathXmlApplicationContext("grid-gain.xml");
 
         GridSpringBean bean = new GridSpringBean();
-        bean.setConfiguration( ctx.getBean(GridConfiguration.class));
+        bean.setConfiguration(ctx.getBean(GridConfiguration.class));
 
         return bean;
     }

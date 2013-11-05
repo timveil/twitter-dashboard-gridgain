@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.social.twitter.api.Tweet;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 
 
@@ -38,10 +37,10 @@ public class AddTweetToDatabaseStage implements GridStreamerStage<Tweet> {
         assert cache != null;
 
         for (Tweet tweet : tweets) {
-            cache.putAsync(tweet.getId(), new TweetVO(tweet), (GridPredicate)null);
+            cache.putAsync(tweet.getId(), new TweetVO(tweet), (GridPredicate) null);
         }
 
 
-        return Collections.<String, Collection<?>>singletonMap(gridStreamerContext.nextStageName(), tweets);
+        return null;
     }
 }

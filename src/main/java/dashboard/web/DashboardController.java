@@ -1,7 +1,9 @@
 package dashboard.web;
 
 import dashboard.service.TwitterService;
-import dashboard.utils.StreamerWindow;
+import dashboard.streaming.window.FifteenMinuteWindow;
+import dashboard.streaming.window.FiveMinuteWindow;
+import dashboard.streaming.window.SixtyMinuteWindow;
 import org.atmosphere.cpr.*;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
@@ -40,12 +42,12 @@ public class DashboardController {
         final ObjectMapper mapper = new ObjectMapper();
 
         broadcast(atmosphereResource,
-                20,
+                5,
                 "/counts/lastFive",
                 new Callable<String>() {
 
                     public String call() throws Exception {
-                        return mapper.writeValueAsString(twitterService.getHashTagSummary(StreamerWindow.FIVE_MIN));
+                        return mapper.writeValueAsString(twitterService.getHashTagSummary(FiveMinuteWindow.class));
                     }
 
                 });
@@ -57,12 +59,12 @@ public class DashboardController {
         final ObjectMapper mapper = new ObjectMapper();
 
         broadcast(atmosphereResource,
-                20,
+                5,
                 "/counts/lastFifteen",
                 new Callable<String>() {
 
                     public String call() throws Exception {
-                        return mapper.writeValueAsString(twitterService.getHashTagSummary(StreamerWindow.FIFTEEN_MIN));
+                        return mapper.writeValueAsString(twitterService.getHashTagSummary(FifteenMinuteWindow.class));
                     }
 
                 });
@@ -74,12 +76,12 @@ public class DashboardController {
         final ObjectMapper mapper = new ObjectMapper();
 
         broadcast(atmosphereResource,
-                20,
+                5,
                 "/counts/lastSixty",
                 new Callable<String>() {
 
                     public String call() throws Exception {
-                        return mapper.writeValueAsString(twitterService.getHashTagSummary(StreamerWindow.SIXTY_MIN));
+                        return mapper.writeValueAsString(twitterService.getHashTagSummary(SixtyMinuteWindow.class));
                     }
 
                 });
@@ -92,7 +94,7 @@ public class DashboardController {
         final ObjectMapper mapper = new ObjectMapper();
 
         broadcast(atmosphereResource,
-                20,
+                2,
                 "/counts/topTweets",
                 new Callable<String>() {
 
@@ -112,7 +114,7 @@ public class DashboardController {
         final ObjectMapper mapper = new ObjectMapper();
 
         broadcast(atmosphereResource,
-                10,
+                2,
                 "/counts/tweetsWithHashTag",
                 new Callable<String>() {
 
@@ -131,7 +133,7 @@ public class DashboardController {
         final ObjectMapper mapper = new ObjectMapper();
 
         broadcast(atmosphereResource,
-                10,
+                2,
                 "/counts/totalTweets",
                 new Callable<String>() {
 
