@@ -3,7 +3,7 @@
 
 <fmt:formatDate var="startTimeFormatted" value="${sessionScope.startTime}" type="both" dateStyle="short" timeStyle="short"/>
 
-<h3>Twitter Stream Data
+<h3>Twitter Dashboard
     <small>as of ${startTimeFormatted}</small>
 </h3>
 
