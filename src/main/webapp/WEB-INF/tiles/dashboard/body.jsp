@@ -37,7 +37,7 @@
 
     <div class="col-lg-3">
 
-        <h4>Top Hashtags
+        <h4>Top HashTags
             <small>last 5 minutes</small>
         </h4>
 
@@ -55,7 +55,7 @@
 
     <div class="col-lg-3">
 
-        <h4>Top Hashtags
+        <h4>Top HashTags
             <small>last 15 minutes</small>
         </h4>
 
@@ -73,7 +73,7 @@
 
     <div class="col-lg-3">
 
-        <h4>Top Hashtags
+        <h4>Top HashTags
             <small>last 60 minutes</small>
         </h4>
 
