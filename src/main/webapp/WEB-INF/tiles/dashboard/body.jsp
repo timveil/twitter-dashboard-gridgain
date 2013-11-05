@@ -3,9 +3,14 @@
 
 <fmt:formatDate var="startTimeFormatted" value="${sessionScope.startTime}" type="both" dateStyle="short" timeStyle="short"/>
 
-<h3>Twitter Sample Stream Data
+<h3>Twitter Stream Data
     <small>as of ${startTimeFormatted}</small>
 </h3>
+
+<div class="bs-callout bs-callout-info">
+    <p>This demo ingests the <a href="https://dev.twitter.com/docs/api/1.1/get/statuses/sample" target="_blank">Twitter Sample Stream</a>.  This publicly available stream of data represents roughly <strong>%1</strong> of all real-time Twitter activity.  The Twitter Firehose, which includes all activity, is not publicly available.  As a result, this application applies a <strong>multiplier</strong> to data coming in to simulate a significantly faster stream of data.</p>
+    <p>In this example, only the last <strong>1,000,000</strong> tweets are stored in the In-Memory Database.</p>
+</div>
 
 <hr/>
 
@@ -13,7 +18,7 @@
 
     <div class="col-lg-6">
 
-        <h4>Total Tweets <small>stored in memory</small></h4>
+        <h4>Total Tweets <small>processed by GridGain</small></h4>
         <span id="totalCounter" class="counter"></span>
 
     </div>
@@ -30,9 +35,9 @@
 
 <div class="row">
 
-    <div class="col-lg-4">
+    <div class="col-lg-3">
 
-        <h4>Popular Hashtags
+        <h4>Top Hashtags
             <small>last 5 minutes</small>
         </h4>
 
@@ -48,9 +53,9 @@
         </table>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-lg-3">
 
-        <h4>Popular Hashtags
+        <h4>Top Hashtags
             <small>last 15 minutes</small>
         </h4>
 
@@ -66,9 +71,9 @@
         </table>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-lg-3">
 
-        <h4>Popular Hashtags
+        <h4>Top Hashtags
             <small>last 60 minutes</small>
         </h4>
 
@@ -84,12 +89,7 @@
         </table>
     </div>
 
-</div>
-
-<hr/>
-
-<div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-3">
 
         <h4>Top Tweeters</h4>
 
@@ -105,9 +105,9 @@
         </table>
     </div>
 
-    <div class="col-lg-8">&nbsp;
-    </div>
 </div>
+
+
 
 <script id="hashTagTemplate" type="text/x-jquery-tmpl">
     <tr>
