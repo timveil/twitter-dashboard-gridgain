@@ -224,7 +224,13 @@ public class TwitterServiceImpl implements TwitterService {
 
         assert streamer != null;
 
-        return (Long) streamer.context().localSpace().get(GridUtils.TOTAL_TWEETS);
+        final Object o = streamer.context().localSpace().get(GridUtils.TOTAL_TWEETS);
+
+        if (o != null) {
+            return (Long) o;
+        }
+
+        return 0L;
 
     }
 
@@ -236,7 +242,13 @@ public class TwitterServiceImpl implements TwitterService {
 
         assert streamer != null;
 
-        return (Long) streamer.context().localSpace().get(GridUtils.TOTAL_TWEETS_NO_HASH_TAGS);
+        final Object o = streamer.context().localSpace().get(GridUtils.TOTAL_TWEETS_NO_HASH_TAGS);
+
+        if (o != null) {
+            return (Long) o;
+        }
+
+        return 0L;
     }
 
 }
