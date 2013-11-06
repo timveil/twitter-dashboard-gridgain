@@ -28,10 +28,13 @@ public class AddTweetToWindowsStage implements GridStreamerStage<TweetVO> {
     @Override
     public Map<String, Collection<?>> run(GridStreamerContext gridStreamerContext, Collection<TweetVO> tweets) throws GridException {
 
-        final GridStreamerWindow<TweetVO> streamerWindow = gridStreamerContext.window(TopTweetersWindow.class.getName());
-        assert streamerWindow != null;
+        if (!tweets.isEmpty()) {
 
-        addToWindow(tweets, streamerWindow);
+            final GridStreamerWindow<TweetVO> streamerWindow = gridStreamerContext.window(TopTweetersWindow.class.getName());
+            assert streamerWindow != null;
+
+            addToWindow(tweets, streamerWindow);
+        }
 
         return Collections.<String, Collection<?>>singletonMap(gridStreamerContext.nextStageName(), tweets);
 

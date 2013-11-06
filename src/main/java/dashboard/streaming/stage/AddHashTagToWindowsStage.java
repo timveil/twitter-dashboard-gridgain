@@ -32,25 +32,28 @@ public class AddHashTagToWindowsStage implements GridStreamerStage<TweetVO> {
     @Override
     public Map<String, Collection<?>> run(GridStreamerContext gridStreamerContext, Collection<TweetVO> tweets) throws GridException {
 
-        final GridStreamerWindow<HashTagVO> fiveMinuteWindow = gridStreamerContext.window(FiveMinuteWindow.class.getName());
-        assert fiveMinuteWindow != null;
+        if (!tweets.isEmpty()) {
 
-        final GridStreamerWindow<HashTagVO> fifteenMinuteWindow = gridStreamerContext.window(FifteenMinuteWindow.class.getName());
-        assert fifteenMinuteWindow != null;
+            final GridStreamerWindow<HashTagVO> fiveMinuteWindow = gridStreamerContext.window(FiveMinuteWindow.class.getName());
+            assert fiveMinuteWindow != null;
 
-        final GridStreamerWindow<HashTagVO> sixtyMinuteWindow = gridStreamerContext.window(SixtyMinuteWindow.class.getName());
-        assert sixtyMinuteWindow != null;
+            final GridStreamerWindow<HashTagVO> fifteenMinuteWindow = gridStreamerContext.window(FifteenMinuteWindow.class.getName());
+            assert fifteenMinuteWindow != null;
+
+            final GridStreamerWindow<HashTagVO> sixtyMinuteWindow = gridStreamerContext.window(SixtyMinuteWindow.class.getName());
+            assert sixtyMinuteWindow != null;
 
 
-        for (TweetVO tweet : tweets) {
-            if (tweet.hasHashTags()) {
-                final List<HashTagVO> hashTags = tweet.getHashTags();
+            for (TweetVO tweet : tweets) {
+                if (tweet.hasHashTags()) {
+                    final List<HashTagVO> hashTags = tweet.getHashTags();
 
-                enqueue(hashTags, fiveMinuteWindow);
-                enqueue(hashTags, fifteenMinuteWindow);
-                enqueue(hashTags, sixtyMinuteWindow);
+                    enqueue(hashTags, fiveMinuteWindow);
+                    enqueue(hashTags, fifteenMinuteWindow);
+                    enqueue(hashTags, sixtyMinuteWindow);
+                }
+
             }
-
         }
 
         return Collections.<String, Collection<?>>singletonMap(gridStreamerContext.nextStageName(), tweets);

@@ -33,59 +33,62 @@ public class AddTweetToDatabaseStage implements GridStreamerStage<TweetVO> {
     @Override
     public Map<String, Collection<?>> run(final GridStreamerContext gridStreamerContext, Collection<TweetVO> tweets) throws GridException {
 
-        Grid grid = GridUtils.getGrid();
+        if (!tweets.isEmpty()) {
 
-        GridCache<String, TweetVO> tweetCache = grid.cache(TweetVO.class.getName());
-        assert tweetCache != null;
+            Grid grid = GridUtils.getGrid();
 
-        GridCache<String, HashTagVO> hashTagCache = grid.cache(HashTagVO.class.getName());
-        assert hashTagCache != null;
+            GridCache<String, TweetVO> tweetCache = grid.cache(TweetVO.class.getName());
+            assert tweetCache != null;
 
-        for (final TweetVO tweet : tweets) {
+            GridCache<String, HashTagVO> hashTagCache = grid.cache(HashTagVO.class.getName());
+            assert hashTagCache != null;
+
+            for (final TweetVO tweet : tweets) {
 
 
-            final GridFuture<Boolean> putTweetFuture = tweetCache.putxAsync(tweet.getGUID(), tweet, (GridPredicate) null);
+                final GridFuture<Boolean> putTweetFuture = tweetCache.putxAsync(tweet.getGUID(), tweet, (GridPredicate) null);
 
-            putTweetFuture.listenAsync(new GridInClosure<GridFuture<Boolean>>() {
-                @Override
-                public void apply(GridFuture<Boolean> future) {
+                putTweetFuture.listenAsync(new GridInClosure<GridFuture<Boolean>>() {
+                    @Override
+                    public void apply(GridFuture<Boolean> future) {
 
-                    if (future.isDone()) {
+                        if (future.isDone()) {
 
-                        Long currentTotal = (Long) gridStreamerContext.localSpace().get(GridUtils.TOTAL_TWEETS);
+                            Long currentTotal = (Long) gridStreamerContext.localSpace().get(GridUtils.TOTAL_TWEETS);
 
-                        if (currentTotal == null) {
-                            currentTotal = 0L;
+                            if (currentTotal == null) {
+                                currentTotal = 0L;
+                            }
+
+                            gridStreamerContext.localSpace().put(GridUtils.TOTAL_TWEETS, currentTotal += 1);
+
+                            Long noHashTags = (Long) gridStreamerContext.localSpace().get(GridUtils.TOTAL_TWEETS_NO_HASH_TAGS);
+
+                            if (noHashTags == null) {
+                                noHashTags = 0L;
+                            }
+
+
+                            if (tweet.hasHashTags()) {
+                                noHashTags += 1;
+                            }
+
+                            gridStreamerContext.localSpace().put(GridUtils.TOTAL_TWEETS_NO_HASH_TAGS, noHashTags);
                         }
-
-                        gridStreamerContext.localSpace().put(GridUtils.TOTAL_TWEETS, currentTotal += 1);
-
-                        Long noHashTags = (Long) gridStreamerContext.localSpace().get(GridUtils.TOTAL_TWEETS_NO_HASH_TAGS);
-
-                        if (noHashTags == null) {
-                            noHashTags = 0L;
-                        }
-
-
-                        if (tweet.hasHashTags()) {
-                            noHashTags += 1;
-                        }
-
-                        gridStreamerContext.localSpace().put(GridUtils.TOTAL_TWEETS_NO_HASH_TAGS, noHashTags);
                     }
-                }
-            });
+                });
 
-            if (tweet.hasHashTags()) {
+                if (tweet.hasHashTags()) {
 
-                for (HashTagVO hashTagVO : tweet.getHashTags()) {
+                    for (HashTagVO hashTagVO : tweet.getHashTags()) {
 
-                    hashTagCache.putxAsync(hashTagVO.getGUID(), hashTagVO, (GridPredicate) null);
+                        hashTagCache.putxAsync(hashTagVO.getGUID(), hashTagVO, (GridPredicate) null);
+
+                    }
 
                 }
 
             }
-
         }
 
 
