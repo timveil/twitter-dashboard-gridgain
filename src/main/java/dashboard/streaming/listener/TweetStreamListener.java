@@ -38,7 +38,7 @@ public class TweetStreamListener extends BaseListener {
         try {
             streamer.addEvent(new TweetVO(tweet, fake));
         } catch (GridException e) {
-            log.error("error adding Tweet to streamer... " + e);
+            log.error("error adding Tweet to streamer... ", e);
         }
     }
 
