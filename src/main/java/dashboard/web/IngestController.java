@@ -23,7 +23,7 @@ public class IngestController {
 
     @RequestMapping(value = "/ingest", method = RequestMethod.GET)
     public String get(ModelMap model) {
-        return "ingest";
+        return "tile.2.ingest";
     }
 
     @RequestMapping(value = "/ingest", method = RequestMethod.POST)

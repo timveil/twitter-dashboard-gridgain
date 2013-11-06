@@ -1,7 +1,6 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ include file="/WEB-INF/tiles/common/taglibs.jsp" %>
 
-
 <h3>Administration</h3>
 
 <div class="bs-callout bs-callout-warning">

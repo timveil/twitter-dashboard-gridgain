@@ -21,7 +21,7 @@ public class SearchController {
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String get(ModelMap model) {
-        return "search";
+        return "tile.1.search";
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
@@ -32,7 +32,7 @@ public class SearchController {
 
         model.put("tweets", twitterService.findTweets(text, screenName));
 
-        return "search";
+        return "tile.1.search";
     }
 
 

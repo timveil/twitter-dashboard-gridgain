@@ -31,7 +31,7 @@ public class DashboardController {
 
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
     public String get(ModelMap model) {
-        return "dashboard";
+        return "tile.0.dashboard";
     }
 
 

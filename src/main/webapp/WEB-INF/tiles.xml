@@ -4,15 +4,14 @@
 <tiles-definitions>
 
     <definition name="base" template="/WEB-INF/tiles/template.jsp">
-        <!--<put-attribute name="title" expression="${requestScope.pageTitle}" />-->
         <put-attribute name="meta" value="/WEB-INF/tiles/common/meta.jsp" />
         <put-attribute name="header" value="/WEB-INF/tiles/common/header.jsp" />
         <put-attribute name="footer" value="/WEB-INF/tiles/common/footer.jsp" />
     </definition>
 
-    <definition name="*" extends="base">
-        <put-attribute name="title" value="" />
-        <put-attribute name="body" value="/WEB-INF/tiles/{1}/body.jsp" />
+    <definition name="tile.*.*" extends="base">
+        <put-attribute name="navigation" value="{1}" />
+        <put-attribute name="body" value="/WEB-INF/tiles/{2}/body.jsp" />
     </definition>
 
 </tiles-definitions>

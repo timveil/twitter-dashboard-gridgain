@@ -74,7 +74,6 @@
             padding-bottom: 5px;
         }
 
-
             /*
              * Callouts
              *
@@ -88,10 +87,12 @@
             padding: 20px;
             border-left: 3px solid #eee;
         }
+
         .bs-callout h4 {
             margin-top: 0;
             margin-bottom: 5px;
         }
+
         .bs-callout p:last-child {
             margin-bottom: 0;
         }
@@ -101,20 +102,25 @@
             background-color: #fdf7f7;
             border-color: #eed3d7;
         }
+
         .bs-callout-danger h4 {
             color: #b94a48;
         }
+
         .bs-callout-warning {
             background-color: #faf8f0;
             border-color: #faebcc;
         }
+
         .bs-callout-warning h4 {
             color: #c09853;
         }
+
         .bs-callout-info {
             background-color: #f4f8fa;
             border-color: #bce8f1;
         }
+
         .bs-callout-info h4 {
             color: #3a87ad;
         }
@@ -125,7 +131,9 @@
 
 <div id="wrap">
 
-    <tiles:insertAttribute name="header"/>
+    <tiles:insertAttribute name="header">
+        <tiles:putAttribute name="navigation" value="${navigation}"/>
+    </tiles:insertAttribute>
 
     <div class="container">
         <c:if test="${! empty title}">
