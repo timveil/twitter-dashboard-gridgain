@@ -1,11 +1,11 @@
 package dashboard.streaming.window;
 
+import dashboard.model.HashTagVO;
 import dashboard.streaming.index.provider.HashTagIndexProvider;
 import org.gridgain.grid.streamer.window.GridStreamerBoundedTimeWindow;
-import org.springframework.social.twitter.api.HashTagEntity;
 
 
-public class SixtyMinuteWindow extends GridStreamerBoundedTimeWindow<HashTagEntity> {
+public class SixtyMinuteWindow extends GridStreamerBoundedTimeWindow<HashTagVO> {
 
     public SixtyMinuteWindow() {
         super();

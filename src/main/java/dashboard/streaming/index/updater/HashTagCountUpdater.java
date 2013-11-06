@@ -1,35 +1,35 @@
 package dashboard.streaming.index.updater;
 
+import dashboard.model.HashTagVO;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.streamer.index.GridStreamerIndexEntry;
 import org.gridgain.grid.streamer.index.GridStreamerIndexUpdater;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.social.twitter.api.HashTagEntity;
 
 
-public class HashTagCountUpdater implements GridStreamerIndexUpdater<HashTagEntity, String, Long> {
+public class HashTagCountUpdater implements GridStreamerIndexUpdater<HashTagVO, String, Long> {
 
     @Nullable
     @Override
-    public String indexKey(HashTagEntity hashTagEntity) {
-        return hashTagEntity.getText();
+    public String indexKey(HashTagVO hashTag) {
+        return hashTag.getText();
     }
 
     @Nullable
     @Override
-    public Long initialValue(HashTagEntity hashTagEntity, String s) {
+    public Long initialValue(HashTagVO hashTag, String s) {
         return 1l;
     }
 
     @Nullable
     @Override
-    public Long onAdded(GridStreamerIndexEntry<HashTagEntity, String, Long> entry, HashTagEntity hashTagEntity) throws GridException {
+    public Long onAdded(GridStreamerIndexEntry<HashTagVO, String, Long> entry, HashTagVO hashTag) throws GridException {
         return entry.value() + 1;
     }
 
     @Nullable
     @Override
-    public Long onRemoved(GridStreamerIndexEntry<HashTagEntity, String, Long> entry, HashTagEntity hashTagEntity) {
+    public Long onRemoved(GridStreamerIndexEntry<HashTagVO, String, Long> entry, HashTagVO hashTag) {
         return entry.value() - 1 == 0 ? 1L : entry.value() - 1;
     }
 }

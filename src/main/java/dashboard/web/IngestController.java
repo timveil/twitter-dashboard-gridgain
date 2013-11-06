@@ -41,6 +41,7 @@ public class IngestController {
         }
 
         request.getSession().setAttribute("startTime", new Date());
+        request.getSession().setAttribute("duration", duration);
 
         twitterService.ingest(duration);
 

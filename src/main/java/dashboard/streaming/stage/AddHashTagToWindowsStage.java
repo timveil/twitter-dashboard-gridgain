@@ -1,5 +1,7 @@
 package dashboard.streaming.stage;
 
+import dashboard.model.HashTagVO;
+import dashboard.model.TweetVO;
 import dashboard.streaming.window.FifteenMinuteWindow;
 import dashboard.streaming.window.FiveMinuteWindow;
 import dashboard.streaming.window.SixtyMinuteWindow;
@@ -10,8 +12,6 @@ import org.gridgain.grid.streamer.GridStreamerWindow;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.social.twitter.api.HashTagEntity;
-import org.springframework.social.twitter.api.Tweet;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class AddHashTagToWindowsStage implements GridStreamerStage<Tweet> {
+public class AddHashTagToWindowsStage implements GridStreamerStage<TweetVO> {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -30,7 +30,7 @@ public class AddHashTagToWindowsStage implements GridStreamerStage<Tweet> {
 
     @Nullable
     @Override
-    public Map<String, Collection<?>> run(GridStreamerContext gridStreamerContext, Collection<Tweet> tweets) throws GridException {
+    public Map<String, Collection<?>> run(GridStreamerContext gridStreamerContext, Collection<TweetVO> tweets) throws GridException {
 
         addToWindow(gridStreamerContext, tweets, FiveMinuteWindow.class);
         addToWindow(gridStreamerContext, tweets, FifteenMinuteWindow.class);
@@ -40,17 +40,17 @@ public class AddHashTagToWindowsStage implements GridStreamerStage<Tweet> {
 
     }
 
-    private void addToWindow(GridStreamerContext context, Collection<Tweet> tweets, Class window) {
-        final GridStreamerWindow<HashTagEntity> streamerWindow = context.window(window.getName());
+    private void addToWindow(GridStreamerContext context, Collection<TweetVO> tweets, Class window) {
+        final GridStreamerWindow<HashTagVO> streamerWindow = context.window(window.getName());
         assert streamerWindow != null;
 
 
-        for (Tweet tweet : tweets) {
+        for (TweetVO tweet : tweets) {
 
-            if (tweet.hasTags()) {
-                final List<HashTagEntity> hashTags = tweet.getEntities().getHashTags();
+            if (tweet.hasHashTags()) {
+                final List<HashTagVO> hashTags = tweet.getHashTags();
 
-                for (HashTagEntity tag : hashTags) {
+                for (HashTagVO tag : hashTags) {
                     try {
                         streamerWindow.enqueue(tag);
                     } catch (Exception e) {

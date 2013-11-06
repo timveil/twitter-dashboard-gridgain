@@ -4,6 +4,10 @@
 
 <h3>Search Tweet Database</h3>
 
+<div class="bs-callout bs-callout-info">
+    <p>Query is executed against GridGain In-Memory Database. Search results limited to <strong>100</strong> results.</p>
+</div>
+
 <form class="form-horizontal" role="form" action="<c:url value="/search"/>" method="post">
     <div class="form-group">
         <label for="text" class="col-lg-2 control-label">Tweet</label>
@@ -39,17 +43,17 @@
             <th>Tweet</th>
         </tr>
         </thead>
-        <tbod>
+        <tbody>
 
 
-            <c:forEach var="tweet" items="${tweets}">
+        <c:forEach var="tweet" items="${tweets}">
             <tr>
                 <td style="white-space: nowrap">${tweet.screenName}</td>
                 <td style="white-space: nowrap"><fmt:formatDate value="${tweet.createdAt}" dateStyle="short" timeStyle="short" type="both"/></td>
                 <td>${tweet.text}</td>
             </tr>
-            </c:forEach>
-            </tbody>
+        </c:forEach>
+        </tbody>
     </table>
 
 </c:if>

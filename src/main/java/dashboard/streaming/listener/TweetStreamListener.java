@@ -1,6 +1,7 @@
 package dashboard.streaming.listener;
 
 import com.google.common.collect.Lists;
+import dashboard.model.TweetVO;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.streamer.GridStreamer;
 import org.springframework.social.twitter.api.Tweet;
@@ -21,15 +22,15 @@ public class TweetStreamListener extends BaseListener {
     public void onTweet(Tweet tweet) {
 
 
-        List<Tweet> tweets = Lists.newArrayList();
-        tweets.add(tweet);
+        List<TweetVO> tweets = Lists.newArrayList();
+        tweets.add(new TweetVO(tweet, false));
 
         for (int i = 0; i < MULTIPLIER; i++) {
-            final Tweet fakeTweet = new Tweet(tweet.getId() + (i + 1), tweet.getText() + "-FAKE", tweet.getCreatedAt(), tweet.getFromUser(), null, tweet.getToUserId(), tweet.getFromUserId(), tweet.getLanguageCode(), tweet.getSource());
+            final Tweet fakeTweet = new Tweet(0, tweet.getText(), tweet.getCreatedAt(), tweet.getFromUser(), tweet.getProfileImageUrl(), tweet.getToUserId(), tweet.getFromUserId(), tweet.getLanguageCode(), tweet.getSource());
             fakeTweet.setUser(tweet.getUser());
             fakeTweet.setEntities(tweet.getEntities());
 
-            tweets.add(fakeTweet);
+            tweets.add(new TweetVO(fakeTweet, true));
         }
 
         try {

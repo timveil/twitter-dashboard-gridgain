@@ -51,6 +51,26 @@
                         </bean>
                     </property>
                 </bean>
+
+                <bean class="org.gridgain.grid.cache.GridCacheConfigurationAdapter">
+                    <property name="name" value="dashboard.model.HashTagVO"/>
+                    <property name="cacheMode" value="PARTITIONED"/>
+                    <property name="startSize" value="1000000"/>
+                    <property name="queryIndexEnabled" value="true"/>
+                    <property name="atomicityMode" value="ATOMIC"/>
+                    <property name="writeSynchronizationMode" value="PRIMARY_SYNC"/>
+                    <property name="partitionedDistributionMode" value="PARTITIONED_ONLY"/>
+                    <property name="affinity">
+                        <bean class="org.gridgain.grid.cache.affinity.partitioned.GridCachePartitionedAffinity">
+                            <property name="keyBackups" value="0"/>
+                        </bean>
+                    </property>
+                    <property name="evictionPolicy">
+                        <bean class="org.gridgain.grid.cache.eviction.fifo.GridCacheFifoEvictionPolicy">
+                            <property name="maxSize" value="1000000"/>
+                        </bean>
+                    </property>
+                </bean>
             </list>
         </property>
 

@@ -1,11 +1,11 @@
 package dashboard.streaming.index.provider;
 
+import dashboard.model.TweetVO;
 import dashboard.streaming.index.updater.TopTweeterCountUpdater;
 import org.gridgain.grid.streamer.index.tree.GridStreamerTreeIndexProvider;
-import org.springframework.social.twitter.api.Tweet;
 
 
-public class TopTweeterIndexProvider extends GridStreamerTreeIndexProvider<Tweet, String, Long> {
+public class TopTweeterIndexProvider extends GridStreamerTreeIndexProvider<TweetVO, String, Long> {
 
     public TopTweeterIndexProvider() {
         super();

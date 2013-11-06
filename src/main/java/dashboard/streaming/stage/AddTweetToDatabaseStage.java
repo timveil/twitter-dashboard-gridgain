@@ -1,5 +1,6 @@
 package dashboard.streaming.stage;
 
+import dashboard.model.HashTagVO;
 import dashboard.model.TweetVO;
 import dashboard.utils.GridUtils;
 import org.gridgain.grid.Grid;
@@ -13,13 +14,12 @@ import org.gridgain.grid.streamer.GridStreamerStage;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.social.twitter.api.Tweet;
 
 import java.util.Collection;
 import java.util.Map;
 
 
-public class AddTweetToDatabaseStage implements GridStreamerStage<Tweet> {
+public class AddTweetToDatabaseStage implements GridStreamerStage<TweetVO> {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -31,20 +31,22 @@ public class AddTweetToDatabaseStage implements GridStreamerStage<Tweet> {
 
     @Nullable
     @Override
-    public Map<String, Collection<?>> run(final GridStreamerContext gridStreamerContext, Collection<Tweet> tweets) throws GridException {
+    public Map<String, Collection<?>> run(final GridStreamerContext gridStreamerContext, Collection<TweetVO> tweets) throws GridException {
 
         Grid grid = GridUtils.getGrid();
 
-        GridCache<Long, TweetVO> cache = grid.cache(TweetVO.class.getName());
-        assert cache != null;
+        GridCache<String, TweetVO> tweetCache = grid.cache(TweetVO.class.getName());
+        assert tweetCache != null;
 
-        for (Tweet tweet : tweets) {
+        GridCache<String, HashTagVO> hashTagCache = grid.cache(HashTagVO.class.getName());
+        assert hashTagCache != null;
 
-            final TweetVO tweetVO = new TweetVO(tweet);
+        for (final TweetVO tweet : tweets) {
 
-            final GridFuture<Boolean> putFuture = cache.putxAsync(tweet.getId(), tweetVO, (GridPredicate) null);
 
-            putFuture.listenAsync(new GridInClosure<GridFuture<Boolean>>() {
+            final GridFuture<Boolean> putTweetFuture = tweetCache.putxAsync(tweet.getGUID(), tweet, (GridPredicate) null);
+
+            putTweetFuture.listenAsync(new GridInClosure<GridFuture<Boolean>>() {
                 @Override
                 public void apply(GridFuture<Boolean> future) {
 
@@ -65,7 +67,7 @@ public class AddTweetToDatabaseStage implements GridStreamerStage<Tweet> {
                         }
 
 
-                        if (tweetVO.hasTags()) {
+                        if (tweet.hasHashTags()) {
                             noHashTags += 1;
                         }
 
@@ -73,6 +75,17 @@ public class AddTweetToDatabaseStage implements GridStreamerStage<Tweet> {
                     }
                 }
             });
+
+            if (tweet.hasHashTags()) {
+
+                for (HashTagVO hashTagVO : tweet.getHashTags()) {
+
+                    hashTagCache.putxAsync(hashTagVO.getGUID(), hashTagVO, (GridPredicate) null);
+
+                }
+
+            }
+
         }
 
 

@@ -4,7 +4,7 @@
 <fmt:formatDate var="startTimeFormatted" value="${sessionScope.startTime}" type="both" dateStyle="short" timeStyle="short"/>
 
 <h3>Twitter Dashboard
-    <small>as of ${startTimeFormatted}</small>
+    <small>as of <strong>${startTimeFormatted}</strong>, stream will open for <strong><fmt:formatNumber value="${(duration / 1000) / 60}" maxFractionDigits="0"/></strong> minutes</small>
 </h3>
 
 <div class="bs-callout bs-callout-info">

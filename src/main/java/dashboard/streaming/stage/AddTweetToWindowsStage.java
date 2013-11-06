@@ -1,5 +1,6 @@
 package dashboard.streaming.stage;
 
+import dashboard.model.TweetVO;
 import dashboard.streaming.window.TopTweetersWindow;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.streamer.GridStreamerContext;
@@ -8,14 +9,13 @@ import org.gridgain.grid.streamer.GridStreamerWindow;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.social.twitter.api.Tweet;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
 
-public class AddTweetToWindowsStage implements GridStreamerStage<Tweet> {
+public class AddTweetToWindowsStage implements GridStreamerStage<TweetVO> {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -26,7 +26,7 @@ public class AddTweetToWindowsStage implements GridStreamerStage<Tweet> {
 
     @Nullable
     @Override
-    public Map<String, Collection<?>> run(GridStreamerContext gridStreamerContext, Collection<Tweet> tweets) throws GridException {
+    public Map<String, Collection<?>> run(GridStreamerContext gridStreamerContext, Collection<TweetVO> tweets) throws GridException {
 
         addToWindow(gridStreamerContext, tweets, TopTweetersWindow.class);
 
@@ -34,19 +34,17 @@ public class AddTweetToWindowsStage implements GridStreamerStage<Tweet> {
 
     }
 
-    private void addToWindow(GridStreamerContext context, Collection<Tweet> tweets, Class window) {
-        final GridStreamerWindow<Tweet> streamerWindow = context.window(window.getName());
+    private void addToWindow(GridStreamerContext context, Collection<TweetVO> tweets, Class window) {
+        final GridStreamerWindow<TweetVO> streamerWindow = context.window(window.getName());
         assert streamerWindow != null;
 
 
-        for (Tweet tweet : tweets) {
+        for (TweetVO tweet : tweets) {
 
-            if (tweet.hasTags()) {
-                try {
-                    streamerWindow.enqueue(tweet);
-                } catch (Exception e) {
-                    log.error("error adding tweet [" + tweet.getId() + "] to window " + window + "...", e);
-                }
+            try {
+                streamerWindow.enqueue(tweet);
+            } catch (Exception e) {
+                log.error("error adding tweet [" + tweet.getGUID() + "] to window " + window + "...", e);
             }
         }
 

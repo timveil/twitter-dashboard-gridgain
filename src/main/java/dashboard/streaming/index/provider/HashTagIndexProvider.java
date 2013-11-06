@@ -1,11 +1,11 @@
 package dashboard.streaming.index.provider;
 
+import dashboard.model.HashTagVO;
 import dashboard.streaming.index.updater.HashTagCountUpdater;
 import org.gridgain.grid.streamer.index.tree.GridStreamerTreeIndexProvider;
-import org.springframework.social.twitter.api.HashTagEntity;
 
 
-public class HashTagIndexProvider extends GridStreamerTreeIndexProvider<HashTagEntity, String, Long> {
+public class HashTagIndexProvider extends GridStreamerTreeIndexProvider<HashTagVO, String, Long> {
 
     public HashTagIndexProvider() {
         super();
