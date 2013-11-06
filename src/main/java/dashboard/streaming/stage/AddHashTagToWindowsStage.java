@@ -32,52 +32,51 @@ public class AddHashTagToWindowsStage implements GridStreamerStage<TweetVO> {
     @Override
     public Map<String, Collection<?>> run(GridStreamerContext gridStreamerContext, Collection<TweetVO> tweets) throws GridException {
 
-        addToWindow(gridStreamerContext, tweets, FiveMinuteWindow.class);
-        addToWindow(gridStreamerContext, tweets, FifteenMinuteWindow.class);
-        addToWindow(gridStreamerContext, tweets, SixtyMinuteWindow.class);
+        final GridStreamerWindow<HashTagVO> fiveMinuteWindow = gridStreamerContext.window(FiveMinuteWindow.class.getName());
+        assert fiveMinuteWindow != null;
+
+        final GridStreamerWindow<HashTagVO> fifteenMinuteWindow = gridStreamerContext.window(FifteenMinuteWindow.class.getName());
+        assert fifteenMinuteWindow != null;
+
+        final GridStreamerWindow<HashTagVO> sixtyMinuteWindow = gridStreamerContext.window(SixtyMinuteWindow.class.getName());
+        assert sixtyMinuteWindow != null;
+
+
+        for (TweetVO tweet : tweets) {
+            if (tweet.hasHashTags()) {
+                final List<HashTagVO> hashTags = tweet.getHashTags();
+
+                enqueue(hashTags, fiveMinuteWindow);
+                enqueue(hashTags, fifteenMinuteWindow);
+                enqueue(hashTags, sixtyMinuteWindow);
+            }
+
+        }
 
         return Collections.<String, Collection<?>>singletonMap(gridStreamerContext.nextStageName(), tweets);
 
     }
 
-    private void addToWindow(GridStreamerContext context, Collection<TweetVO> tweets, Class window) {
-        final GridStreamerWindow<HashTagVO> streamerWindow = context.window(window.getName());
-        assert streamerWindow != null;
+    private void enqueue(List<HashTagVO> hashTags, GridStreamerWindow<HashTagVO> window) {
+        try {
+            boolean success = window.enqueueAll(hashTags);
 
-
-        for (TweetVO tweet : tweets) {
-
-            if (tweet.hasHashTags()) {
-                final List<HashTagVO> hashTags = tweet.getHashTags();
-
-                try {
-                    boolean success = streamerWindow.enqueueAll(hashTags);
-
-                    if (!success) {
-                        log.warn("problem adding hashtags to queue");
-                    }
-
-                } catch (Exception e) {
-                    log.error("error adding hashTags to window " + window + "...", e);
-                }
+            if (!success) {
+                log.warn("problem adding all HashTagVO to window");
             }
+
+        } catch (Exception e) {
+            log.error("error adding all HashTagVO to window " + window.name() + "...", e);
         }
+    }
 
 
-        final int evictionSize = streamerWindow.evictionQueueSize();
+    private void evict(GridStreamerWindow<HashTagVO> window) {
 
-        if (evictionSize > 0) {
-
-            if (log.isTraceEnabled()) {
-                log.trace("eviction queue size in window " + window + " is " + evictionSize);
-            }
-
-            try {
-                streamerWindow.clearEvicted();
-            } catch (Exception e) {
-                log.error("error clearing evicted hashTags from window " + window + "...", e);
-            }
+        try {
+            window.clearEvicted();
+        } catch (Exception e) {
+            log.error("error clearing evicted HashTagVO from window " + window.name() + "...", e);
         }
-
     }
 }

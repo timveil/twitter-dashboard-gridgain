@@ -28,46 +28,34 @@ public class AddTweetToWindowsStage implements GridStreamerStage<TweetVO> {
     @Override
     public Map<String, Collection<?>> run(GridStreamerContext gridStreamerContext, Collection<TweetVO> tweets) throws GridException {
 
-        addToWindow(gridStreamerContext, tweets, TopTweetersWindow.class);
+        final GridStreamerWindow<TweetVO> streamerWindow = gridStreamerContext.window(TopTweetersWindow.class.getName());
+        assert streamerWindow != null;
+
+        addToWindow(tweets, streamerWindow);
 
         return Collections.<String, Collection<?>>singletonMap(gridStreamerContext.nextStageName(), tweets);
 
     }
 
-    private void addToWindow(GridStreamerContext context, Collection<TweetVO> tweets, Class window) {
-        final GridStreamerWindow<TweetVO> streamerWindow = context.window(window.getName());
-        assert streamerWindow != null;
+    private void addToWindow(Collection<TweetVO> tweets, GridStreamerWindow<TweetVO> window) {
 
         try {
-            boolean success = streamerWindow.enqueueAll(tweets);
+            boolean success = window.enqueueAll(tweets);
 
             if (!success) {
-                log.warn("problem adding tweets to queue");
+                log.warn("problem adding all TweetVO to queue");
             }
 
         } catch (Exception e) {
-            log.error("error adding tweets to window " + window + "...", e);
+            log.error("error adding all TweetVO to window " + window.name() + "...", e);
         }
+    }
 
-
-        final int evictionSize = streamerWindow.evictionQueueSize();
-
-        if (evictionSize > 0) {
-
-            if (log.isTraceEnabled()) {
-                log.trace("eviction queue size in window " + window + " BEFORE EVICTION is " + evictionSize);
-            }
-
-            try {
-                streamerWindow.clearEvicted();
-            } catch (Exception e) {
-                log.error("error clearing evicted tweet from window " + window + "...", e);
-            }
-
-            if (log.isTraceEnabled()) {
-                log.trace("eviction queue size in window " + window + " AFTER EVICTION is " + streamerWindow.evictionQueueSize());
-            }
+    private void evict(GridStreamerWindow<TweetVO> window) {
+        try {
+            window.clearEvicted();
+        } catch (Exception e) {
+            log.error("error clearing evicted TweetVO from window " + window.name() + "...", e);
         }
-
     }
 }

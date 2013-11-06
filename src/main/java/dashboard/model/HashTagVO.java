@@ -13,13 +13,13 @@ import java.util.UUID;
 
 public class HashTagVO implements Externalizable {
 
-    @GridCacheQuerySqlField(unique = true, index = true)
+    @GridCacheQuerySqlField(unique = true)
     private String GUID;
 
-    @GridCacheQuerySqlField(index = true)
+    @GridCacheQuerySqlField
     private String text;
 
-    @GridCacheQuerySqlField(index = true)
+    @GridCacheQuerySqlField
     private String tweetGUID;
 
     public HashTagVO() {
