@@ -54,7 +54,14 @@ public class AddHashTagToWindowsStage implements GridStreamerStage<TweetVO> {
                 }
 
             }
+
+            /*
+            evict(fiveMinuteWindow);
+            evict(fifteenMinuteWindow);
+            evict(sixtyMinuteWindow);
+            */
         }
+
 
         return Collections.<String, Collection<?>>singletonMap(gridStreamerContext.nextStageName(), tweets);
 
