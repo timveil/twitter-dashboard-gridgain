@@ -25,6 +25,7 @@
                 <property name="classNames">
                     <list>
                         <value>dashboard.model.TweetVO</value>
+                        <value>dashboard.model.HashTagVO</value>
                     </list>
                 </property>
             </bean>
@@ -35,6 +36,7 @@
                 <bean class="org.gridgain.grid.cache.GridCacheConfigurationAdapter">
                     <property name="name" value="dashboard.model.TweetVO"/>
                     <property name="cacheMode" value="PARTITIONED"/>
+                    <property name="eagerTtl" value="false"/>
                     <property name="startSize" value="1000000"/>
                     <property name="queryIndexEnabled" value="true"/>
                     <property name="atomicityMode" value="ATOMIC"/>
@@ -55,6 +57,7 @@
                 <bean class="org.gridgain.grid.cache.GridCacheConfigurationAdapter">
                     <property name="name" value="dashboard.model.HashTagVO"/>
                     <property name="cacheMode" value="PARTITIONED"/>
+                    <property name="eagerTtl" value="false"/>
                     <property name="startSize" value="100000"/>
                     <property name="queryIndexEnabled" value="false"/>
                     <property name="atomicityMode" value="ATOMIC"/>
