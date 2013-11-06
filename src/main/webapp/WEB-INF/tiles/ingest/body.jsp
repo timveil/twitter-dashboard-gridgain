@@ -14,12 +14,13 @@
         <label for="duration" class="col-lg-2 control-label">Twitter Stream Lifespan</label>
 
         <div class="col-lg-4">
-            <input type="number" class="form-control" id="duration" name="duration" placeholder="Lifespan in minutes of Twitter Stream">
+            <input type="number" class="form-control" id="duration" name="duration" placeholder="Lifespan of Twitter Stream in minutes ">
         </div>
     </div>
     <div class="form-group">
         <div class="col-lg-offset-2 col-lg-10">
-            <button type="submit" class="btn btn-success">Capture Twitter Data</button>
+            <button type="submit" class="btn btn-primary">Capture Twitter Data</button>
+            <button type="reset" class="btn btn-default">Reset</button>
         </div>
     </div>
 </form>

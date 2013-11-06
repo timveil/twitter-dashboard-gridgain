@@ -1,44 +1,45 @@
 package dashboard.streaming.listener;
 
-import com.google.common.collect.Lists;
 import dashboard.model.TweetVO;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.streamer.GridStreamer;
 import org.springframework.social.twitter.api.Tweet;
 
-import java.util.List;
-
 public class TweetStreamListener extends BaseListener {
 
-    public static final int MULTIPLIER = 55;
 
     private GridStreamer streamer;
 
-    public TweetStreamListener(GridStreamer streamer) {
+    private int multiplier;
+
+    public TweetStreamListener(GridStreamer streamer, int multiplier) {
         this.streamer = streamer;
+        this.multiplier = multiplier;
     }
 
     @Override
     public void onTweet(Tweet tweet) {
 
+        addEvent(tweet, false);
 
-        List<TweetVO> tweets = Lists.newArrayList();
-        tweets.add(new TweetVO(tweet, false));
 
-        for (int i = 0; i < MULTIPLIER; i++) {
+        for (int i = 0; i < multiplier; i++) {
             final Tweet fakeTweet = new Tweet(0, tweet.getText(), tweet.getCreatedAt(), tweet.getFromUser(), tweet.getProfileImageUrl(), tweet.getToUserId(), tweet.getFromUserId(), tweet.getLanguageCode(), tweet.getSource());
             fakeTweet.setUser(tweet.getUser());
             fakeTweet.setEntities(tweet.getEntities());
 
-            tweets.add(new TweetVO(fakeTweet, true));
+            addEvent(fakeTweet, true);
+
         }
 
+    }
+
+    private void addEvent(Tweet tweet, boolean fake) {
         try {
-            streamer.addEvents(tweets);
+            streamer.addEvent(new TweetVO(tweet, fake));
         } catch (GridException e) {
             log.error("error adding Tweet to streamer... " + e);
         }
-
     }
 
 }

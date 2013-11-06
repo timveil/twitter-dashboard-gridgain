@@ -40,6 +40,7 @@ import java.util.*;
 public class TwitterServiceImpl implements TwitterService {
 
     public static final int MAX_NUM_RETURNED = 5;
+    public static final int MULTIPLIER = 55;
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -59,7 +60,7 @@ public class TwitterServiceImpl implements TwitterService {
 
         try {
             List<StreamListener> listeners = Lists.newArrayList();
-            listeners.add(new TweetStreamListener(tweetStreamer));
+            listeners.add(new TweetStreamListener(tweetStreamer, MULTIPLIER));
 
             sampleStream = twitter.streamingOperations().sample(listeners);
 
