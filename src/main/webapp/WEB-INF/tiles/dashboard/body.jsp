@@ -16,18 +16,20 @@
 
 <div class="row">
 
-    <div class="col-lg-6">
-
+    <div class="col-lg-3">
         <h4>Total Tweets <small>streamed</small></h4>
-        <span id="totalCounter" class="counter"></span>
-
     </div>
 
-    <div class="col-lg-6">
+    <div class="col-lg-3">
+        <span id="totalCounter" class="counter"></span>
+    </div>
 
-        <h4>Total Tweets <small>streamed with HashTags</small></h4>
+    <div class="col-lg-3">
+        <h4>Total Tweets <small>with HashTags</small></h4>
+    </div>
+
+    <div class="col-lg-3">
         <span id="totalTags" class="counter"></span>
-
     </div>
 </div>
 
