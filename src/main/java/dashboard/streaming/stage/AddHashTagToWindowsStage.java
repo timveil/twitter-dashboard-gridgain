@@ -50,12 +50,15 @@ public class AddHashTagToWindowsStage implements GridStreamerStage<TweetVO> {
             if (tweet.hasHashTags()) {
                 final List<HashTagVO> hashTags = tweet.getHashTags();
 
-                for (HashTagVO tag : hashTags) {
-                    try {
-                        streamerWindow.enqueue(tag);
-                    } catch (Exception e) {
-                        log.error("error adding hashTags [" + tag.getText() + "] to window " + window + "...", e);
+                try {
+                    boolean success = streamerWindow.enqueueAll(hashTags);
+
+                    if (!success) {
+                        log.warn("problem adding hashtags to queue");
                     }
+
+                } catch (Exception e) {
+                    log.error("error adding hashTags to window " + window + "...", e);
                 }
             }
         }

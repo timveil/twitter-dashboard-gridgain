@@ -73,6 +73,8 @@ public class TwitterServiceImpl implements TwitterService {
 
             if (tweetStreamer != null) {
                 tweetStreamer.reset();
+                tweetStreamer.resetMetrics();
+
             }
 
             if (sampleStream != null) {

@@ -38,14 +38,15 @@ public class AddTweetToWindowsStage implements GridStreamerStage<TweetVO> {
         final GridStreamerWindow<TweetVO> streamerWindow = context.window(window.getName());
         assert streamerWindow != null;
 
+        try {
+            boolean success = streamerWindow.enqueueAll(tweets);
 
-        for (TweetVO tweet : tweets) {
-
-            try {
-                streamerWindow.enqueue(tweet);
-            } catch (Exception e) {
-                log.error("error adding tweet [" + tweet.getGUID() + "] to window " + window + "...", e);
+            if (!success) {
+                log.warn("problem adding tweets to queue");
             }
+
+        } catch (Exception e) {
+            log.error("error adding tweets to window " + window + "...", e);
         }
 
 
