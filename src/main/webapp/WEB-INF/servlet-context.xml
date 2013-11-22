@@ -12,6 +12,18 @@
         </mvc:argument-resolvers>
     </mvc:annotation-driven>
 
+    <bean id="properties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="locations">
+            <list>
+                <value>classpath:twitter-dashboard.properties</value>
+                <value>file:${user.home}/twitter-dashboard.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <context:property-placeholder properties-ref="properties" ignore-unresolvable="true"/>
+
 
     <mvc:resources mapping="/static/**" location="/static/" />
 

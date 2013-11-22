@@ -1,22 +1,35 @@
 package dashboard.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.social.twitter.api.Twitter;
 import org.springframework.social.twitter.api.impl.TwitterTemplate;
 
+import java.util.Properties;
+
 @Configuration
 public class TwitterConfiguration {
 
-    private static final String CONSUMER_KEY = "UDr4MGoK5XxHaUVkurRmpw";
-    private static final String CONSUMER_SECRET = "yryIt8Js0HFeCjqBZMGWKSWO1KWyXpBOHP2fCNofpk";
-    private static final String ACCESS_TOKEN = "371408397-CGUgW70jVb3a2YPMjSQoqTrI88JtVub9uDozDhEN";
-    private static final String ACCESS_TOKEN_SECRET = "hS5m951GIngZ7STLh02y91eP8sSJsnTQzKg9DMrPg";
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
+    @javax.annotation.Resource(name = "properties")
+    private Properties properties;
 
     @Bean
     public Twitter twitter() {
-        return new TwitterTemplate(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET);
+        final String consumerKey = properties.getProperty("twitter.consumer-key");
+        final String consumerSecret = properties.getProperty("twitter.consumer-secret");
+        final String accessToken = properties.getProperty("twitter.access-token");
+        final String accessTokenSecret = properties.getProperty("twitter.access-token-secret");
+
+        log.debug("twitter consumer key:  " + consumerKey);
+        log.debug("twitter consumer secret:  " + consumerSecret);
+        log.debug("twitter access token:  " + accessToken);
+        log.debug("twitter access token secret:  " + accessTokenSecret);
+
+        return new TwitterTemplate(consumerKey, consumerSecret, accessToken, accessTokenSecret);
     }
 
 }

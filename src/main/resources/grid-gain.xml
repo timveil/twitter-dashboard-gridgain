@@ -109,7 +109,7 @@
 
         <property name="indexingSpi">
             <bean class="org.gridgain.grid.spi.indexing.h2.GridH2IndexingSpi">
-                <property name="longQueryExecutionTimeout" value="200"/>
+                <property name="longQueryExecutionTimeout" value="1000"/>
                 <property name="longQueryExplain" value="true"/>
                 <property name="maxOffHeapMemory" value="-1"/>
                 <property name="defaultIndexFixedTyping" value="true"/>
