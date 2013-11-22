@@ -11,6 +11,7 @@
     <bean id="grid.cfg" class="org.gridgain.grid.GridConfigurationAdapter" scope="singleton">
 
         <property name="localHost" value="127.0.0.1"/>
+        <property name="restTcpHost" value="0.0.0.0"/>
         <property name="gridName" ref="gridName"/>
 
         <property name="gridLogger">

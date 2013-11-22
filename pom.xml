@@ -23,7 +23,7 @@
     <properties>
         <spring.version>3.2.4.RELEASE</spring.version>
         <tiles.version>3.0.1</tiles.version>
-        <gg.version>5.2.2</gg.version>
+        <gg.version>5.3.0</gg.version>
         <servlet.version>3.0.1</servlet.version>
         <jsp.version>2.2</jsp.version>
         <jstl.version>1.2</jstl.version>
