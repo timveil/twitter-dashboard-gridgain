@@ -8,7 +8,6 @@ import org.gridgain.grid.GridException;
 import org.gridgain.grid.GridFuture;
 import org.gridgain.grid.cache.GridCache;
 import org.gridgain.grid.lang.GridInClosure;
-import org.gridgain.grid.lang.GridPredicate;
 import org.gridgain.grid.streamer.GridStreamerContext;
 import org.gridgain.grid.streamer.GridStreamerStage;
 import org.jetbrains.annotations.Nullable;
@@ -46,7 +45,7 @@ public class AddTweetToDatabaseStage implements GridStreamerStage<TweetVO> {
             for (final TweetVO tweet : tweets) {
 
 
-                final GridFuture<Boolean> putTweetFuture = tweetCache.putxAsync(tweet.getGUID(), tweet, (GridPredicate) null);
+                final GridFuture<Boolean> putTweetFuture = tweetCache.putxAsync(tweet.getGUID(), tweet);
 
                 putTweetFuture.listenAsync(new GridInClosure<GridFuture<Boolean>>() {
                     @Override
@@ -82,7 +81,7 @@ public class AddTweetToDatabaseStage implements GridStreamerStage<TweetVO> {
 
                     for (HashTagVO hashTagVO : tweet.getHashTags()) {
 
-                        hashTagCache.putxAsync(hashTagVO.getGUID(), hashTagVO, (GridPredicate) null);
+                        hashTagCache.putxAsync(hashTagVO.getGUID(), hashTagVO);
 
                     }
 

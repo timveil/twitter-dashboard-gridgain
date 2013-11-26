@@ -21,7 +21,7 @@
     </repositories>
 
     <properties>
-        <spring.version>3.2.4.RELEASE</spring.version>
+        <spring.version>3.2.5.RELEASE</spring.version>
         <tiles.version>3.0.1</tiles.version>
         <gg.version>5.3.0</gg.version>
         <servlet.version>3.0.1</servlet.version>
@@ -132,7 +132,7 @@
         <dependency>
             <groupId>org.atmosphere</groupId>
             <artifactId>atmosphere-runtime-native</artifactId>
-            <version>2.0.3</version>
+            <version>2.0.4</version>
         </dependency>
 
         <dependency>
