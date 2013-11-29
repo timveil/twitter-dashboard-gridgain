@@ -84,12 +84,9 @@ public class AddTweetToDatabaseStage implements GridStreamerStage<TweetVO> {
                         hashTagCache.putxAsync(hashTagVO.getGUID(), hashTagVO);
 
                     }
-
                 }
-
             }
         }
-
 
         return null;
     }

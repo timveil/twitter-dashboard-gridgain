@@ -24,7 +24,6 @@
 
     <context:property-placeholder properties-ref="properties" ignore-unresolvable="true"/>
 
-
     <mvc:resources mapping="/static/**" location="/static/" />
 
     <context:component-scan base-package="dashboard"/>
