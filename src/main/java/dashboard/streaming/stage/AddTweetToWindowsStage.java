@@ -35,7 +35,7 @@ public class AddTweetToWindowsStage implements GridStreamerStage<TweetVO> {
 
             addToWindow(tweets, streamerWindow);
 
-            //evict(streamerWindow);
+            evict(streamerWindow);
         }
 
         return Collections.<String, Collection<?>>singletonMap(gridStreamerContext.nextStageName(), tweets);
