@@ -41,7 +41,7 @@
                     <property name="startSize" value="1000000"/>
                     <property name="queryIndexEnabled" value="true"/>
                     <property name="atomicityMode" value="ATOMIC"/>
-                    <property name="writeSynchronizationMode" value="FULL_ASYNC"/>
+                    <property name="writeSynchronizationMode" value="PRIMARY_SYNC"/>
                     <property name="partitionedDistributionMode" value="PARTITIONED_ONLY"/>
                     <property name="affinity">
                         <bean class="org.gridgain.grid.cache.affinity.partitioned.GridCachePartitionedAffinity">
@@ -62,7 +62,7 @@
                     <property name="startSize" value="100000"/>
                     <property name="queryIndexEnabled" value="false"/>
                     <property name="atomicityMode" value="ATOMIC"/>
-                    <property name="writeSynchronizationMode" value="FULL_ASYNC"/>
+                    <property name="writeSynchronizationMode" value="PRIMARY_SYNC"/>
                     <property name="partitionedDistributionMode" value="PARTITIONED_ONLY"/>
                     <property name="affinity">
                         <bean class="org.gridgain.grid.cache.affinity.partitioned.GridCachePartitionedAffinity">

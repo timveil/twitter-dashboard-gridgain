@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Tomcat 7" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 7" ALTERNATIVE_JRE_ENABLED="false">
+  <configuration default="false" name="Tomcat 7" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 7" ALTERNATIVE_JRE_ENABLED="false" ALTERNATIVE_JRE_PATH="">
     <option name="OPEN_IN_BROWSER" value="false" />
-    <option name="COMMON_VM_ARGUMENTS" value="-Xmx2g -Xms2g -DGRIDGAIN_QUIET=false" />
+    <option name="COMMON_VM_ARGUMENTS" value="-Xmx4g -Xms4g -DGRIDGAIN_QUIET=false" />
     <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
     <option name="SHOW_DIALOG_ON_UPDATE" value="false" />
     <option name="UPDATING_POLICY" value="update-resources" />
@@ -41,7 +41,7 @@
     </RunnerSettings>
     <RunnerSettings RunnerId="JRebel Executor" />
     <RunnerSettings RunnerId="Profile ">
-      <option name="myExternalizedOptions" />
+      <option name="myExternalizedOptions" value="&#10;additional-options2=onexit\=snapshot&#10;" />
     </RunnerSettings>
     <RunnerSettings RunnerId="Run" />
     <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">

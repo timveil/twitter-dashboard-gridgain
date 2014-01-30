@@ -56,9 +56,9 @@ public class AddHashTagToWindowsStage implements GridStreamerStage<TweetVO> {
             }
 
 
-            evict(fiveMinuteWindow);
-            evict(fifteenMinuteWindow);
-            evict(sixtyMinuteWindow);
+            //evict(fiveMinuteWindow);
+            //evict(fifteenMinuteWindow);
+            //evict(sixtyMinuteWindow);
 
         }
 
