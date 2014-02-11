@@ -4,3 +4,16 @@
 *.jar
 *.war
 *.ear
+
+*.log
+*.ids
+
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries/timveil.xml
+*.iws
+
+.DS_Store
+
+out/
+target/
