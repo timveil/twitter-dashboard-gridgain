@@ -41,6 +41,7 @@
                     <property name="startSize" value="1000000"/>
                     <property name="queryIndexEnabled" value="true"/>
                     <property name="atomicityMode" value="ATOMIC"/>
+                    <property name="atomicWriteOrderMode" value="PRIMARY"/>
                     <property name="writeSynchronizationMode" value="PRIMARY_SYNC"/>
                     <property name="partitionedDistributionMode" value="PARTITIONED_ONLY"/>
                     <property name="affinity">
@@ -62,6 +63,7 @@
                     <property name="startSize" value="100000"/>
                     <property name="queryIndexEnabled" value="false"/>
                     <property name="atomicityMode" value="ATOMIC"/>
+                    <property name="atomicWriteOrderMode" value="PRIMARY"/>
                     <property name="writeSynchronizationMode" value="PRIMARY_SYNC"/>
                     <property name="partitionedDistributionMode" value="PARTITIONED_ONLY"/>
                     <property name="affinity">
