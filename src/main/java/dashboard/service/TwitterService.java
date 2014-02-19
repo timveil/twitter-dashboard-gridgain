@@ -18,6 +18,5 @@ public interface TwitterService {
 
     long getTotalTweetsWithHashTag();
 
-
     List<TweetVO> findTweets(String text, String screenName);
 }
