@@ -92,8 +92,6 @@ public class TwitterServiceImpl implements TwitterService {
 
         assert streamer != null;
 
-        List<KeyValuePair> results = Lists.newArrayList();
-
 
         final GridClosure<GridStreamerContext, Collection<GridStreamerIndexEntry<HashTagVO, String, Long>>> gridClosure = new GridClosure<GridStreamerContext, Collection<GridStreamerIndexEntry<HashTagVO, String, Long>>>() {
 
@@ -138,6 +136,9 @@ public class TwitterServiceImpl implements TwitterService {
             }
         };
 
+
+        List<KeyValuePair> results = Lists.newArrayList();
+
         try {
 
             Collection<GridStreamerIndexEntry<HashTagVO, String, Long>> reduceResults = streamer.context().reduce(gridClosure, gridReducer);
@@ -162,9 +163,6 @@ public class TwitterServiceImpl implements TwitterService {
         final GridStreamer streamer = grid.streamer(GridUtils.STREAMER_NAME);
 
         assert streamer != null;
-
-        List<KeyValuePair> results = Lists.newArrayList();
-
 
         final GridClosure<GridStreamerContext, Collection<GridStreamerIndexEntry<TweetVO, String, Long>>> gridClosure = new GridClosure<GridStreamerContext, Collection<GridStreamerIndexEntry<TweetVO, String, Long>>>() {
 
@@ -208,6 +206,8 @@ public class TwitterServiceImpl implements TwitterService {
                 return GridFunc.retain(sorted, true, MAX_NUM_RETURNED);
             }
         };
+
+        List<KeyValuePair> results = Lists.newArrayList();
 
         try {
 
