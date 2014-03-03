@@ -14,15 +14,14 @@ import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.cache.GridCache;
 import org.gridgain.grid.cache.query.GridCacheQuery;
-import org.gridgain.grid.cache.query.GridCacheQueryType;
 import org.gridgain.grid.lang.GridClosure;
-import org.gridgain.grid.lang.GridFunc;
-import org.gridgain.grid.lang.GridReducer0;
+import org.gridgain.grid.lang.GridReducer;
 import org.gridgain.grid.streamer.GridStreamer;
 import org.gridgain.grid.streamer.GridStreamerContext;
 import org.gridgain.grid.streamer.GridStreamerWindow;
 import org.gridgain.grid.streamer.index.GridStreamerIndex;
 import org.gridgain.grid.streamer.index.GridStreamerIndexEntry;
+import org.gridgain.grid.util.lang.GridFunc;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -109,7 +108,7 @@ public class TwitterServiceImpl implements TwitterService {
             }
         };
 
-        final GridReducer0<Collection<GridStreamerIndexEntry<HashTagVO, String, Long>>> gridReducer = new GridReducer0<Collection<GridStreamerIndexEntry<HashTagVO, String, Long>>>() {
+        final GridReducer<Collection<GridStreamerIndexEntry<HashTagVO, String, Long>>, Collection<GridStreamerIndexEntry<HashTagVO, String, Long>>> gridReducer = new GridReducer<Collection<GridStreamerIndexEntry<HashTagVO, String, Long>>, Collection<GridStreamerIndexEntry<HashTagVO, String, Long>>>() {
             private List<GridStreamerIndexEntry<HashTagVO, String, Long>> sorted = new ArrayList<>();
 
 
@@ -123,7 +122,7 @@ public class TwitterServiceImpl implements TwitterService {
             }
 
             @Override
-            public Collection<GridStreamerIndexEntry<HashTagVO, String, Long>> apply() {
+            public Collection<GridStreamerIndexEntry<HashTagVO, String, Long>> reduce() {
                 Collections.sort(sorted, new Comparator<GridStreamerIndexEntry<HashTagVO, String, Long>>() {
 
                     @Override
@@ -180,7 +179,7 @@ public class TwitterServiceImpl implements TwitterService {
             }
         };
 
-        final GridReducer0<Collection<GridStreamerIndexEntry<TweetVO, String, Long>>> gridReducer = new GridReducer0<Collection<GridStreamerIndexEntry<TweetVO, String, Long>>>() {
+        final GridReducer<Collection<GridStreamerIndexEntry<TweetVO, String, Long>>, Collection<GridStreamerIndexEntry<TweetVO, String, Long>>> gridReducer = new GridReducer<Collection<GridStreamerIndexEntry<TweetVO, String, Long>>, Collection<GridStreamerIndexEntry<TweetVO, String, Long>>>() {
             private List<GridStreamerIndexEntry<TweetVO, String, Long>> sorted = new ArrayList<>();
 
 
@@ -194,7 +193,7 @@ public class TwitterServiceImpl implements TwitterService {
             }
 
             @Override
-            public Collection<GridStreamerIndexEntry<TweetVO, String, Long>> apply() {
+            public Collection<GridStreamerIndexEntry<TweetVO, String, Long>> reduce() {
                 Collections.sort(sorted, new Comparator<GridStreamerIndexEntry<TweetVO, String, Long>>() {
 
                     @Override
@@ -295,9 +294,9 @@ public class TwitterServiceImpl implements TwitterService {
                 log.debug("findTweets sql [" + sql + "]");
             }
 
-            GridCacheQuery<String, TweetVO> query = cache.createQuery(GridCacheQueryType.SQL, TweetVO.class, sql).queryArguments(parameters.toArray());
+            GridCacheQuery<Map.Entry<String, TweetVO>> query = cache.queries().createSqlQuery(TweetVO.class, sql);
 
-            final Collection<Map.Entry<String, TweetVO>> searchResults = query.execute(grid).get();
+            final Collection<Map.Entry<String, TweetVO>> searchResults = query.execute(parameters.toArray()).get();
 
             for (Map.Entry<String, TweetVO> entry : searchResults) {
                 tweets.add(entry.getValue());

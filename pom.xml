@@ -37,38 +37,22 @@
 
         <dependency>
             <groupId>org.gridgain</groupId>
-            <artifactId>gridgain-database</artifactId>
-            <version>5.3.3</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.hibernate</groupId>
-                    <artifactId>hibernate</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.poi</groupId>
-                    <artifactId>poi</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.poi</groupId>
-                    <artifactId>poi-scratchpad</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.poi</groupId>
-                    <artifactId>poi-ooxml</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.pdfbox</groupId>
-                    <artifactId>pdfbox</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.amazonaws</groupId>
-                    <artifactId>aws-java-sdk</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.mongodb</groupId>
-                    <artifactId>mongo-java-driver</artifactId>
-                </exclusion>
-            </exclusions>
+            <artifactId>gridgain-datagrid</artifactId>
+            <version>6.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.gridgain</groupId>
+            <artifactId>gridgain-streaming</artifactId>
+            <version>6.0.1</version>
+        </dependency>
+
+
+        <!-- todo: workaround for OS dependency bug -->
+        <dependency>
+            <groupId>org.gridgain</groupId>
+            <artifactId>jdk8-backport</artifactId>
+            <version>1.0</version>
         </dependency>
 
         <dependency>

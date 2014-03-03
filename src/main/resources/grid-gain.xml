@@ -8,7 +8,7 @@
     <util:constant id="gridName" static-field="dashboard.utils.GridUtils.GRID_NAME"/>
     <util:constant id="streamerName" static-field="dashboard.utils.GridUtils.STREAMER_NAME"/>
 
-    <bean id="grid.cfg" class="org.gridgain.grid.GridConfigurationAdapter" scope="singleton">
+    <bean id="grid.cfg" class="org.gridgain.grid.GridConfiguration" scope="singleton">
 
         <property name="localHost" value="127.0.0.1"/>
         <property name="restTcpHost" value="0.0.0.0"/>
@@ -34,7 +34,7 @@
 
         <property name="cacheConfiguration">
             <list>
-                <bean class="org.gridgain.grid.cache.GridCacheConfigurationAdapter">
+                <bean class="org.gridgain.grid.cache.GridCacheConfiguration">
                     <property name="name" value="dashboard.model.TweetVO"/>
                     <property name="cacheMode" value="PARTITIONED"/>
                     <property name="eagerTtl" value="false"/>
@@ -43,12 +43,6 @@
                     <property name="atomicityMode" value="ATOMIC"/>
                     <property name="atomicWriteOrderMode" value="PRIMARY"/>
                     <property name="writeSynchronizationMode" value="PRIMARY_SYNC"/>
-                    <property name="partitionedDistributionMode" value="PARTITIONED_ONLY"/>
-                    <property name="affinity">
-                        <bean class="org.gridgain.grid.cache.affinity.partitioned.GridCachePartitionedAffinity">
-                            <property name="keyBackups" value="0"/>
-                        </bean>
-                    </property>
                     <property name="evictionPolicy">
                         <bean class="org.gridgain.grid.cache.eviction.fifo.GridCacheFifoEvictionPolicy">
                             <property name="maxSize" value="1000000"/>
@@ -56,7 +50,7 @@
                     </property>
                 </bean>
 
-                <bean class="org.gridgain.grid.cache.GridCacheConfigurationAdapter">
+                <bean class="org.gridgain.grid.cache.GridCacheConfiguration">
                     <property name="name" value="dashboard.model.HashTagVO"/>
                     <property name="cacheMode" value="PARTITIONED"/>
                     <property name="eagerTtl" value="false"/>
@@ -65,12 +59,6 @@
                     <property name="atomicityMode" value="ATOMIC"/>
                     <property name="atomicWriteOrderMode" value="PRIMARY"/>
                     <property name="writeSynchronizationMode" value="PRIMARY_SYNC"/>
-                    <property name="partitionedDistributionMode" value="PARTITIONED_ONLY"/>
-                    <property name="affinity">
-                        <bean class="org.gridgain.grid.cache.affinity.partitioned.GridCachePartitionedAffinity">
-                            <property name="keyBackups" value="0"/>
-                        </bean>
-                    </property>
                     <property name="evictionPolicy">
                         <bean class="org.gridgain.grid.cache.eviction.fifo.GridCacheFifoEvictionPolicy">
                             <property name="maxSize" value="100000"/>
@@ -82,7 +70,7 @@
 
         <property name="streamerConfiguration">
             <list>
-                <bean class="org.gridgain.grid.streamer.GridStreamerConfigurationAdapter">
+                <bean class="org.gridgain.grid.streamer.GridStreamerConfiguration">
                     <property name="name" ref="streamerName"/>
 
                     <property name="windows">

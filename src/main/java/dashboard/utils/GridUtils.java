@@ -2,7 +2,7 @@ package dashboard.utils;
 
 
 import org.gridgain.grid.Grid;
-import org.gridgain.grid.GridFactory;
+import org.gridgain.grid.GridGain;
 
 public class GridUtils {
 
@@ -12,6 +12,6 @@ public class GridUtils {
     public static final String TOTAL_TWEETS_NO_HASH_TAGS = "totalTweetsNoHashTags";
 
     public static Grid getGrid() {
-        return GridFactory.grid(GRID_NAME);
+        return GridGain.grid(GRID_NAME);
     }
 }
