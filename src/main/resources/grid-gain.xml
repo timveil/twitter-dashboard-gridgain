@@ -12,7 +12,9 @@
 
         <property name="localHost" value="127.0.0.1"/>
         <property name="restTcpHost" value="0.0.0.0"/>
+        <property name="restEnabled" value="true"/>
         <property name="gridName" ref="gridName"/>
+        <property name="metricsLogFrequency" value="0"/>
 
         <property name="gridLogger">
             <bean class="org.gridgain.grid.logger.slf4j.GridSlf4jLogger"/>
