@@ -148,11 +148,6 @@
         <option name="VM_PARAMETERS" value="" />
         <option name="PROGRAM_PARAMETERS" value="" />
       </SHUTDOWN>
-      <EnvironmentVariables>
-        <option name="NAME" value="GRIDGAIN_HOME" />
-        <option name="VALUE" value="/Applications/GridGain/gridgain-database-5.3.3-nix/distro" />
-        <option name="IS_PREDEFINED" value="false" />
-      </EnvironmentVariables>
     </ConfigurationWrapper>
     <method>
       <option name="BuildArtifacts" enabled="true">
