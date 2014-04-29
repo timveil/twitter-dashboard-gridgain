@@ -37,5 +37,5 @@ Once the project has been cloned or downloaded do the following:
 
 2.  Navigate to the root folder and execute ```mvn package``` to generate a .war file
 3.  Deploy war file to tomcat and start tomcat
-4.  Navigate to http://localhost:8080/ingest to start capturing twitter data
+4.  Navigate to ```http://localhost:8080/ingest``` to start capturing twitter data
 
