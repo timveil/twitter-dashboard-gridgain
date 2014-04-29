@@ -1,4 +1,41 @@
-twitter-dashboard
+Twitter Dashboard
 =================
 
+About
+-----
+
+This demo monitors the [Twitter Sample Stream](https://dev.twitter.com/docs/api/1.1/get/statuses/sample) using GridGain's [In-Memory Computing Platform](http://www.gridgain.org/platform/) product.
+This publicly available stream of data represents roughly **%1** of all real-time Twitter activity.
+The [Twitter Firehose](https://dev.twitter.com/docs/api/1.1/get/statuses/firehose), which includes all activity, is not publicly available.
+As a result, this application applies a **multiplier** to incoming events to simulate a significantly faster stream of data.
+
+
 Go to http://localhost:8080/ingest to start capturing twitter data.  I typically capture data for 2 hours or (120 minutes) while working
+
+Pre Requisites
+--------------
+
+The following software and accounts are required to run this demo.  Instructions on installing the JDK, Tomcat and Maven can be found on those respective sites.
+
+1. Latest Oracle JDK (1.7.x)
+2. Latest Apache Tomcat (7.x)
+3. Latest Apache Maven (3.2.x)
+4. A Twitter Developer Account.  See [https://dev.twitter.com/]()
+
+Running the Demo
+----------------
+
+Once the project has been cloned or downloaded do the following:
+
+1. Update the protocol for the port 8080 connector in Tomcat's `server.xml`
+
+        <Connector port="8080"
+            protocol="org.apache.coyote.http11.Http11NioProtocol"
+            connectionTimeout="20000"
+            redirectPort="8443" />
+
+
+2.  Navigate to the root folder and execute ```mvn package``` to generate a .war file
+3.  Deploy war file to tomcat and start tomcat
+4.  Navigate to http://localhost:8080/ingest to start capturing twitter data
+
