@@ -10,8 +10,6 @@ The [Twitter Firehose](https://dev.twitter.com/docs/api/1.1/get/statuses/firehos
 As a result, this application applies a **multiplier** to incoming events to simulate a significantly faster stream of data.
 
 
-Go to http://localhost:8080/ingest to start capturing twitter data.  I typically capture data for 2 hours or (120 minutes) while working
-
 Pre Requisites
 --------------
 
@@ -36,6 +34,8 @@ Once the project has been cloned or downloaded do the following:
 
 
 2.  Navigate to the root folder and execute ```mvn package``` to generate a .war file
+
 3.  Deploy war file to tomcat and start tomcat
+
 4.  Navigate to ```http://localhost:8080/ingest``` to start capturing twitter data
 
