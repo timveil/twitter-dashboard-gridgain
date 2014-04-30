@@ -20,9 +20,9 @@
           <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.6" />
           <element id="library" level="project" name="Maven: commons-io:commons-io:2.4" />
           <element id="library" level="project" name="Maven: commons-net:commons-net:3.1" />
-          <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpclient:4.2.3" />
-          <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpcore:4.2.3" />
-          <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpmime:4.2.3" />
+          <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpclient:4.3.3" />
+          <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpcore:4.3.2" />
+          <element id="library" level="project" name="Maven: org.apache.httpcomponents:httpmime:4.3.3" />
           <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final" />
           <element id="library" level="project" name="Maven: org.jboss.logging:jboss-logging:3.1.0.GA" />
           <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:4.2.6.Final" />
