@@ -15,7 +15,7 @@ In addition to GridGain, this demo is built using a number of popular open sourc
 * Apache Tiles - [http://tiles.apache.org]()
 * Atmosphere - [https://github.com/Atmosphere/atmosphere]()
 * Twitter Bootstrap - [http://getbootstrap.com]()
-* jQuery - [http://jquery.com/]()
+* jQuery - [http://jquery.com]()
 
 
 Pre Requisites
