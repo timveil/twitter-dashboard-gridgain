@@ -30,7 +30,7 @@
         <jsp.version>2.2</jsp.version>
         <jstl.version>1.2</jstl.version>
         <slf4j.version>1.7.6</slf4j.version>
-        <spring.social.version>1.1.0.RC1</spring.social.version>
+        <spring.social.version>1.1.0</spring.social.version>
     </properties>
 
     <dependencies>
