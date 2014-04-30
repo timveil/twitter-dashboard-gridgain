@@ -89,6 +89,8 @@
                             <bean class="dashboard.streaming.stage.AddHashTagToWindowsStage"/>
                             <bean class="dashboard.streaming.stage.AddTweetToWindowsStage"/>
                             <bean class="dashboard.streaming.stage.AddTweetToDatabaseStage"/>
+                            <bean class="dashboard.streaming.stage.RemoveHashTagFromWindowsStage"/>
+                            <bean class="dashboard.streaming.stage.RemoveTweetFromWindowsStage"/>
                         </list>
                     </property>
 

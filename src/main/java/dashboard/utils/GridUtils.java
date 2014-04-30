@@ -11,6 +11,8 @@ public class GridUtils {
     public static final String TOTAL_TWEETS = "totalTweets";
     public static final String TOTAL_TWEETS_NO_HASH_TAGS = "totalTweetsNoHashTags";
 
+    public static final int EVICTION_COUNT = 1000;
+
     public static Grid getGrid() {
         return GridGain.grid(GRID_NAME);
     }

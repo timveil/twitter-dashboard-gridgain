@@ -89,17 +89,12 @@ public class TwitterServiceImpl implements TwitterService {
 
         final GridStreamer streamer = grid.streamer(GridUtils.STREAMER_NAME);
 
-        assert streamer != null;
-
-
         final GridClosure<GridStreamerContext, Collection<GridStreamerIndexEntry<HashTagVO, String, Long>>> gridClosure = new GridClosure<GridStreamerContext, Collection<GridStreamerIndexEntry<HashTagVO, String, Long>>>() {
 
             @Override
             public Collection<GridStreamerIndexEntry<HashTagVO, String, Long>> apply(GridStreamerContext gridStreamerContext) {
 
                 final GridStreamerWindow<HashTagVO> gridStreamerWindow = gridStreamerContext.window(window.getName());
-
-                assert gridStreamerWindow != null;
 
                 final GridStreamerIndex<HashTagVO, String, Long> index = gridStreamerWindow.index(HashTagIndexProvider.class.getName());
 
@@ -161,16 +156,12 @@ public class TwitterServiceImpl implements TwitterService {
 
         final GridStreamer streamer = grid.streamer(GridUtils.STREAMER_NAME);
 
-        assert streamer != null;
-
         final GridClosure<GridStreamerContext, Collection<GridStreamerIndexEntry<TweetVO, String, Long>>> gridClosure = new GridClosure<GridStreamerContext, Collection<GridStreamerIndexEntry<TweetVO, String, Long>>>() {
 
             @Override
             public Collection<GridStreamerIndexEntry<TweetVO, String, Long>> apply(GridStreamerContext gridStreamerContext) {
 
                 final GridStreamerWindow<TweetVO> gridStreamerWindow = gridStreamerContext.window(TopTweetersWindow.class.getName());
-
-                assert gridStreamerWindow != null;
 
                 final GridStreamerIndex<TweetVO, String, Long> index = gridStreamerWindow.index(TopTweeterIndexProvider.class.getName());
 
@@ -231,8 +222,6 @@ public class TwitterServiceImpl implements TwitterService {
 
         final GridStreamer streamer = grid.streamer(GridUtils.STREAMER_NAME);
 
-        assert streamer != null;
-
         final Object o = streamer.context().localSpace().get(GridUtils.TOTAL_TWEETS);
 
         if (o != null) {
@@ -249,8 +238,6 @@ public class TwitterServiceImpl implements TwitterService {
 
         final GridStreamer streamer = grid.streamer(GridUtils.STREAMER_NAME);
 
-        assert streamer != null;
-
         final Object o = streamer.context().localSpace().get(GridUtils.TOTAL_TWEETS_NO_HASH_TAGS);
 
         if (o != null) {
@@ -265,10 +252,7 @@ public class TwitterServiceImpl implements TwitterService {
 
         final Grid grid = GridUtils.getGrid();
 
-
-        GridCache<String, TweetVO> cache = grid.cache(TweetVO.class.getName());
-        assert cache != null;
-
+        final GridCache<String, TweetVO> cache = grid.cache(TweetVO.class.getName());
 
         List<TweetVO> tweets = Lists.newArrayList();
 
