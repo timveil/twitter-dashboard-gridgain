@@ -31,8 +31,8 @@ Once the project has been cloned or downloaded do the following:
             protocol="org.apache.coyote.http11.Http11NioProtocol"
             connectionTimeout="20000"
             redirectPort="8443" />
-2.  Copy the resources/twitter-dashboard.properties file to the top level of your user (home) directory and update the file with your twitter developer credentials.
+2.  Copy the `src/main/resources/twitter-dashboard.properties` file to the top level of your user (home) directory and update the file with your twitter developer credentials.
 3.  Navigate to the root folder and execute ```mvn package``` to generate a .war file
 4.  Deploy war file to tomcat and start tomcat
-5.  Navigate to ```http://localhost:8080/ingest``` to start capturing twitter data
+5.  Navigate to `http://localhost:8080/ingest` to start capturing twitter data
 
