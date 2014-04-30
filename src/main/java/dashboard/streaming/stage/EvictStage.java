@@ -12,16 +12,15 @@ public class EvictStage {
     void evict(GridStreamerWindow window) {
 
         try {
-            final int evictionQueueSize = window.evictionQueueSize();
-            final int windowSize = window.size();
 
-            // todo: workaround for bug in timebound windows calculation of evictionQueueSize
-            final int pollCount = evictionQueueSize == windowSize ? GridUtils.EVICTION_COUNT : evictionQueueSize;
-
-            window.pollEvicted(pollCount);
+            // todo: workaround for bug in GridStreamerBoundedTimeWindow's calculation of evictionQueueSize
+            window.pollEvicted(GridUtils.EVICTION_COUNT);
 
             if (log.isTraceEnabled()) {
-                log.trace("window name: " + window.name() + ", window size: " + windowSize + ", eviction size: " + evictionQueueSize + ", poll count: " + pollCount);
+                final int evictionQueueSize = window.evictionQueueSize();
+                final int windowSize = window.size();
+
+                log.trace("window name: " + window.name() + ", window size: " + windowSize + ", eviction size: " + evictionQueueSize);
             }
         } catch (Exception e) {
             log.error("error clearing evicted HashTagVO from window " + window.name() + "...", e);
