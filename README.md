@@ -9,7 +9,7 @@ This publicly available stream of data represents roughly **%1** of all real-tim
 The [Twitter Firehose](https://dev.twitter.com/docs/api/1.1/get/statuses/firehose), which includes all activity, is not publicly available.
 As a result, this application applies a **multiplier** to incoming events to simulate a significantly faster stream of data.
 
-In addition to GridGain, this demo is build using a number of popular open source projects including:
+In addition to GridGain, this demo is built using a number of popular open source projects including:
 * Spring Framework - [http://projects.spring.io/spring-framework]()
 * Spring Social Twitter - [http://projects.spring.io/spring-social-twitter]()
 * Apache Tiles - [http://tiles.apache.org]()
