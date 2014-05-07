@@ -2,9 +2,9 @@ package dashboard.streaming.stage;
 
 import dashboard.model.HashTagVO;
 import dashboard.model.TweetVO;
-import dashboard.streaming.window.FifteenMinuteWindow;
 import dashboard.streaming.window.FiveMinuteWindow;
-import dashboard.streaming.window.SixtyMinuteWindow;
+import dashboard.streaming.window.OneMinuteWindow;
+import dashboard.streaming.window.TenMinuteWindow;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.streamer.GridStreamerContext;
 import org.gridgain.grid.streamer.GridStreamerStage;
@@ -34,19 +34,19 @@ public class AddHashTagToWindowsStage extends EnqueueStage<HashTagVO> implements
 
         if (!tweets.isEmpty()) {
 
-            final GridStreamerWindow<HashTagVO> fiveMinuteWindow = gridStreamerContext.window(FiveMinuteWindow.class.getName());
+            final GridStreamerWindow<HashTagVO> oneMinute = gridStreamerContext.window(OneMinuteWindow.class.getName());
 
-            final GridStreamerWindow<HashTagVO> fifteenMinuteWindow = gridStreamerContext.window(FifteenMinuteWindow.class.getName());
+            final GridStreamerWindow<HashTagVO> fiveMinute = gridStreamerContext.window(FiveMinuteWindow.class.getName());
 
-            final GridStreamerWindow<HashTagVO> sixtyMinuteWindow = gridStreamerContext.window(SixtyMinuteWindow.class.getName());
+            final GridStreamerWindow<HashTagVO> tenMinute = gridStreamerContext.window(TenMinuteWindow.class.getName());
 
             for (TweetVO tweet : tweets) {
                 if (tweet.hasHashTags()) {
                     final List<HashTagVO> hashTags = tweet.getHashTags();
 
-                    enqueue(fiveMinuteWindow, hashTags);
-                    enqueue(fifteenMinuteWindow, hashTags);
-                    enqueue(sixtyMinuteWindow, hashTags);
+                    enqueue(oneMinute, hashTags);
+                    enqueue(fiveMinute, hashTags);
+                    enqueue(tenMinute, hashTags);
                 }
 
             }

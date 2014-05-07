@@ -1,9 +1,9 @@
 package dashboard.web;
 
 import dashboard.service.TwitterService;
-import dashboard.streaming.window.FifteenMinuteWindow;
 import dashboard.streaming.window.FiveMinuteWindow;
-import dashboard.streaming.window.SixtyMinuteWindow;
+import dashboard.streaming.window.OneMinuteWindow;
+import dashboard.streaming.window.TenMinuteWindow;
 import org.atmosphere.cpr.*;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
@@ -35,10 +35,27 @@ public class DashboardController {
     }
 
 
+    @RequestMapping(value = "/counts/lastOne")
+    @ResponseBody
+    public void oneMinuteCount(AtmosphereResource atmosphereResource) {
+
+        final ObjectMapper mapper = new ObjectMapper();
+
+        broadcast(atmosphereResource,
+                5,
+                "/counts/lastOne",
+                new Callable<String>() {
+
+                    public String call() throws Exception {
+                        return mapper.writeValueAsString(twitterService.getHashTagSummary(OneMinuteWindow.class));
+                    }
+
+                });
+    }
+
     @RequestMapping(value = "/counts/lastFive")
     @ResponseBody
     public void fiveMinuteCount(AtmosphereResource atmosphereResource) {
-
         final ObjectMapper mapper = new ObjectMapper();
 
         broadcast(atmosphereResource,
@@ -53,35 +70,18 @@ public class DashboardController {
                 });
     }
 
-    @RequestMapping(value = "/counts/lastFifteen")
+    @RequestMapping(value = "/counts/lastTen")
     @ResponseBody
-    public void fifteenMinuteCount(AtmosphereResource atmosphereResource) {
+    public void tenMinuteCount(AtmosphereResource atmosphereResource) {
         final ObjectMapper mapper = new ObjectMapper();
 
         broadcast(atmosphereResource,
                 5,
-                "/counts/lastFifteen",
+                "/counts/lastTen",
                 new Callable<String>() {
 
                     public String call() throws Exception {
-                        return mapper.writeValueAsString(twitterService.getHashTagSummary(FifteenMinuteWindow.class));
-                    }
-
-                });
-    }
-
-    @RequestMapping(value = "/counts/lastSixty")
-    @ResponseBody
-    public void sixtyMinuteCount(AtmosphereResource atmosphereResource) {
-        final ObjectMapper mapper = new ObjectMapper();
-
-        broadcast(atmosphereResource,
-                5,
-                "/counts/lastSixty",
-                new Callable<String>() {
-
-                    public String call() throws Exception {
-                        return mapper.writeValueAsString(twitterService.getHashTagSummary(SixtyMinuteWindow.class));
+                        return mapper.writeValueAsString(twitterService.getHashTagSummary(TenMinuteWindow.class));
                     }
 
                 });

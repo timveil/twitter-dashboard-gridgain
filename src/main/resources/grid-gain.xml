@@ -77,9 +77,9 @@
 
                     <property name="windows">
                         <list>
+                            <bean class="dashboard.streaming.window.OneMinuteWindow"/>
                             <bean class="dashboard.streaming.window.FiveMinuteWindow"/>
-                            <bean class="dashboard.streaming.window.FifteenMinuteWindow"/>
-                            <bean class="dashboard.streaming.window.SixtyMinuteWindow"/>
+                            <bean class="dashboard.streaming.window.TenMinuteWindow"/>
                             <bean class="dashboard.streaming.window.TopTweetersWindow"/>
                         </list>
                     </property>

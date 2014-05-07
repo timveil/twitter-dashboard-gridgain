@@ -2,9 +2,9 @@ package dashboard.streaming.stage;
 
 import dashboard.model.HashTagVO;
 import dashboard.model.TweetVO;
-import dashboard.streaming.window.FifteenMinuteWindow;
 import dashboard.streaming.window.FiveMinuteWindow;
-import dashboard.streaming.window.SixtyMinuteWindow;
+import dashboard.streaming.window.OneMinuteWindow;
+import dashboard.streaming.window.TenMinuteWindow;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.streamer.GridStreamerContext;
 import org.gridgain.grid.streamer.GridStreamerStage;
@@ -31,14 +31,14 @@ public class RemoveHashTagFromWindowsStage extends EvictStage implements GridStr
     @Override
     public Map<String, Collection<?>> run(GridStreamerContext gridStreamerContext, Collection<TweetVO> tweets) throws GridException {
 
-        final GridStreamerWindow<HashTagVO> fiveMinuteWindow = gridStreamerContext.window(FiveMinuteWindow.class.getName());
-        evict(fiveMinuteWindow);
+        final GridStreamerWindow<HashTagVO> oneMinute = gridStreamerContext.window(OneMinuteWindow.class.getName());
+        evict(oneMinute);
 
-        final GridStreamerWindow<HashTagVO> fifteenMinuteWindow = gridStreamerContext.window(FifteenMinuteWindow.class.getName());
-        evict(fifteenMinuteWindow);
+        final GridStreamerWindow<HashTagVO> fiveMinute = gridStreamerContext.window(FiveMinuteWindow.class.getName());
+        evict(fiveMinute);
 
-        final GridStreamerWindow<HashTagVO> sixtyMinuteWindow = gridStreamerContext.window(SixtyMinuteWindow.class.getName());
-        evict(sixtyMinuteWindow);
+        final GridStreamerWindow<HashTagVO> tenMinute = gridStreamerContext.window(TenMinuteWindow.class.getName());
+        evict(tenMinute);
 
         return Collections.<String, Collection<?>>singletonMap(gridStreamerContext.nextStageName(), tweets);
 

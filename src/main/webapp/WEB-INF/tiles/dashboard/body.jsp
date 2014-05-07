@@ -40,7 +40,7 @@
     <div class="col-lg-3">
 
         <h4>Top HashTags
-            <small>last 5 minutes</small>
+            <small>last 1 minute</small>
         </h4>
 
         <table class="table table-nonfluid table-condensed table-striped">
@@ -58,7 +58,7 @@
     <div class="col-lg-3">
 
         <h4>Top HashTags
-            <small>last 15 minutes</small>
+            <small>last 5 minutes</small>
         </h4>
 
         <table class="table table-nonfluid table-condensed table-striped">
@@ -76,7 +76,7 @@
     <div class="col-lg-3">
 
         <h4>Top HashTags
-            <small>last 60 minutes</small>
+            <small>last 10 minutes</small>
         </h4>
 
         <table class="table table-nonfluid table-condensed table-striped">
@@ -129,9 +129,9 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        getStreamingData('<c:url value="/counts/lastFive"/>', '#last5', "#hashTagTemplate");
-        getStreamingData('<c:url value="/counts/lastFifteen"/>', '#last15', "#hashTagTemplate");
-        getStreamingData('<c:url value="/counts/lastSixty"/>', '#last60', "#hashTagTemplate");
+        getStreamingData('<c:url value="/counts/lastOne"/>', '#last5', "#hashTagTemplate");
+        getStreamingData('<c:url value="/counts/lastFive"/>', '#last15', "#hashTagTemplate");
+        getStreamingData('<c:url value="/counts/lastTen"/>', '#last60', "#hashTagTemplate");
         getStreamingData('<c:url value="/counts/topTweets"/>', '#topTweets', "#topTweetsTemplate");
         getStreamingDataSingle('<c:url value="/counts/totalTweets"/>', '#totalCounter');
         getStreamingDataSingle('<c:url value="/counts/tweetsWithHashTag"/>', '#totalTags');
