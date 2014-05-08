@@ -1,6 +1,5 @@
 package dashboard.model;
 
-import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import org.gridgain.grid.cache.query.GridCacheQuerySqlField;
 import org.springframework.social.twitter.api.HashTagEntity;
@@ -12,6 +11,7 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -42,6 +42,15 @@ public class TweetVO implements Externalizable {
     @GridCacheQuerySqlField(index = true)
     private boolean fake;
 
+    @GridCacheQuerySqlField
+    private boolean geoEnabled;
+
+    @GridCacheQuerySqlField
+    private String location;
+
+    @GridCacheQuerySqlField
+    private String source;
+
     private List<HashTagVO> hashTags;
 
 
@@ -58,6 +67,9 @@ public class TweetVO implements Externalizable {
         this.userId = tweet.getUser().getId();
         this.languageCode = tweet.getLanguageCode();
         this.fake = fake;
+        this.geoEnabled = tweet.getUser().isGeoEnabled();
+        this.location = tweet.getUser().getLocation();
+        this.source = tweet.getSource();
 
         if (tweet.hasTags()) {
             hashTags = Lists.newArrayList();
@@ -110,6 +122,18 @@ public class TweetVO implements Externalizable {
         return hashTags != null && !hashTags.isEmpty();
     }
 
+    public boolean isGeoEnabled() {
+        return geoEnabled;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeLong(tweetId);
@@ -120,6 +144,9 @@ public class TweetVO implements Externalizable {
         out.writeObject(screenName);
         out.writeObject(languageCode);
         out.writeBoolean(fake);
+        out.writeBoolean(geoEnabled);
+        out.writeObject(location);
+        out.writeObject(source);
     }
 
     @Override
@@ -132,11 +159,15 @@ public class TweetVO implements Externalizable {
         this.languageCode = (String) in.readObject();
         this.userId = in.readLong();
         this.fake = in.readBoolean();
+        this.geoEnabled = in.readBoolean();
+        this.location = (String)in.readObject();
+        this.source = (String)in.readObject();
     }
+
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(GUID, tweetId, text, createdAt, userId, screenName, languageCode, fake, hashTags);
+        return Objects.hash(GUID, tweetId, text, createdAt, userId, screenName, languageCode, fake, geoEnabled, location, source, hashTags);
     }
 
     @Override
@@ -148,6 +179,6 @@ public class TweetVO implements Externalizable {
             return false;
         }
         final TweetVO other = (TweetVO) obj;
-        return Objects.equal(this.GUID, other.GUID) && Objects.equal(this.tweetId, other.tweetId) && Objects.equal(this.text, other.text) && Objects.equal(this.createdAt, other.createdAt) && Objects.equal(this.userId, other.userId) && Objects.equal(this.screenName, other.screenName) && Objects.equal(this.languageCode, other.languageCode) && Objects.equal(this.fake, other.fake) && Objects.equal(this.hashTags, other.hashTags);
+        return Objects.equals(this.GUID, other.GUID) && Objects.equals(this.tweetId, other.tweetId) && Objects.equals(this.text, other.text) && Objects.equals(this.createdAt, other.createdAt) && Objects.equals(this.userId, other.userId) && Objects.equals(this.screenName, other.screenName) && Objects.equals(this.languageCode, other.languageCode) && Objects.equals(this.fake, other.fake) && Objects.equals(this.geoEnabled, other.geoEnabled) && Objects.equals(this.location, other.location) && Objects.equals(this.source, other.source) && Objects.equals(this.hashTags, other.hashTags);
     }
 }
