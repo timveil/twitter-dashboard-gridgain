@@ -171,8 +171,6 @@
     <orderEntry type="library" name="Maven: org.atmosphere:atmosphere-compat-jbossweb:2.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.atmosphere:atmosphere-compat-tomcat:2.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.atmosphere:atmosphere-compat-tomcat7:2.0.1" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.13" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.13" level="project" />
   </component>
 </module>
 

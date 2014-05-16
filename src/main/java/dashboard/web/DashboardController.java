@@ -1,11 +1,11 @@
 package dashboard.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dashboard.service.TwitterService;
 import dashboard.streaming.window.FiveMinuteWindow;
 import dashboard.streaming.window.OneMinuteWindow;
 import dashboard.streaming.window.TenMinuteWindow;
 import org.atmosphere.cpr.*;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
