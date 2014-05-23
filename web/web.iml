@@ -153,10 +153,10 @@
     <orderEntry type="library" name="Maven: com.github.romix:java-concurrent-hash-trie-map:0.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.pcollections:pcollections:2.1.2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-web:3.2.8.RELEASE" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet.jsp:jsp-api:2.2" level="project" />
-    <orderEntry type="library" name="Maven: javax.servlet:jstl:1.2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:3.2.8.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-test:3.2.8.RELEASE" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet.jsp:jsp-api:2.2" level="project" />
+    <orderEntry type="library" name="Maven: javax.servlet:jstl:1.2" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.social:spring-social-core:1.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.social:spring-social-twitter:1.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.3.2" level="project" />
