@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    _________        _____ __________________        _____
+    __  ____/___________(_)______  /__  ____/______ ____(_)_______
+    _  / __  __  ___/__  / _  __  / _  / __  _  __ `/__  / __  __ \
+    / /_/ /  _  /    _  /  / /_/ /  / /_/ /  / /_/ / _  /  _  / / /
+    \____/   /_/     /_/   \_,__/   \____/   \__,_/  /_/   /_/ /_/
+
+    Copyright (C) GridGain Systems. All Rights Reserved.
+    Version: In-Memory Database 6.1.5
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <description>Main Spring file for grid configuration.</description>
+
+    <util:properties id="gridProperties" local-override="true" location="node.properties"/>
+
+    <context:property-placeholder properties-ref="gridProperties" ignore-unresolvable="true"/>
+
+
+    <bean id="grid.cfg" class="org.gridgain.grid.GridConfiguration">
+
+        <property name="gridName" value="${grid.name}"/>
+        <property name="localHost" value="${grid.localhost}"/>
+        <property name="restEnabled" value="${grid.rest.enabled}"/>
+        <property name="restTcpHost" value="${grid.rest.host}"/>
+        <property name="peerClassLoadingEnabled" value="${grid.pcl.enabled}"/>
+
+        <property name="gridLogger">
+            <bean class="org.gridgain.grid.logger.slf4j.GridSlf4jLogger"/>
+        </property>
+
+        <property name="marshaller">
+            <bean class="org.gridgain.grid.marshaller.optimized.GridOptimizedMarshaller">
+                <property name="requireSerializable" value="true"/>
+
+                <property name="classNames">
+                    <list>
+                        <!--
+                            Specify class names you plan to store in cache or execute as closures
+                            for better performance.
+                        -->
+                    </list>
+                </property>
+            </bean>
+        </property>
+
+        <property name="discoverySpi">
+            <bean class="org.gridgain.grid.spi.discovery.tcp.GridTcpDiscoverySpi">
+                <property name="ipFinder">
+                    <bean class="org.gridgain.grid.spi.discovery.tcp.ipfinder.vm.GridTcpDiscoveryVmIpFinder">
+                        <property name="addresses" value="#{T(java.util.Arrays).asList('${grid.discovery.tcp.addresses}')}"/>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+
+        <property name="indexingSpi">
+            <bean class="org.gridgain.grid.spi.indexing.h2.GridH2IndexingSpi">
+                <property name="longQueryExecutionTimeout" value="${grid.indexing.timeout}"/>
+                <property name="longQueryExplain" value="${grid.indexing.explain}"/>
+                <property name="defaultIndexFixedTyping" value="true"/>
+                <property name="defaultIndexPrimitiveKey" value="true"/>
+                <property name="defaultIndexPrimitiveValue" value="false"/>
+            </bean>
+        </property>
+
+    </bean>
+</beans>
