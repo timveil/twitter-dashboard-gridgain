@@ -30,9 +30,9 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="dashboard" target="1.7" />
-      <module name="node" target="1.8" />
+      <module name="node" target="1.7" />
       <module name="twitter-dashboard" target="1.7" />
-      <module name="web" target="1.8" />
+      <module name="web" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
