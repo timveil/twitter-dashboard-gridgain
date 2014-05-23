@@ -29,9 +29,9 @@
     <dependencies>
 
         <dependency>
-            <groupId>org.gridgain</groupId>
-            <artifactId>gridgain-platform-ent</artifactId>
-            <version>6.1.1</version>
+            <groupId>dashboard</groupId>
+            <artifactId>core</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -50,13 +50,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>3.2.8.RELEASE</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>3.2.8.RELEASE</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -80,18 +73,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.social</groupId>
-            <artifactId>spring-social-core</artifactId>
-            <version>1.1.0.RELEASE</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.social</groupId>
-            <artifactId>spring-social-twitter</artifactId>
-            <version>1.1.0.RELEASE</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.apache.tiles</groupId>
             <artifactId>tiles-servlet</artifactId>
             <version>3.0.3</version>
@@ -109,23 +90,6 @@
             <version>3.0.3</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.6</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.7.6</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.6</version>
-        </dependency>
 
         <dependency>
             <groupId>org.atmosphere</groupId>

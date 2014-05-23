@@ -1,10 +1,10 @@
 package dashboard.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dashboard.core.streaming.window.FiveMinuteWindow;
+import dashboard.core.streaming.window.OneMinuteWindow;
+import dashboard.core.streaming.window.TenMinuteWindow;
 import dashboard.web.service.TwitterService;
-import dashboard.web.streaming.window.FiveMinuteWindow;
-import dashboard.web.streaming.window.OneMinuteWindow;
-import dashboard.web.streaming.window.TenMinuteWindow;
 import org.atmosphere.cpr.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

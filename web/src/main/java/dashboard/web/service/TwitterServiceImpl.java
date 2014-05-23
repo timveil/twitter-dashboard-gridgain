@@ -1,14 +1,14 @@
 package dashboard.web.service;
 
 import com.google.common.collect.Lists;
-import dashboard.web.model.HashTagVO;
-import dashboard.web.model.KeyValuePair;
-import dashboard.web.model.TweetVO;
-import dashboard.web.streaming.index.provider.HashTagIndexProvider;
-import dashboard.web.streaming.index.provider.TopTweeterIndexProvider;
-import dashboard.web.streaming.listener.TweetStreamListener;
-import dashboard.web.streaming.window.TopTweetersWindow;
-import dashboard.web.utils.GridUtils;
+import dashboard.core.model.HashTagVO;
+import dashboard.core.model.KeyValuePair;
+import dashboard.core.model.TweetVO;
+import dashboard.core.streaming.index.provider.HashTagIndexProvider;
+import dashboard.core.streaming.index.provider.TopTweeterIndexProvider;
+import dashboard.core.streaming.window.TopTweetersWindow;
+import dashboard.core.twitter.TweetStreamListener;
+import dashboard.core.utils.GridUtils;
 import org.apache.commons.lang.StringUtils;
 import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridException;
