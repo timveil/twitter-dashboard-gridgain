@@ -1,19 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>dashboard</groupId>
-    <artifactId>twitter-web</artifactId>
-    <packaging>war</packaging>
-    <version>1.0-SNAPSHOT</version>
-    <name>twitter-web</name>
 
-    <repositories>
-        <repository>
-            <id>org.springframework.maven.milestone</id>
-            <name>Spring Maven Milestone Repository</name>
-            <url>http://maven.springframework.org/milestone</url>
-        </repository>
-    </repositories>
+    <groupId>dashboard</groupId>
+    <artifactId>web</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+    <name>web</name>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -27,6 +20,14 @@
         <slf4j.version>1.7.6</slf4j.version>
         <spring.social.version>1.1.0.RELEASE</spring.social.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>org.springframework.maven.milestone</id>
+            <name>Spring Maven Milestone Repository</name>
+            <url>http://maven.springframework.org/milestone</url>
+        </repository>
+    </repositories>
 
     <dependencies>
 
@@ -160,5 +161,4 @@
         </dependency>
 
     </dependencies>
-
 </project>
