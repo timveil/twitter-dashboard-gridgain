@@ -5,8 +5,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
 
-    <util:constant id="gridName" static-field="dashboard.utils.GridUtils.GRID_NAME"/>
-    <util:constant id="streamerName" static-field="dashboard.utils.GridUtils.STREAMER_NAME"/>
+    <util:constant id="gridName" static-field="dashboard.web.utils.GridUtils.GRID_NAME"/>
+    <util:constant id="streamerName" static-field="dashboard.web.utils.GridUtils.STREAMER_NAME"/>
 
     <bean id="grid.cfg" class="org.gridgain.grid.GridConfiguration" scope="singleton">
 
@@ -26,8 +26,8 @@
 
                 <property name="classNames">
                     <list>
-                        <value>dashboard.model.TweetVO</value>
-                        <value>dashboard.model.HashTagVO</value>
+                        <value>dashboard.web.model.TweetVO</value>
+                        <value>dashboard.web.model.HashTagVO</value>
                     </list>
                 </property>
             </bean>
@@ -36,7 +36,7 @@
         <property name="cacheConfiguration">
             <list>
                 <bean class="org.gridgain.grid.cache.GridCacheConfiguration">
-                    <property name="name" value="dashboard.model.TweetVO"/>
+                    <property name="name" value="dashboard.web.model.TweetVO"/>
                     <property name="cacheMode" value="PARTITIONED"/>
                     <property name="eagerTtl" value="false"/>
                     <property name="startSize" value="1000000"/>
@@ -52,7 +52,7 @@
                 </bean>
 
                 <bean class="org.gridgain.grid.cache.GridCacheConfiguration">
-                    <property name="name" value="dashboard.model.HashTagVO"/>
+                    <property name="name" value="dashboard.web.model.HashTagVO"/>
                     <property name="cacheMode" value="PARTITIONED"/>
                     <property name="eagerTtl" value="false"/>
                     <property name="startSize" value="100000"/>
@@ -76,19 +76,19 @@
 
                     <property name="windows">
                         <list>
-                            <bean class="dashboard.streaming.window.OneMinuteWindow"/>
-                            <bean class="dashboard.streaming.window.FiveMinuteWindow"/>
-                            <bean class="dashboard.streaming.window.TenMinuteWindow"/>
-                            <bean class="dashboard.streaming.window.TopTweetersWindow"/>
+                            <bean class="dashboard.web.streaming.window.OneMinuteWindow"/>
+                            <bean class="dashboard.web.streaming.window.FiveMinuteWindow"/>
+                            <bean class="dashboard.web.streaming.window.TenMinuteWindow"/>
+                            <bean class="dashboard.web.streaming.window.TopTweetersWindow"/>
                         </list>
                     </property>
 
                     <property name="stages">
                         <list>
-                            <bean class="dashboard.streaming.stage.AddHashTagToWindowsStage"/>
-                            <bean class="dashboard.streaming.stage.AddTweetToWindowsStage"/>
-                            <bean class="dashboard.streaming.stage.AddTweetToDatabaseStage"/>
-                            <bean class="dashboard.streaming.stage.RemoveHashTagFromWindowsStage"/>
+                            <bean class="dashboard.web.streaming.stage.AddHashTagToWindowsStage"/>
+                            <bean class="dashboard.web.streaming.stage.AddTweetToWindowsStage"/>
+                            <bean class="dashboard.web.streaming.stage.AddTweetToDatabaseStage"/>
+                            <bean class="dashboard.web.streaming.stage.RemoveHashTagFromWindowsStage"/>
                         </list>
                     </property>
 
