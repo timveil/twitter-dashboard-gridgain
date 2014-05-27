@@ -1,7 +1,6 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ include file="/WEB-INF/tiles/common/taglibs.jsp" %>
 
-
 <h3>Search Tweet Database</h3>
 
 <div class="bs-callout bs-callout-info">
@@ -33,7 +32,6 @@
 </form>
 
 <c:if test="${! empty tweets}">
-
 
     <table class="table table-striped">
         <thead>

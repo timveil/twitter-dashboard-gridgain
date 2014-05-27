@@ -10,8 +10,8 @@
     <tiles:insertAttribute name="meta"/>
 
     <style>
-            /* Sticky footer styles
-       -------------------------------------------------- */
+        /* Sticky footer styles
+   -------------------------------------------------- */
 
         html,
         body {
@@ -19,7 +19,7 @@
             /* The html and body elements cannot have any padding or margin. */
         }
 
-            /* Wrapper for page content to push down footer */
+        /* Wrapper for page content to push down footer */
         #wrap {
             min-height: 100%;
             height: auto !important;
@@ -30,15 +30,15 @@
             padding: 0 0 60px;
         }
 
-            /* Set the fixed height of the footer here */
+        /* Set the fixed height of the footer here */
         #footer {
             height: 60px;
             background-color: #f5f5f5;
         }
 
-            /* Custom page CSS
-            -------------------------------------------------- */
-            /* Not required for template or sticky footer method. */
+        /* Custom page CSS
+        -------------------------------------------------- */
+        /* Not required for template or sticky footer method. */
 
         #wrap > .container {
             padding: 60px 15px 0;
@@ -74,14 +74,14 @@
             padding-bottom: 5px;
         }
 
-            /*
-             * Callouts
-             *
-             * Not quite alerts, but custom and helpful notes for folks reading the docs.
-             * Requires a base and modifier class.
-             */
+        /*
+         * Callouts
+         *
+         * Not quite alerts, but custom and helpful notes for folks reading the docs.
+         * Requires a base and modifier class.
+         */
 
-            /* Common styles for all types */
+        /* Common styles for all types */
         .bs-callout {
             margin: 20px 0;
             padding: 20px;
@@ -97,7 +97,7 @@
             margin-bottom: 0;
         }
 
-            /* Variations */
+        /* Variations */
         .bs-callout-danger {
             background-color: #fdf7f7;
             border-color: #eed3d7;
@@ -143,7 +143,6 @@
         </c:if>
         <tiles:insertAttribute name="body"/>
     </div>
-
 
 </div>
 

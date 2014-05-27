@@ -18,7 +18,7 @@ To enable GridGain debugging uncomment this category and add additional JVM opti
             <param name="ConversionPattern" value="[%d{ABSOLUTE}][%-5p][%t][%c{1}] %m%n"/>
         </layout>
 
-        <filter class="org.pache.log4j.varia.LevelRangeFilter">
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
             <param name="levelMin" value="DEBUG"/>
             <param name="levelMax" value="WARN"/>
         </filter>

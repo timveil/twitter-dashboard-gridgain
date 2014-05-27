@@ -109,8 +109,6 @@
 
 </div>
 
-
-
 <script id="hashTagTemplate" type="text/x-jquery-tmpl">
     <tr>
         <td>\${key}</td>
@@ -174,16 +172,15 @@
                     try {
                         var result = $.parseJSON(data);
 
-                        console.log("result for divId [" + divId + "]  " + result);
+                        //console.log("result for divId [" + divId + "]  " + result);
 
                         $(divId).html(result)
 
-
                     } catch (error) {
-                        console.log("An error occurred: " + error);
+                        //console.log("An error occurred: " + error);
                     }
                 } else {
-                    console.log("response.responseBody is null - ignoring.");
+                    //console.log("response.responseBody is null - ignoring.");
                 }
             }
         };
@@ -202,7 +199,7 @@
                 try {
                     var result = $.parseJSON(data);
 
-                    console.log("result for divId [" + divId + "]  " + result);
+                    //console.log("result for divId [" + divId + "]  " + result);
 
                     $(divId).empty();
 
@@ -210,10 +207,10 @@
 
 
                 } catch (error) {
-                    console.log("An error occurred: " + error);
+                    //console.log("An error occurred: " + error);
                 }
             } else {
-                console.log("response.responseBody is null - ignoring.");
+                //console.log("response.responseBody is null - ignoring.");
             }
         }
     }

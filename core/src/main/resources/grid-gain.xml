@@ -8,7 +8,7 @@
     <util:constant id="gridName" static-field="dashboard.core.utils.GridUtils.GRID_NAME"/>
     <util:constant id="streamerName" static-field="dashboard.core.utils.GridUtils.STREAMER_NAME"/>
 
-    <bean id="grid.cfg" class="org.gridgain.grid.GridConfiguration" scope="singleton">
+    <bean id="grid.cfg" class="org.gridgain.grid.GridConfiguration">
 
         <property name="restTcpHost" value="0.0.0.0"/>
         <property name="restEnabled" value="true"/>
@@ -93,7 +93,7 @@
                     </property>
 
                     <property name="router">
-                        <bean class="org.gridgain.grid.streamer.router.GridStreamerLocalEventRouter"/>
+                        <bean class="org.gridgain.grid.streamer.router.GridStreamerRoundRobinEventRouter"/>
                     </property>
                 </bean>
             </list>
@@ -103,7 +103,6 @@
             <bean class="org.gridgain.grid.spi.indexing.h2.GridH2IndexingSpi">
                 <property name="longQueryExecutionTimeout" value="1000"/>
                 <property name="longQueryExplain" value="true"/>
-                <property name="maxOffHeapMemory" value="-1"/>
                 <property name="defaultIndexFixedTyping" value="true"/>
                 <property name="defaultIndexPrimitiveKey" value="true"/>
                 <property name="defaultIndexPrimitiveValue" value="false"/>

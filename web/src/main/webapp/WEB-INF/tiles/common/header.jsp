@@ -19,6 +19,5 @@
                 <li <c:if test="${navigation == 2}">class="active"</c:if>><a href="<c:url value="/ingest"/>">Admin</a></li>
             </ul>
         </div>
-        <!--/.nav-collapse -->
     </div>
 </div>
