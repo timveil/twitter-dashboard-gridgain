@@ -40,7 +40,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="core" />
-    <orderEntry type="library" name="Maven: org.gridgain:gridgain-platform-ent:6.1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.gridgain:gridgain-platform-ent:6.1.5" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjrt:1.7.2" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.7.2" level="project" />
     <orderEntry type="library" name="Maven: commons-beanutils:commons-beanutils:1.8.3" level="project" />
@@ -73,8 +73,8 @@
     <orderEntry type="library" name="Maven: com.jidesoft:jide-common:3.5.9" level="project" />
     <orderEntry type="library" name="Maven: com.jidesoft:jide-components:3.5.9" level="project" />
     <orderEntry type="library" name="Maven: com.jidesoft:jide-grids:3.5.9" level="project" />
-    <orderEntry type="library" name="Maven: com.fifesoft:rsyntaxtextarea:2.5.1" level="project" />
-    <orderEntry type="library" name="Maven: com.fifesoft:autocomplete:2.5.1" level="project" />
+    <orderEntry type="library" name="Maven: com.fifesoft:rsyntaxtextarea:2.5.2" level="project" />
+    <orderEntry type="library" name="Maven: com.fifesoft:autocomplete:2.5.2" level="project" />
     <orderEntry type="library" name="Maven: org.scala-lang:scala-compiler:2.10.3" level="project" />
     <orderEntry type="library" name="Maven: org.scala-lang:scala-library:2.10.3" level="project" />
     <orderEntry type="library" name="Maven: org.scala-lang:scala-reflect:2.10.3" level="project" />

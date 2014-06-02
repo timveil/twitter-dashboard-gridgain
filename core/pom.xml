@@ -49,7 +49,7 @@
         <dependency>
             <groupId>org.gridgain</groupId>
             <artifactId>gridgain-platform-ent</artifactId>
-            <version>6.1.1</version>
+            <version>6.1.5</version>
         </dependency>
 
         <dependency>
