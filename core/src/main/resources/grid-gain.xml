@@ -11,14 +11,19 @@
             http://www.springframework.org/schema/context
             http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <util:constant id="gridName" static-field="dashboard.core.utils.GridUtils.GRID_NAME"/>
-    <util:constant id="streamerName" static-field="dashboard.core.utils.GridUtils.STREAMER_NAME"/>
+    <util:constant id="GRID_NAME" static-field="dashboard.core.utils.GridUtils.GRID_NAME"/>
+    <util:constant id="STREAMER_NAME" static-field="dashboard.core.utils.GridUtils.STREAMER_NAME"/>
+    <util:constant id="ONE_MINUTE_WINDOW" static-field="dashboard.core.utils.GridUtils.ONE_MINUTE_WINDOW"/>
+    <util:constant id="FIVE_MINUTE_WINDOW" static-field="dashboard.core.utils.GridUtils.FIVE_MINUTE_WINDOW"/>
+    <util:constant id="TEN_MINUTE_WINDOW" static-field="dashboard.core.utils.GridUtils.TEN_MINUTE_WINDOW"/>
+    <util:constant id="TOP_TWEETERS_WINDOW" static-field="dashboard.core.utils.GridUtils.TOP_TWEETERS_WINDOW"/>
+
     <util:properties id="gridProperties" local-override="true" location="grid.properties"/>
     <context:property-placeholder properties-ref="gridProperties" ignore-unresolvable="true"/>
 
     <bean id="grid.cfg" class="org.gridgain.grid.GridConfiguration">
 
-        <property name="gridName" ref="gridName"/>
+        <property name="gridName" ref="GRID_NAME"/>
         <property name="smtpHost" value="${grid.smtpHost}"/>
         <property name="smtpPort" value="${grid.smtpPort}"/>
         <property name="adminEmails" value="${grid.adminEmails}"/>
@@ -83,12 +88,12 @@
         <property name="streamerConfiguration">
             <list>
                 <bean class="org.gridgain.grid.streamer.GridStreamerConfiguration">
-                    <property name="name" ref="streamerName"/>
+                    <property name="name" ref="STREAMER_NAME"/>
 
                     <property name="windows">
                         <list>
                             <bean class="org.gridgain.grid.streamer.window.GridStreamerBoundedTimeWindow">
-                                <property name="name" value="oneMinute"/>
+                                <property name="name" ref="ONE_MINUTE_WINDOW"/>
                                 <property name="timeInterval" value="#{1 * 60 * 1000}"/>
 
                                 <property name="indexes">
@@ -102,7 +107,7 @@
                                 </property>
                             </bean>
                             <bean class="org.gridgain.grid.streamer.window.GridStreamerBoundedTimeWindow">
-                                <property name="name" value="fiveMinute"/>
+                                <property name="name" ref="FIVE_MINUTE_WINDOW"/>
                                 <property name="timeInterval" value="#{5 * 60 * 1000}"/>
 
                                 <property name="indexes">
@@ -116,7 +121,7 @@
                                 </property>
                             </bean>
                             <bean class="org.gridgain.grid.streamer.window.GridStreamerBoundedTimeWindow">
-                                <property name="name" value="tenMinute"/>
+                                <property name="name" ref="TEN_MINUTE_WINDOW"/>
                                 <property name="timeInterval" value="#{10 * 60 * 1000}"/>
 
                                 <property name="indexes">
@@ -130,7 +135,7 @@
                                 </property>
                             </bean>
                             <bean class="org.gridgain.grid.streamer.window.GridStreamerUnboundedWindow">
-                                <property name="name" value="topTweeters"/>
+                                <property name="name" ref="TOP_TWEETERS_WINDOW"/>
 
                                 <property name="indexes">
                                     <bean class="org.gridgain.grid.streamer.index.tree.GridStreamerTreeIndexProvider">
