@@ -5,8 +5,8 @@ import dashboard.core.hpc.HashTagClosure;
 import dashboard.core.hpc.HashTagReducer;
 import dashboard.core.hpc.TweetClosure;
 import dashboard.core.hpc.TweetReducer;
-import dashboard.core.model.HashTagVO;
-import dashboard.core.model.TweetVO;
+import dashboard.core.model.HashTag;
+import dashboard.core.model.Tweet;
 import dashboard.core.twitter.TweetStreamListener;
 import dashboard.core.utils.GridConstants;
 import dashboard.core.utils.GridUtils;
@@ -90,9 +90,9 @@ public class TwitterServiceImpl implements TwitterService {
 
         try {
 
-            Collection<GridStreamerIndexEntry<HashTagVO, String, Long>> reduceResults = streamer.context().reduce(new HashTagClosure(windowName), new HashTagReducer());
+            Collection<GridStreamerIndexEntry<HashTag, String, Long>> reduceResults = streamer.context().reduce(new HashTagClosure(windowName), new HashTagReducer());
 
-            for (GridStreamerIndexEntry<HashTagVO, String, Long> entry : reduceResults) {
+            for (GridStreamerIndexEntry<HashTag, String, Long> entry : reduceResults) {
                 results.add(new KeyValuePair(StringUtils.abbreviate(entry.key(), 20), NumberFormat.getNumberInstance().format(entry.value())));
             }
 
@@ -115,9 +115,9 @@ public class TwitterServiceImpl implements TwitterService {
 
         try {
 
-            Collection<GridStreamerIndexEntry<TweetVO, String, Long>> reduceResults = streamer.context().reduce(new TweetClosure(), new TweetReducer());
+            Collection<GridStreamerIndexEntry<Tweet, String, Long>> reduceResults = streamer.context().reduce(new TweetClosure(), new TweetReducer());
 
-            for (GridStreamerIndexEntry<TweetVO, String, Long> entry : reduceResults) {
+            for (GridStreamerIndexEntry<Tweet, String, Long> entry : reduceResults) {
                 results.add(new KeyValuePair(StringUtils.abbreviate(entry.key(), 20), NumberFormat.getNumberInstance().format(entry.value())));
             }
 
@@ -162,13 +162,13 @@ public class TwitterServiceImpl implements TwitterService {
     }
 
     @Override
-    public List<TweetVO> findTweets(String text, String screenName) {
+    public List<Tweet> findTweets(String text, String screenName) {
 
         final Grid grid = GridUtils.getGrid();
 
-        final GridCache<String, TweetVO> cache = grid.cache(TweetVO.class.getName());
+        final GridCache<String, Tweet> cache = grid.cache(Tweet.class.getName());
 
-        List<TweetVO> tweets = Lists.newArrayList();
+        List<Tweet> tweets = Lists.newArrayList();
 
         try {
 
@@ -192,11 +192,11 @@ public class TwitterServiceImpl implements TwitterService {
                 log.debug("findTweets sql [" + sql + "]");
             }
 
-            GridCacheQuery<Map.Entry<String, TweetVO>> query = cache.queries().createSqlQuery(TweetVO.class, sql);
+            GridCacheQuery<Map.Entry<String, Tweet>> query = cache.queries().createSqlQuery(Tweet.class, sql);
 
-            final Collection<Map.Entry<String, TweetVO>> searchResults = query.execute(parameters.toArray()).get();
+            final Collection<Map.Entry<String, Tweet>> searchResults = query.execute(parameters.toArray()).get();
 
-            for (Map.Entry<String, TweetVO> entry : searchResults) {
+            for (Map.Entry<String, Tweet> entry : searchResults) {
                 tweets.add(entry.getValue());
             }
 

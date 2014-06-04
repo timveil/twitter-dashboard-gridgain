@@ -40,7 +40,7 @@ public class DashboardController {
         final ObjectMapper mapper = new ObjectMapper();
 
         broadcast(atmosphereResource,
-                120,
+                5,
                 "/counts/lastOne",
                 new Callable<String>() {
 
@@ -57,7 +57,7 @@ public class DashboardController {
         final ObjectMapper mapper = new ObjectMapper();
 
         broadcast(atmosphereResource,
-                120,
+                5,
                 "/counts/lastFive",
                 new Callable<String>() {
 
@@ -74,7 +74,7 @@ public class DashboardController {
         final ObjectMapper mapper = new ObjectMapper();
 
         broadcast(atmosphereResource,
-                120,
+                5,
                 "/counts/lastTen",
                 new Callable<String>() {
 
@@ -92,7 +92,7 @@ public class DashboardController {
         final ObjectMapper mapper = new ObjectMapper();
 
         broadcast(atmosphereResource,
-                120,
+                5,
                 "/counts/topTweets",
                 new Callable<String>() {
 
@@ -112,7 +112,7 @@ public class DashboardController {
         final ObjectMapper mapper = new ObjectMapper();
 
         broadcast(atmosphereResource,
-                120,
+                5,
                 "/counts/tweetsWithHashTag",
                 new Callable<String>() {
 
@@ -131,7 +131,7 @@ public class DashboardController {
         final ObjectMapper mapper = new ObjectMapper();
 
         broadcast(atmosphereResource,
-                120,
+                5,
                 "/counts/totalTweets",
                 new Callable<String>() {
 

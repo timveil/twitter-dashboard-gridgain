@@ -1,6 +1,6 @@
 package dashboard.core.hpc;
 
-import dashboard.core.model.TweetVO;
+import dashboard.core.model.Tweet;
 import dashboard.core.utils.GridConstants;
 import org.gridgain.grid.lang.GridReducer;
 import org.gridgain.grid.streamer.index.GridStreamerIndexEntry;
@@ -9,12 +9,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class TweetReducer implements GridReducer<Collection<GridStreamerIndexEntry<TweetVO, String, Long>>, Collection<GridStreamerIndexEntry<TweetVO, String, Long>>> {
-    private List<GridStreamerIndexEntry<TweetVO, String, Long>> sorted = new ArrayList<>();
+public class TweetReducer implements GridReducer<Collection<GridStreamerIndexEntry<Tweet, String, Long>>, Collection<GridStreamerIndexEntry<Tweet, String, Long>>> {
+    private List<GridStreamerIndexEntry<Tweet, String, Long>> sorted = new ArrayList<>();
 
 
     @Override
-    public boolean collect(@Nullable Collection<GridStreamerIndexEntry<TweetVO, String, Long>> gridStreamerIndexEntries) {
+    public boolean collect(@Nullable Collection<GridStreamerIndexEntry<Tweet, String, Long>> gridStreamerIndexEntries) {
         if (gridStreamerIndexEntries != null && !gridStreamerIndexEntries.isEmpty()) {
             sorted.addAll(gridStreamerIndexEntries);
         }
@@ -23,11 +23,11 @@ public class TweetReducer implements GridReducer<Collection<GridStreamerIndexEnt
     }
 
     @Override
-    public Collection<GridStreamerIndexEntry<TweetVO, String, Long>> reduce() {
-        Collections.sort(sorted, new Comparator<GridStreamerIndexEntry<TweetVO, String, Long>>() {
+    public Collection<GridStreamerIndexEntry<Tweet, String, Long>> reduce() {
+        Collections.sort(sorted, new Comparator<GridStreamerIndexEntry<Tweet, String, Long>>() {
 
             @Override
-            public int compare(GridStreamerIndexEntry<TweetVO, String, Long> o1, GridStreamerIndexEntry<TweetVO, String, Long> o2) {
+            public int compare(GridStreamerIndexEntry<Tweet, String, Long> o1, GridStreamerIndexEntry<Tweet, String, Long> o2) {
                 return o2.value().compareTo(o1.value());
             }
         });

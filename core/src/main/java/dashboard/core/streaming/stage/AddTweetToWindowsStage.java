@@ -1,6 +1,6 @@
 package dashboard.core.streaming.stage;
 
-import dashboard.core.model.TweetVO;
+import dashboard.core.model.Tweet;
 import dashboard.core.utils.GridConstants;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.streamer.GridStreamerContext;
@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.Map;
 
 
-public class AddTweetToWindowsStage extends AddToWindowStage<TweetVO> implements GridStreamerStage<TweetVO> {
+public class AddTweetToWindowsStage extends AddToWindowStage<Tweet> implements GridStreamerStage<Tweet> {
 
     @Override
     public String name() {
@@ -22,17 +22,17 @@ public class AddTweetToWindowsStage extends AddToWindowStage<TweetVO> implements
 
     @Nullable
     @Override
-    public Map<String, Collection<?>> run(GridStreamerContext gridStreamerContext, Collection<TweetVO> tweets) throws GridException {
+    public Map<String, Collection<?>> run(GridStreamerContext gridStreamerContext, Collection<Tweet> tweets) throws GridException {
 
         if (!tweets.isEmpty()) {
 
-            final GridStreamerWindow<TweetVO> streamerWindow = gridStreamerContext.window(GridConstants.TOP_TWEETERS_WINDOW);
+            final GridStreamerWindow<Tweet> streamerWindow = gridStreamerContext.window(GridConstants.TOP_TWEETERS_WINDOW);
 
             add(streamerWindow, tweets);
 
         }
 
-        return Collections.<String, Collection<?>>singletonMap(gridStreamerContext.nextStageName(), tweets);
+        return Collections.<String, Collection<?>>singletonMap(AddTweetToDatabaseStage.class.getSimpleName(), tweets);
 
     }
 

@@ -38,12 +38,12 @@
 
         <property name="marshaller">
             <bean class="org.gridgain.grid.marshaller.optimized.GridOptimizedMarshaller">
-                <property name="requireSerializable" value="true"/>
+                <property name="requireSerializable" value="false"/>
 
                 <property name="classNames">
                     <list>
-                        <value>dashboard.core.model.TweetVO</value>
-                        <value>dashboard.core.model.HashTagVO</value>
+                        <value>dashboard.core.model.Tweet</value>
+                        <value>dashboard.core.model.HashTag</value>
                     </list>
                 </property>
             </bean>
@@ -52,7 +52,7 @@
         <property name="cacheConfiguration">
             <list>
                 <bean class="org.gridgain.grid.cache.GridCacheConfiguration">
-                    <property name="name" value="dashboard.core.model.TweetVO"/>
+                    <property name="name" value="dashboard.core.model.Tweet"/>
                     <property name="cacheMode" value="PARTITIONED"/>
                     <property name="eagerTtl" value="false"/>
                     <property name="startSize" value="1000000"/>
@@ -68,11 +68,11 @@
                 </bean>
 
                 <bean class="org.gridgain.grid.cache.GridCacheConfiguration">
-                    <property name="name" value="dashboard.core.model.HashTagVO"/>
+                    <property name="name" value="dashboard.core.model.HashTag"/>
                     <property name="cacheMode" value="PARTITIONED"/>
                     <property name="eagerTtl" value="false"/>
                     <property name="startSize" value="100000"/>
-                    <property name="queryIndexEnabled" value="false"/>
+                    <property name="queryIndexEnabled" value="true"/>
                     <property name="atomicityMode" value="ATOMIC"/>
                     <property name="atomicWriteOrderMode" value="PRIMARY"/>
                     <property name="writeSynchronizationMode" value="PRIMARY_SYNC"/>
@@ -152,15 +152,13 @@
                     <property name="stages">
                         <list>
                             <bean class="dashboard.core.streaming.stage.AddHashTagToWindowsStage"/>
+                            <bean class="dashboard.core.streaming.stage.AddHashTagToDatabaseStage"/>
                             <bean class="dashboard.core.streaming.stage.AddTweetToWindowsStage"/>
                             <bean class="dashboard.core.streaming.stage.AddTweetToDatabaseStage"/>
                             <bean class="dashboard.core.streaming.stage.RemoveHashTagFromWindowsStage"/>
                         </list>
                     </property>
 
-                    <property name="router">
-                        <bean class="org.gridgain.grid.streamer.router.GridStreamerLocalEventRouter"/>
-                    </property>
                 </bean>
             </list>
         </property>

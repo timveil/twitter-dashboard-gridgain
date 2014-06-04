@@ -1,21 +1,18 @@
 package dashboard.core.streaming.stage;
 
-import dashboard.core.model.HashTagVO;
-import dashboard.core.model.TweetVO;
+import dashboard.core.model.HashTag;
 import dashboard.core.utils.GridConstants;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.streamer.GridStreamerContext;
-import org.gridgain.grid.streamer.GridStreamerStage;
 import org.gridgain.grid.streamer.GridStreamerWindow;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 
-public class AddHashTagToWindowsStage extends AddToWindowStage<HashTagVO> implements GridStreamerStage<TweetVO> {
+public class AddHashTagToWindowsStage extends AddToWindowStage<HashTag> {
 
     @Override
     public String name() {
@@ -24,29 +21,22 @@ public class AddHashTagToWindowsStage extends AddToWindowStage<HashTagVO> implem
 
     @Nullable
     @Override
-    public Map<String, Collection<?>> run(GridStreamerContext gridStreamerContext, Collection<TweetVO> tweets) throws GridException {
+    public Map<String, Collection<?>> run(GridStreamerContext gridStreamerContext, Collection<HashTag> hashTags) throws GridException {
 
-        if (!tweets.isEmpty()) {
+        if (!hashTags.isEmpty()) {
 
-            final GridStreamerWindow<HashTagVO> oneMinute = gridStreamerContext.window(GridConstants.ONE_MINUTE_WINDOW);
+            final GridStreamerWindow<HashTag> oneMinute = gridStreamerContext.window(GridConstants.ONE_MINUTE_WINDOW);
+            add(oneMinute, hashTags);
 
-            final GridStreamerWindow<HashTagVO> fiveMinute = gridStreamerContext.window(GridConstants.FIVE_MINUTE_WINDOW);
+            final GridStreamerWindow<HashTag> fiveMinute = gridStreamerContext.window(GridConstants.FIVE_MINUTE_WINDOW);
+            add(fiveMinute, hashTags);
 
-            final GridStreamerWindow<HashTagVO> tenMinute = gridStreamerContext.window(GridConstants.TEN_MINUTE_WINDOW);
+            final GridStreamerWindow<HashTag> tenMinute = gridStreamerContext.window(GridConstants.TEN_MINUTE_WINDOW);
+            add(tenMinute, hashTags);
 
-            for (TweetVO tweet : tweets) {
-                if (tweet.hasHashTags()) {
-                    final List<HashTagVO> hashTags = tweet.getHashTags();
-
-                    add(oneMinute, hashTags);
-                    add(fiveMinute, hashTags);
-                    add(tenMinute, hashTags);
-                }
-
-            }
         }
 
-        return Collections.<String, Collection<?>>singletonMap(gridStreamerContext.nextStageName(), tweets);
+        return Collections.<String, Collection<?>>singletonMap(AddHashTagToDatabaseStage.class.getSimpleName(), hashTags);
 
     }
 

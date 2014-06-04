@@ -1,25 +1,27 @@
 package dashboard.core.streaming.stage;
 
+import org.gridgain.grid.logger.GridLogger;
+import org.gridgain.grid.resources.GridLoggerResource;
+import org.gridgain.grid.streamer.GridStreamerStage;
 import org.gridgain.grid.streamer.GridStreamerWindow;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 
-public class AddToWindowStage<T> {
+public abstract class AddToWindowStage<T> implements GridStreamerStage<T> {
 
-    private static final Logger log = LoggerFactory.getLogger(AddToWindowStage.class);
+    @GridLoggerResource
+    private GridLogger logger;
 
     void add(GridStreamerWindow<T> window, Collection<T> events) {
         try {
             boolean success = window.enqueueAll(events);
 
             if (!success) {
-                log.warn("problem adding events to window");
+                logger.warning("problem adding events to window");
             }
 
         } catch (Exception e) {
-            log.error("error adding all events to window " + window.name() + "...", e);
+            logger.error("error adding all events to window " + window.name() + "...", e);
         }
     }
 }

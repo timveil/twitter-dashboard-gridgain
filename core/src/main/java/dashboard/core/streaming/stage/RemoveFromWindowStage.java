@@ -1,15 +1,17 @@
 package dashboard.core.streaming.stage;
 
 import dashboard.core.utils.GridConstants;
+import org.gridgain.grid.logger.GridLogger;
+import org.gridgain.grid.resources.GridLoggerResource;
+import org.gridgain.grid.streamer.GridStreamerStage;
 import org.gridgain.grid.streamer.GridStreamerWindow;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 
-public class RemoveFromWindowStage<T> {
+public abstract class RemoveFromWindowStage<T> implements GridStreamerStage<T> {
 
-    private static final Logger log = LoggerFactory.getLogger(RemoveFromWindowStage.class);
+    @GridLoggerResource
+    private GridLogger logger;
 
     void remove(GridStreamerWindow<T> window) {
 
@@ -19,17 +21,20 @@ public class RemoveFromWindowStage<T> {
             Collection<T> evictedElements = window.pollEvicted(GridConstants.EVICTION_COUNT);
 
             if (evictedElements != null && !evictedElements.isEmpty()) {
-                log.debug("evicted " + evictedElements.size() + " from window: " + window.name());
+                if (logger.isDebugEnabled()) {
+                    logger.debug("evicted " + evictedElements.size() + " from window: " + window.name());
+                }
             }
 
-            if (log.isTraceEnabled()) {
+
+            if (logger.isTraceEnabled()) {
                 final int evictionQueueSize = window.evictionQueueSize();
                 final int windowSize = window.size();
 
-                log.trace("window name: " + window.name() + ", window size: " + windowSize + ", eviction size: " + evictionQueueSize);
+                logger.trace("window name: " + window.name() + ", window size: " + windowSize + ", eviction size: " + evictionQueueSize);
             }
         } catch (Exception e) {
-            log.error("error clearing evicted event from window " + window.name() + "...", e);
+            logger.error("error clearing evicted event from window " + window.name() + "...", e);
         }
     }
 }

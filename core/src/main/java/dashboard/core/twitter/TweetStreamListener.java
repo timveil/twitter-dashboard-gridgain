@@ -1,14 +1,17 @@
 package dashboard.core.twitter;
 
-import dashboard.core.model.TweetVO;
+import dashboard.core.model.HashTagFactory;
+import dashboard.core.model.TweetFactory;
+import dashboard.core.streaming.stage.AddHashTagToWindowsStage;
+import dashboard.core.streaming.stage.AddTweetToWindowsStage;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.streamer.GridStreamer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.social.twitter.api.HashTagEntity;
 import org.springframework.social.twitter.api.StreamDeleteEvent;
 import org.springframework.social.twitter.api.StreamListener;
 import org.springframework.social.twitter.api.StreamWarningEvent;
-import org.springframework.social.twitter.api.Tweet;
 
 public class TweetStreamListener implements StreamListener {
 
@@ -24,28 +27,23 @@ public class TweetStreamListener implements StreamListener {
     }
 
     @Override
-    public void onTweet(Tweet tweet) {
+    public void onTweet(org.springframework.social.twitter.api.Tweet tweet) {
 
-        addEvent(tweet, false);
-
-
-        for (int i = 0; i < multiplier; i++) {
-            final Tweet fakeTweet = new Tweet(0, tweet.getText(), tweet.getCreatedAt(), tweet.getFromUser(), tweet.getProfileImageUrl(), tweet.getToUserId(), tweet.getFromUserId(), tweet.getLanguageCode(), tweet.getSource());
-            fakeTweet.setUser(tweet.getUser());
-            fakeTweet.setEntities(tweet.getEntities());
-
-            addEvent(fakeTweet, true);
-
-        }
-
-    }
-
-    private void addEvent(Tweet tweet, boolean fake) {
         try {
-            streamer.addEvent(new TweetVO(tweet, fake));
+            final dashboard.core.model.Tweet ggTweet = TweetFactory.create(tweet);
+
+            streamer.addEventToStage(AddTweetToWindowsStage.class.getSimpleName(), ggTweet);
+
+            for (HashTagEntity entity : tweet.getEntities().getHashTags()) {
+                streamer.addEventToStage(AddHashTagToWindowsStage.class.getSimpleName(), HashTagFactory.create(ggTweet, entity));
+            }
+
+
         } catch (GridException e) {
             log.error("error adding Tweet to streamer... ", e);
         }
+
+
     }
 
     @Override
