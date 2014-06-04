@@ -21,11 +21,6 @@
             <id>GridGain External Repository</id>
             <url>http://www.gridgainsystems.com:8085/nexus/content/repositories/external</url>
         </repository>
-        <repository>
-            <id>org.springframework.maven.milestone</id>
-            <name>Spring Maven Milestone Repository</name>
-            <url>http://maven.springframework.org/milestone</url>
-        </repository>
     </repositories>
 
     <build>

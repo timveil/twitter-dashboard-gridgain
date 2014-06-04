@@ -10,7 +10,7 @@
             <directory>${project.build.directory}/lib</directory>
             <outputDirectory>/lib</outputDirectory>
             <excludes>
-                <exclude>gridgain-database*.jar</exclude>
+                <exclude>gridgain-*.jar</exclude>
             </excludes>
         </fileSet>
 

@@ -11,21 +11,21 @@
             http://www.springframework.org/schema/context
             http://www.springframework.org/schema/context/spring-context.xsd">
 
-
     <util:constant id="gridName" static-field="dashboard.core.utils.GridUtils.GRID_NAME"/>
     <util:constant id="streamerName" static-field="dashboard.core.utils.GridUtils.STREAMER_NAME"/>
 
     <util:properties id="gridProperties" local-override="true" location="grid.properties"/>
+
     <context:property-placeholder properties-ref="gridProperties" ignore-unresolvable="true"/>
 
     <bean id="grid.cfg" class="org.gridgain.grid.GridConfiguration">
 
+        <property name="gridName" ref="gridName"/>
         <property name="smtpHost" value="${grid.smtpHost}"/>
         <property name="smtpPort" value="${grid.smtpPort}"/>
         <property name="adminEmails" value="${grid.adminEmails}"/>
         <property name="restTcpHost" value="${grid.restTcpHost}"/>
         <property name="restEnabled" value="${grid.restEnabled}"/>
-        <property name="gridName" ref="gridName"/>
         <property name="metricsLogFrequency" value="${grid.metricsLogFrequency}"/>
         <property name="licenseUrl" value="${grid.licenseUrl}"/>
 
@@ -35,7 +35,6 @@
 
         <property name="marshaller">
             <bean class="org.gridgain.grid.marshaller.optimized.GridOptimizedMarshaller">
-
                 <property name="requireSerializable" value="true"/>
 
                 <property name="classNames">
