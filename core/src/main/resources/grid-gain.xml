@@ -1,19 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/util
+            http://www.springframework.org/schema/util/spring-util.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd">
 
 
     <util:constant id="gridName" static-field="dashboard.core.utils.GridUtils.GRID_NAME"/>
     <util:constant id="streamerName" static-field="dashboard.core.utils.GridUtils.STREAMER_NAME"/>
 
+    <util:properties id="gridProperties" local-override="true" location="grid.properties"/>
+    <context:property-placeholder properties-ref="gridProperties" ignore-unresolvable="true"/>
+
     <bean id="grid.cfg" class="org.gridgain.grid.GridConfiguration">
 
-        <property name="restTcpHost" value="0.0.0.0"/>
-        <property name="restEnabled" value="true"/>
+        <property name="smtpHost" value="${grid.smtpHost}"/>
+        <property name="smtpPort" value="${grid.smtpPort}"/>
+        <property name="adminEmails" value="${grid.adminEmails}"/>
+        <property name="restTcpHost" value="${grid.restTcpHost}"/>
+        <property name="restEnabled" value="${grid.restEnabled}"/>
         <property name="gridName" ref="gridName"/>
-        <property name="metricsLogFrequency" value="0"/>
+        <property name="metricsLogFrequency" value="${grid.metricsLogFrequency}"/>
+        <property name="licenseUrl" value="${grid.licenseUrl}"/>
 
         <property name="gridLogger">
             <bean class="org.gridgain.grid.logger.slf4j.GridSlf4jLogger"/>
