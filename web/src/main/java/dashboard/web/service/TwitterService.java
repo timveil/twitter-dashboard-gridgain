@@ -1,7 +1,7 @@
 package dashboard.web.service;
 
-import dashboard.core.model.KeyValuePair;
 import dashboard.core.model.TweetVO;
+import dashboard.web.model.KeyValuePair;
 
 import java.util.List;
 

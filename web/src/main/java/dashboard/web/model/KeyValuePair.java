@@ -1,4 +1,4 @@
-package dashboard.core.model;
+package dashboard.web.model;
 
 
 public class KeyValuePair {

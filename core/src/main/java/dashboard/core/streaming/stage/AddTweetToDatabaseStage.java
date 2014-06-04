@@ -2,6 +2,7 @@ package dashboard.core.streaming.stage;
 
 import dashboard.core.model.HashTagVO;
 import dashboard.core.model.TweetVO;
+import dashboard.core.utils.GridConstants;
 import dashboard.core.utils.GridUtils;
 import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridException;
@@ -12,8 +13,6 @@ import org.gridgain.grid.lang.GridPredicate;
 import org.gridgain.grid.streamer.GridStreamerContext;
 import org.gridgain.grid.streamer.GridStreamerStage;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -21,9 +20,6 @@ import java.util.Map;
 
 
 public class AddTweetToDatabaseStage implements GridStreamerStage<TweetVO> {
-
-    private final Logger log = LoggerFactory.getLogger(getClass());
-
 
     @Override
     public String name() {
@@ -60,15 +56,15 @@ public class AddTweetToDatabaseStage implements GridStreamerStage<TweetVO> {
 
                 if (future.isDone()) {
 
-                    Long currentTotal = (Long) gridStreamerContext.localSpace().get(GridUtils.TOTAL_TWEETS);
+                    Long currentTotal = (Long) gridStreamerContext.localSpace().get(GridConstants.TOTAL_TWEETS);
 
                     if (currentTotal == null) {
                         currentTotal = 0L;
                     }
 
-                    gridStreamerContext.localSpace().put(GridUtils.TOTAL_TWEETS, currentTotal += 1);
+                    gridStreamerContext.localSpace().put(GridConstants.TOTAL_TWEETS, currentTotal += 1);
 
-                    Long noHashTags = (Long) gridStreamerContext.localSpace().get(GridUtils.TOTAL_TWEETS_NO_HASH_TAGS);
+                    Long noHashTags = (Long) gridStreamerContext.localSpace().get(GridConstants.TOTAL_TWEETS_NO_HASH_TAGS);
 
                     if (noHashTags == null) {
                         noHashTags = 0L;
@@ -79,7 +75,7 @@ public class AddTweetToDatabaseStage implements GridStreamerStage<TweetVO> {
                         noHashTags += 1;
                     }
 
-                    gridStreamerContext.localSpace().put(GridUtils.TOTAL_TWEETS_NO_HASH_TAGS, noHashTags);
+                    gridStreamerContext.localSpace().put(GridConstants.TOTAL_TWEETS_NO_HASH_TAGS, noHashTags);
                 }
             }
         });

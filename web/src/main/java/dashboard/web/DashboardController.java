@@ -1,7 +1,7 @@
 package dashboard.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dashboard.core.utils.GridUtils;
+import dashboard.core.utils.GridConstants;
 import dashboard.web.service.TwitterService;
 import org.atmosphere.cpr.*;
 import org.slf4j.Logger;
@@ -40,12 +40,12 @@ public class DashboardController {
         final ObjectMapper mapper = new ObjectMapper();
 
         broadcast(atmosphereResource,
-                5,
+                120,
                 "/counts/lastOne",
                 new Callable<String>() {
 
                     public String call() throws Exception {
-                        return mapper.writeValueAsString(twitterService.getHashTagSummary(GridUtils.ONE_MINUTE_WINDOW));
+                        return mapper.writeValueAsString(twitterService.getHashTagSummary(GridConstants.ONE_MINUTE_WINDOW));
                     }
 
                 });
@@ -57,12 +57,12 @@ public class DashboardController {
         final ObjectMapper mapper = new ObjectMapper();
 
         broadcast(atmosphereResource,
-                5,
+                120,
                 "/counts/lastFive",
                 new Callable<String>() {
 
                     public String call() throws Exception {
-                        return mapper.writeValueAsString(twitterService.getHashTagSummary(GridUtils.FIVE_MINUTE_WINDOW));
+                        return mapper.writeValueAsString(twitterService.getHashTagSummary(GridConstants.FIVE_MINUTE_WINDOW));
                     }
 
                 });
@@ -74,12 +74,12 @@ public class DashboardController {
         final ObjectMapper mapper = new ObjectMapper();
 
         broadcast(atmosphereResource,
-                5,
+                120,
                 "/counts/lastTen",
                 new Callable<String>() {
 
                     public String call() throws Exception {
-                        return mapper.writeValueAsString(twitterService.getHashTagSummary(GridUtils.TEN_MINUTE_WINDOW));
+                        return mapper.writeValueAsString(twitterService.getHashTagSummary(GridConstants.TEN_MINUTE_WINDOW));
                     }
 
                 });
@@ -92,7 +92,7 @@ public class DashboardController {
         final ObjectMapper mapper = new ObjectMapper();
 
         broadcast(atmosphereResource,
-                2,
+                120,
                 "/counts/topTweets",
                 new Callable<String>() {
 
@@ -112,7 +112,7 @@ public class DashboardController {
         final ObjectMapper mapper = new ObjectMapper();
 
         broadcast(atmosphereResource,
-                2,
+                120,
                 "/counts/tweetsWithHashTag",
                 new Callable<String>() {
 
@@ -131,7 +131,7 @@ public class DashboardController {
         final ObjectMapper mapper = new ObjectMapper();
 
         broadcast(atmosphereResource,
-                2,
+                120,
                 "/counts/totalTweets",
                 new Callable<String>() {
 

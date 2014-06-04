@@ -11,12 +11,12 @@
             http://www.springframework.org/schema/context
             http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <util:constant id="GRID_NAME" static-field="dashboard.core.utils.GridUtils.GRID_NAME"/>
-    <util:constant id="STREAMER_NAME" static-field="dashboard.core.utils.GridUtils.STREAMER_NAME"/>
-    <util:constant id="ONE_MINUTE_WINDOW" static-field="dashboard.core.utils.GridUtils.ONE_MINUTE_WINDOW"/>
-    <util:constant id="FIVE_MINUTE_WINDOW" static-field="dashboard.core.utils.GridUtils.FIVE_MINUTE_WINDOW"/>
-    <util:constant id="TEN_MINUTE_WINDOW" static-field="dashboard.core.utils.GridUtils.TEN_MINUTE_WINDOW"/>
-    <util:constant id="TOP_TWEETERS_WINDOW" static-field="dashboard.core.utils.GridUtils.TOP_TWEETERS_WINDOW"/>
+    <util:constant id="GRID_NAME" static-field="dashboard.core.utils.GridConstants.GRID_NAME"/>
+    <util:constant id="STREAMER_NAME" static-field="dashboard.core.utils.GridConstants.STREAMER_NAME"/>
+    <util:constant id="ONE_MINUTE_WINDOW" static-field="dashboard.core.utils.GridConstants.ONE_MINUTE_WINDOW"/>
+    <util:constant id="FIVE_MINUTE_WINDOW" static-field="dashboard.core.utils.GridConstants.FIVE_MINUTE_WINDOW"/>
+    <util:constant id="TEN_MINUTE_WINDOW" static-field="dashboard.core.utils.GridConstants.TEN_MINUTE_WINDOW"/>
+    <util:constant id="TOP_TWEETERS_WINDOW" static-field="dashboard.core.utils.GridConstants.TOP_TWEETERS_WINDOW"/>
 
     <util:properties id="gridProperties" local-override="true" location="grid.properties"/>
     <context:property-placeholder properties-ref="gridProperties" ignore-unresolvable="true"/>
@@ -159,7 +159,7 @@
                     </property>
 
                     <property name="router">
-                        <bean class="org.gridgain.grid.streamer.router.GridStreamerRoundRobinEventRouter"/>
+                        <bean class="org.gridgain.grid.streamer.router.GridStreamerLocalEventRouter"/>
                     </property>
                 </bean>
             </list>

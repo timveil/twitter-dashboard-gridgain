@@ -1,6 +1,6 @@
 package dashboard.core.streaming.stage;
 
-import dashboard.core.utils.GridUtils;
+import dashboard.core.utils.GridConstants;
 import org.gridgain.grid.streamer.GridStreamerWindow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ public class RemoveFromWindowStage<T> {
         try {
 
             // todo: workaround for bug in GridStreamerBoundedTimeWindow's calculation of evictionQueueSize
-            Collection<T> evictedElements = window.pollEvicted(GridUtils.EVICTION_COUNT);
+            Collection<T> evictedElements = window.pollEvicted(GridConstants.EVICTION_COUNT);
 
             if (evictedElements != null && !evictedElements.isEmpty()) {
                 log.debug("evicted " + evictedElements.size() + " from window: " + window.name());

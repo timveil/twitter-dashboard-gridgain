@@ -134,11 +134,29 @@ public class TweetVO implements Externalizable {
         return source;
     }
 
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        GUID = (String) in.readObject();
+        tweetId = in.readLong();
+        text = (String) in.readObject();
+        createdAt = (Date) in.readObject();
+        userId = in.readLong();
+        screenName = (String) in.readObject();
+        languageCode = (String) in.readObject();
+        fake = in.readBoolean();
+        geoEnabled = in.readBoolean();
+        location = (String) in.readObject();
+        source = (String) in.readObject();
+        //hashTags = GridUtils.readList(in);
+
+    }
+
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeObject(GUID);
         out.writeLong(tweetId);
         out.writeObject(text);
-        out.writeObject(GUID);
         out.writeObject(createdAt);
         out.writeLong(userId);
         out.writeObject(screenName);
@@ -147,21 +165,7 @@ public class TweetVO implements Externalizable {
         out.writeBoolean(geoEnabled);
         out.writeObject(location);
         out.writeObject(source);
-    }
-
-    @Override
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        this.tweetId = in.readLong();
-        this.GUID = (String) in.readObject();
-        this.text = (String) in.readObject();
-        this.createdAt = (Date) in.readObject();
-        this.screenName = (String) in.readObject();
-        this.languageCode = (String) in.readObject();
-        this.userId = in.readLong();
-        this.fake = in.readBoolean();
-        this.geoEnabled = in.readBoolean();
-        this.location = (String)in.readObject();
-        this.source = (String)in.readObject();
+        //GridUtils.writeCollection(out, hashTags);
     }
 
 
@@ -181,4 +185,6 @@ public class TweetVO implements Externalizable {
         final TweetVO other = (TweetVO) obj;
         return Objects.equals(this.GUID, other.GUID) && Objects.equals(this.tweetId, other.tweetId) && Objects.equals(this.text, other.text) && Objects.equals(this.createdAt, other.createdAt) && Objects.equals(this.userId, other.userId) && Objects.equals(this.screenName, other.screenName) && Objects.equals(this.languageCode, other.languageCode) && Objects.equals(this.fake, other.fake) && Objects.equals(this.geoEnabled, other.geoEnabled) && Objects.equals(this.location, other.location) && Objects.equals(this.source, other.source) && Objects.equals(this.hashTags, other.hashTags);
     }
+
+
 }

@@ -13,7 +13,7 @@
         <label for="duration" class="col-lg-2 control-label">Twitter Stream Lifespan</label>
 
         <div class="col-lg-4">
-            <input type="number" class="form-control" id="duration" name="duration" placeholder="Lifespan of Twitter Stream in minutes ">
+            <input type="number" min="0" class="form-control" id="duration" name="duration" placeholder="Lifespan of Twitter Stream in minutes ">
         </div>
     </div>
     <div class="form-group">

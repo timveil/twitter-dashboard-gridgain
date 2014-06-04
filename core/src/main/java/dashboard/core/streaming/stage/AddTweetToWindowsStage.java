@@ -1,7 +1,7 @@
 package dashboard.core.streaming.stage;
 
 import dashboard.core.model.TweetVO;
-import dashboard.core.utils.GridUtils;
+import dashboard.core.utils.GridConstants;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.streamer.GridStreamerContext;
 import org.gridgain.grid.streamer.GridStreamerStage;
@@ -26,7 +26,7 @@ public class AddTweetToWindowsStage extends AddToWindowStage<TweetVO> implements
 
         if (!tweets.isEmpty()) {
 
-            final GridStreamerWindow<TweetVO> streamerWindow = gridStreamerContext.window(GridUtils.TOP_TWEETERS_WINDOW);
+            final GridStreamerWindow<TweetVO> streamerWindow = gridStreamerContext.window(GridConstants.TOP_TWEETERS_WINDOW);
 
             add(streamerWindow, tweets);
 
