@@ -5,16 +5,22 @@ import org.gridgain.grid.streamer.GridStreamerWindow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class EvictStage {
+import java.util.Collection;
 
-    private static final Logger log = LoggerFactory.getLogger(EvictStage.class);
+public class RemoveFromWindowStage<T> {
 
-    void evict(GridStreamerWindow window) {
+    private static final Logger log = LoggerFactory.getLogger(RemoveFromWindowStage.class);
+
+    void remove(GridStreamerWindow<T> window) {
 
         try {
 
             // todo: workaround for bug in GridStreamerBoundedTimeWindow's calculation of evictionQueueSize
-            window.pollEvicted(GridUtils.EVICTION_COUNT);
+            Collection<T> evictedElements = window.pollEvicted(GridUtils.EVICTION_COUNT);
+
+            if (evictedElements != null && !evictedElements.isEmpty()) {
+                log.debug("evicted " + evictedElements.size() + " from window: " + window.name());
+            }
 
             if (log.isTraceEnabled()) {
                 final int evictionQueueSize = window.evictionQueueSize();
@@ -23,7 +29,7 @@ public class EvictStage {
                 log.trace("window name: " + window.name() + ", window size: " + windowSize + ", eviction size: " + evictionQueueSize);
             }
         } catch (Exception e) {
-            log.error("error clearing evicted HashTagVO from window " + window.name() + "...", e);
+            log.error("error clearing evicted event from window " + window.name() + "...", e);
         }
     }
 }

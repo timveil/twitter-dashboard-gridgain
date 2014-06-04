@@ -4,9 +4,6 @@ import com.google.common.collect.Lists;
 import dashboard.core.model.HashTagVO;
 import dashboard.core.model.KeyValuePair;
 import dashboard.core.model.TweetVO;
-import dashboard.core.streaming.index.provider.HashTagIndexProvider;
-import dashboard.core.streaming.index.provider.TopTweeterIndexProvider;
-import dashboard.core.streaming.window.TopTweetersWindow;
 import dashboard.core.twitter.TweetStreamListener;
 import dashboard.core.utils.GridUtils;
 import org.apache.commons.lang.StringUtils;
@@ -83,7 +80,7 @@ public class TwitterServiceImpl implements TwitterService {
     }
 
     @Override
-    public List<KeyValuePair> getHashTagSummary(final Class window) {
+    public List<KeyValuePair> getHashTagSummary(final String windowName) {
 
         final Grid grid = GridUtils.getGrid();
 
@@ -94,9 +91,9 @@ public class TwitterServiceImpl implements TwitterService {
             @Override
             public Collection<GridStreamerIndexEntry<HashTagVO, String, Long>> apply(GridStreamerContext gridStreamerContext) {
 
-                final GridStreamerWindow<HashTagVO> gridStreamerWindow = gridStreamerContext.window(window.getName());
+                final GridStreamerWindow<HashTagVO> gridStreamerWindow = gridStreamerContext.window(windowName);
 
-                final GridStreamerIndex<HashTagVO, String, Long> index = gridStreamerWindow.index(HashTagIndexProvider.class.getName());
+                final GridStreamerIndex<HashTagVO, String, Long> index = gridStreamerWindow.index();
 
                 return index.entries(0);
 
@@ -161,9 +158,9 @@ public class TwitterServiceImpl implements TwitterService {
             @Override
             public Collection<GridStreamerIndexEntry<TweetVO, String, Long>> apply(GridStreamerContext gridStreamerContext) {
 
-                final GridStreamerWindow<TweetVO> gridStreamerWindow = gridStreamerContext.window(TopTweetersWindow.class.getName());
+                final GridStreamerWindow<TweetVO> gridStreamerWindow = gridStreamerContext.window(GridUtils.TOP_TWEETERS_WINDOW);
 
-                final GridStreamerIndex<TweetVO, String, Long> index = gridStreamerWindow.index(TopTweeterIndexProvider.class.getName());
+                final GridStreamerIndex<TweetVO, String, Long> index = gridStreamerWindow.index();
 
                 return index.entries(0);
 

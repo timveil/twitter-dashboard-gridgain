@@ -1,23 +1,19 @@
 package dashboard.core.streaming.stage;
 
 import dashboard.core.model.TweetVO;
-import dashboard.core.streaming.window.TopTweetersWindow;
+import dashboard.core.utils.GridUtils;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.streamer.GridStreamerContext;
 import org.gridgain.grid.streamer.GridStreamerStage;
 import org.gridgain.grid.streamer.GridStreamerWindow;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
 
-public class AddTweetToWindowsStage extends EnqueueStage<TweetVO> implements GridStreamerStage<TweetVO> {
-
-    private final Logger log = LoggerFactory.getLogger(getClass());
+public class AddTweetToWindowsStage extends AddToWindowStage<TweetVO> implements GridStreamerStage<TweetVO> {
 
     @Override
     public String name() {
@@ -30,9 +26,9 @@ public class AddTweetToWindowsStage extends EnqueueStage<TweetVO> implements Gri
 
         if (!tweets.isEmpty()) {
 
-            final GridStreamerWindow<TweetVO> streamerWindow = gridStreamerContext.window(TopTweetersWindow.class.getName());
+            final GridStreamerWindow<TweetVO> streamerWindow = gridStreamerContext.window(GridUtils.TOP_TWEETERS_WINDOW);
 
-            enqueue(streamerWindow, tweets);
+            add(streamerWindow, tweets);
 
         }
 

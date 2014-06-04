@@ -13,9 +13,7 @@
 
     <util:constant id="gridName" static-field="dashboard.core.utils.GridUtils.GRID_NAME"/>
     <util:constant id="streamerName" static-field="dashboard.core.utils.GridUtils.STREAMER_NAME"/>
-
     <util:properties id="gridProperties" local-override="true" location="grid.properties"/>
-
     <context:property-placeholder properties-ref="gridProperties" ignore-unresolvable="true"/>
 
     <bean id="grid.cfg" class="org.gridgain.grid.GridConfiguration">
@@ -89,10 +87,60 @@
 
                     <property name="windows">
                         <list>
-                            <bean class="dashboard.core.streaming.window.OneMinuteWindow"/>
-                            <bean class="dashboard.core.streaming.window.FiveMinuteWindow"/>
-                            <bean class="dashboard.core.streaming.window.TenMinuteWindow"/>
-                            <bean class="dashboard.core.streaming.window.TopTweetersWindow"/>
+                            <bean class="org.gridgain.grid.streamer.window.GridStreamerBoundedTimeWindow">
+                                <property name="name" value="oneMinute"/>
+                                <property name="timeInterval" value="#{1 * 60 * 1000}"/>
+
+                                <property name="indexes">
+                                    <list>
+                                        <bean class="org.gridgain.grid.streamer.index.tree.GridStreamerTreeIndexProvider">
+                                            <property name="updater">
+                                                <bean class="dashboard.core.streaming.index.updater.HashTagCountUpdater"/>
+                                            </property>
+                                        </bean>
+                                    </list>
+                                </property>
+                            </bean>
+                            <bean class="org.gridgain.grid.streamer.window.GridStreamerBoundedTimeWindow">
+                                <property name="name" value="fiveMinute"/>
+                                <property name="timeInterval" value="#{5 * 60 * 1000}"/>
+
+                                <property name="indexes">
+                                    <list>
+                                        <bean class="org.gridgain.grid.streamer.index.tree.GridStreamerTreeIndexProvider">
+                                            <property name="updater">
+                                                <bean class="dashboard.core.streaming.index.updater.HashTagCountUpdater"/>
+                                            </property>
+                                        </bean>
+                                    </list>
+                                </property>
+                            </bean>
+                            <bean class="org.gridgain.grid.streamer.window.GridStreamerBoundedTimeWindow">
+                                <property name="name" value="tenMinute"/>
+                                <property name="timeInterval" value="#{10 * 60 * 1000}"/>
+
+                                <property name="indexes">
+                                    <list>
+                                        <bean class="org.gridgain.grid.streamer.index.tree.GridStreamerTreeIndexProvider">
+                                            <property name="updater">
+                                                <bean class="dashboard.core.streaming.index.updater.HashTagCountUpdater"/>
+                                            </property>
+                                        </bean>
+                                    </list>
+                                </property>
+                            </bean>
+                            <bean class="org.gridgain.grid.streamer.window.GridStreamerUnboundedWindow">
+                                <property name="name" value="topTweeters"/>
+
+                                <property name="indexes">
+                                    <bean class="org.gridgain.grid.streamer.index.tree.GridStreamerTreeIndexProvider">
+                                        <property name="updater">
+                                            <bean class="dashboard.core.streaming.index.updater.TopTweeterCountUpdater"/>
+                                        </property>
+                                    </bean>
+
+                                </property>
+                            </bean>
                         </list>
                     </property>
 

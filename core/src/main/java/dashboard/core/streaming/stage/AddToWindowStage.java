@@ -6,12 +6,11 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 
-public class EnqueueStage<T> {
+public class AddToWindowStage<T> {
 
-    private static final Logger log = LoggerFactory.getLogger(EnqueueStage.class);
+    private static final Logger log = LoggerFactory.getLogger(AddToWindowStage.class);
 
-
-    void enqueue(GridStreamerWindow<T> window, Collection<T> events) {
+    void add(GridStreamerWindow<T> window, Collection<T> events) {
         try {
             boolean success = window.enqueueAll(events);
 

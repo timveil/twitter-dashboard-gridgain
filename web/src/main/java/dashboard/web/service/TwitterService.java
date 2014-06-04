@@ -10,7 +10,7 @@ public interface TwitterService {
 
     void ingest(int duration);
 
-    List<KeyValuePair> getHashTagSummary(Class window);
+    List<KeyValuePair> getHashTagSummary(String windowName);
 
     List<KeyValuePair> getTopTweeters();
 

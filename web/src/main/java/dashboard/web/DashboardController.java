@@ -1,9 +1,7 @@
 package dashboard.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dashboard.core.streaming.window.FiveMinuteWindow;
-import dashboard.core.streaming.window.OneMinuteWindow;
-import dashboard.core.streaming.window.TenMinuteWindow;
+import dashboard.core.utils.GridUtils;
 import dashboard.web.service.TwitterService;
 import org.atmosphere.cpr.*;
 import org.slf4j.Logger;
@@ -47,7 +45,7 @@ public class DashboardController {
                 new Callable<String>() {
 
                     public String call() throws Exception {
-                        return mapper.writeValueAsString(twitterService.getHashTagSummary(OneMinuteWindow.class));
+                        return mapper.writeValueAsString(twitterService.getHashTagSummary(GridUtils.ONE_MINUTE_WINDOW));
                     }
 
                 });
@@ -64,7 +62,7 @@ public class DashboardController {
                 new Callable<String>() {
 
                     public String call() throws Exception {
-                        return mapper.writeValueAsString(twitterService.getHashTagSummary(FiveMinuteWindow.class));
+                        return mapper.writeValueAsString(twitterService.getHashTagSummary(GridUtils.FIVE_MINUTE_WINDOW));
                     }
 
                 });
@@ -81,7 +79,7 @@ public class DashboardController {
                 new Callable<String>() {
 
                     public String call() throws Exception {
-                        return mapper.writeValueAsString(twitterService.getHashTagSummary(TenMinuteWindow.class));
+                        return mapper.writeValueAsString(twitterService.getHashTagSummary(GridUtils.TEN_MINUTE_WINDOW));
                     }
 
                 });

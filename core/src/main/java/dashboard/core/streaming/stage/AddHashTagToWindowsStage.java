@@ -2,16 +2,12 @@ package dashboard.core.streaming.stage;
 
 import dashboard.core.model.HashTagVO;
 import dashboard.core.model.TweetVO;
-import dashboard.core.streaming.window.FiveMinuteWindow;
-import dashboard.core.streaming.window.OneMinuteWindow;
-import dashboard.core.streaming.window.TenMinuteWindow;
+import dashboard.core.utils.GridUtils;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.streamer.GridStreamerContext;
 import org.gridgain.grid.streamer.GridStreamerStage;
 import org.gridgain.grid.streamer.GridStreamerWindow;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -19,9 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class AddHashTagToWindowsStage extends EnqueueStage<HashTagVO> implements GridStreamerStage<TweetVO> {
-
-    private final Logger log = LoggerFactory.getLogger(getClass());
+public class AddHashTagToWindowsStage extends AddToWindowStage<HashTagVO> implements GridStreamerStage<TweetVO> {
 
     @Override
     public String name() {
@@ -34,19 +28,19 @@ public class AddHashTagToWindowsStage extends EnqueueStage<HashTagVO> implements
 
         if (!tweets.isEmpty()) {
 
-            final GridStreamerWindow<HashTagVO> oneMinute = gridStreamerContext.window(OneMinuteWindow.class.getName());
+            final GridStreamerWindow<HashTagVO> oneMinute = gridStreamerContext.window(GridUtils.ONE_MINUTE_WINDOW);
 
-            final GridStreamerWindow<HashTagVO> fiveMinute = gridStreamerContext.window(FiveMinuteWindow.class.getName());
+            final GridStreamerWindow<HashTagVO> fiveMinute = gridStreamerContext.window(GridUtils.FIVE_MINUTE_WINDOW);
 
-            final GridStreamerWindow<HashTagVO> tenMinute = gridStreamerContext.window(TenMinuteWindow.class.getName());
+            final GridStreamerWindow<HashTagVO> tenMinute = gridStreamerContext.window(GridUtils.TEN_MINUTE_WINDOW);
 
             for (TweetVO tweet : tweets) {
                 if (tweet.hasHashTags()) {
                     final List<HashTagVO> hashTags = tweet.getHashTags();
 
-                    enqueue(oneMinute, hashTags);
-                    enqueue(fiveMinute, hashTags);
-                    enqueue(tenMinute, hashTags);
+                    add(oneMinute, hashTags);
+                    add(fiveMinute, hashTags);
+                    add(tenMinute, hashTags);
                 }
 
             }
