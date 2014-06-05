@@ -25,7 +25,7 @@
     </div>
 
     <div class="col-lg-3">
-        <h4>Total Tweets <small>with HashTags</small></h4>
+        <h4>Total HashTags <small>streamed</small></h4>
     </div>
 
     <div class="col-lg-3">

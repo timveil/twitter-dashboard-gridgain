@@ -117,7 +117,7 @@ public class DashboardController {
                 new Callable<String>() {
 
                     public String call() throws Exception {
-                        return mapper.writeValueAsString(NumberFormat.getInstance().format(twitterService.getTotalTweetsWithHashTag()));
+                        return mapper.writeValueAsString(NumberFormat.getInstance().format(twitterService.getTotalHashTags()));
                     }
 
                 }

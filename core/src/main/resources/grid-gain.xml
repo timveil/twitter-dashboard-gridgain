@@ -12,6 +12,7 @@
             http://www.springframework.org/schema/context/spring-context.xsd">
 
     <util:constant id="GRID_NAME" static-field="dashboard.core.utils.GridConstants.GRID_NAME"/>
+    <util:constant id="ATOMIC_CACHE" static-field="dashboard.core.utils.GridConstants.ATOMIC_CACHE"/>
     <util:constant id="STREAMER_NAME" static-field="dashboard.core.utils.GridConstants.STREAMER_NAME"/>
     <util:constant id="ONE_MINUTE_WINDOW" static-field="dashboard.core.utils.GridConstants.ONE_MINUTE_WINDOW"/>
     <util:constant id="FIVE_MINUTE_WINDOW" static-field="dashboard.core.utils.GridConstants.FIVE_MINUTE_WINDOW"/>
@@ -81,6 +82,14 @@
                             <property name="maxSize" value="100000"/>
                         </bean>
                     </property>
+                </bean>
+
+                <bean class="org.gridgain.grid.cache.GridCacheConfiguration">
+                    <property name="name" ref="ATOMIC_CACHE"/>
+                    <property name="cacheMode" value="PARTITIONED"/>
+                    <property name="atomicityMode" value="TRANSACTIONAL"/>
+                    <property name="distributionMode" value="NEAR_PARTITIONED"/>
+                    <property name="queryIndexEnabled" value="false"/>
                 </bean>
             </list>
         </property>

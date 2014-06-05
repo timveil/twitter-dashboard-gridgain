@@ -2,7 +2,10 @@ package dashboard.core.streaming.stage;
 
 import dashboard.core.model.HashTag;
 import dashboard.core.utils.GridConstants;
+import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridException;
+import org.gridgain.grid.cache.datastructures.GridCacheAtomicSequence;
+import org.gridgain.grid.cache.datastructures.GridCacheDataStructures;
 import org.gridgain.grid.streamer.GridStreamerContext;
 import org.gridgain.grid.streamer.GridStreamerWindow;
 import org.jetbrains.annotations.Nullable;
@@ -34,11 +37,31 @@ public class AddHashTagToWindowsStage extends AddToWindowStage<HashTag> {
             final GridStreamerWindow<HashTag> tenMinute = gridStreamerContext.window(GridConstants.TEN_MINUTE_WINDOW);
             add(tenMinute, hashTags);
 
+            incrementTotalCount(gridStreamerContext, hashTags);
+
         }
 
         return Collections.<String, Collection<?>>singletonMap(AddHashTagToDatabaseStage.class.getSimpleName(), hashTags);
 
     }
+
+    private void incrementTotalCount(GridStreamerContext gridStreamerContext, Collection<HashTag> hashTags) {
+
+        try {
+            final Grid grid = gridStreamerContext.projection().grid();
+            final GridCacheDataStructures dataStructures = grid.cache(GridConstants.ATOMIC_CACHE).dataStructures();
+            final GridCacheAtomicSequence seq = dataStructures.atomicSequence(GridConstants.TOTAL_HASH_TAGS, 0, true);
+
+            assert seq != null;
+
+            seq.addAndGet(hashTags.size());
+
+        } catch (GridException e) {
+            logger.error("error incrementing total hash tags", e);
+        }
+
+    }
+
 
 
 }

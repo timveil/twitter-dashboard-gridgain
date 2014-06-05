@@ -15,6 +15,8 @@ import org.apache.commons.lang.StringUtils;
 import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.cache.GridCache;
+import org.gridgain.grid.cache.datastructures.GridCacheAtomicSequence;
+import org.gridgain.grid.cache.datastructures.GridCacheDataStructures;
 import org.gridgain.grid.cache.query.GridCacheQuery;
 import org.gridgain.grid.streamer.GridStreamer;
 import org.gridgain.grid.streamer.index.GridStreamerIndexEntry;
@@ -132,14 +134,17 @@ public class TwitterServiceImpl implements TwitterService {
     @Override
     public long getTotalTweets() {
 
-        final Grid grid = GridUtils.getGrid();
+        try {
+            final Grid grid = GridUtils.getGrid();
 
-        final GridStreamer streamer = grid.streamer(GridConstants.STREAMER_NAME);
+            final GridCacheDataStructures dataStructures = grid.cache(GridConstants.ATOMIC_CACHE).dataStructures();
+            final GridCacheAtomicSequence seq = dataStructures.atomicSequence(GridConstants.TOTAL_TWEETS, 0, true);
 
-        final Object o = streamer.context().localSpace().get(GridConstants.TOTAL_TWEETS);
+            assert seq != null;
 
-        if (o != null) {
-            return (Long) o;
+            return seq.get();
+        } catch (GridException e) {
+            log.error("error getting total tweets", e);
         }
 
         return 0L;
@@ -147,15 +152,18 @@ public class TwitterServiceImpl implements TwitterService {
     }
 
     @Override
-    public long getTotalTweetsWithHashTag() {
-        final Grid grid = GridUtils.getGrid();
+    public long getTotalHashTags() {
+        try {
+            final Grid grid = GridUtils.getGrid();
 
-        final GridStreamer streamer = grid.streamer(GridConstants.STREAMER_NAME);
+            final GridCacheDataStructures dataStructures = grid.cache(GridConstants.ATOMIC_CACHE).dataStructures();
+            final GridCacheAtomicSequence seq = dataStructures.atomicSequence(GridConstants.TOTAL_HASH_TAGS, 0, true);
 
-        final Object o = streamer.context().localSpace().get(GridConstants.TOTAL_TWEETS_NO_HASH_TAGS);
+            assert seq != null;
 
-        if (o != null) {
-            return (Long) o;
+            return seq.get();
+        } catch (GridException e) {
+            log.error("error getting total hash tags", e);
         }
 
         return 0L;

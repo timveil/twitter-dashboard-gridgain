@@ -16,7 +16,7 @@ public interface TwitterService {
 
     long getTotalTweets();
 
-    long getTotalTweetsWithHashTag();
+    long getTotalHashTags();
 
     List<Tweet> findTweets(String text, String screenName);
 }

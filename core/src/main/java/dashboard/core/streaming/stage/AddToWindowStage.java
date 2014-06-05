@@ -10,7 +10,7 @@ import java.util.Collection;
 public abstract class AddToWindowStage<T> implements GridStreamerStage<T> {
 
     @GridLoggerResource
-    private GridLogger logger;
+    protected GridLogger logger;
 
     void add(GridStreamerWindow<T> window, Collection<T> events) {
         try {
