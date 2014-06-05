@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class TweetFactory {
 
-    public static Tweet create(org.springframework.social.twitter.api.Tweet tweet) {
+    public static Tweet create(org.springframework.social.twitter.api.Tweet tweet, boolean fake) {
 
         Tweet ggTweet = new Tweet();
         ggTweet.setGUID(UUID.randomUUID().toString());
@@ -17,6 +17,7 @@ public class TweetFactory {
         ggTweet.setGeoEnabled(tweet.getUser().isGeoEnabled());
         ggTweet.setLocation(tweet.getUser().getLocation());
         ggTweet.setSource(tweet.getSource());
+        ggTweet.setFake(fake);
 
         return ggTweet;
 

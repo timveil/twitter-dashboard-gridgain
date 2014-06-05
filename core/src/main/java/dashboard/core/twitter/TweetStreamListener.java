@@ -8,10 +8,7 @@ import org.gridgain.grid.GridException;
 import org.gridgain.grid.streamer.GridStreamer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.social.twitter.api.HashTagEntity;
-import org.springframework.social.twitter.api.StreamDeleteEvent;
-import org.springframework.social.twitter.api.StreamListener;
-import org.springframework.social.twitter.api.StreamWarningEvent;
+import org.springframework.social.twitter.api.*;
 
 public class TweetStreamListener implements StreamListener {
 
@@ -29,8 +26,19 @@ public class TweetStreamListener implements StreamListener {
     @Override
     public void onTweet(org.springframework.social.twitter.api.Tweet tweet) {
 
+        addTweetToStreamer(tweet, false);
+
+        if (multiplier > 0) {
+            for (int i = 0; i<multiplier; i++) {
+                addTweetToStreamer(tweet, true);
+            }
+        }
+
+    }
+
+    private void addTweetToStreamer(Tweet tweet, boolean fake) {
         try {
-            final dashboard.core.model.Tweet ggTweet = TweetFactory.create(tweet);
+            final dashboard.core.model.Tweet ggTweet = TweetFactory.create(tweet, fake);
 
             streamer.addEventToStage(AddTweetToWindowsStage.class.getSimpleName(), ggTweet);
 
@@ -42,8 +50,6 @@ public class TweetStreamListener implements StreamListener {
         } catch (GridException e) {
             log.error("error adding Tweet to streamer... ", e);
         }
-
-
     }
 
     @Override

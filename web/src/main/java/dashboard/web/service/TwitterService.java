@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TwitterService {
 
-    void ingest(int duration);
+    void ingest(int duration, int multiplier);
 
     List<KeyValuePair> getHashTagSummary(String windowName);
 

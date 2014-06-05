@@ -1,10 +1,10 @@
 <%@ page trimDirectiveWhitespaces="true" %>
 <%@ include file="/WEB-INF/tiles/common/taglibs.jsp" %>
 
-<fmt:formatDate var="startTimeFormatted" value="${sessionScope.startTime}" type="both" dateStyle="short" timeStyle="short"/>
+<fmt:formatDate var="startTimeFormatted" value="${sessionScope.startTime}" type="both" dateStyle="short" timeStyle="long"/>
 
 <h3>Twitter Dashboard
-    <small>as of <strong>${startTimeFormatted}</strong>, stream will open for <strong><fmt:formatNumber value="${(duration / 1000) / 60}" maxFractionDigits="0"/></strong> minutes</small>
+    <small>as of <strong>${startTimeFormatted}</strong>, stream will remain open for <strong><fmt:formatNumber value="${(duration / 1000) / 60}" maxFractionDigits="0"/></strong> minutes, multiplier is <strong>${multiplier}</strong></strong></small>
 </h3>
 
 <div class="bs-callout bs-callout-info">

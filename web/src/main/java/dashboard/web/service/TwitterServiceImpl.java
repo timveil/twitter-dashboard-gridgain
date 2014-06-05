@@ -38,8 +38,6 @@ import java.util.Map;
 public class TwitterServiceImpl implements TwitterService {
 
 
-    public static final int MULTIPLIER = 55;
-
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
@@ -48,7 +46,7 @@ public class TwitterServiceImpl implements TwitterService {
 
     @Override
     @Async
-    public void ingest(int duration) {
+    public void ingest(int duration, int multiplier) {
 
         Stream sampleStream = null;
 
@@ -58,7 +56,7 @@ public class TwitterServiceImpl implements TwitterService {
 
         try {
             List<StreamListener> listeners = Lists.newArrayList();
-            listeners.add(new TweetStreamListener(tweetStreamer, MULTIPLIER));
+            listeners.add(new TweetStreamListener(tweetStreamer, multiplier));
 
             sampleStream = twitter.streamingOperations().sample(listeners);
 

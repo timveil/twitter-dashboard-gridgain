@@ -16,6 +16,15 @@
             <input type="number" min="0" class="form-control" id="duration" name="duration" placeholder="Lifespan of Twitter Stream in minutes ">
         </div>
     </div>
+
+    <div class="form-group">
+        <label for="duration" class="col-lg-2 control-label">Multiplier</label>
+
+        <div class="col-lg-4">
+            <input type="number" min="0" class="form-control" id="multiplier" name="multiplier" placeholder="Multiply the number of incoming Tweets by this factor">
+        </div>
+    </div>
+
     <div class="form-group">
         <div class="col-lg-offset-2 col-lg-10">
             <button type="submit" class="btn btn-primary">Capture Twitter Data</button>

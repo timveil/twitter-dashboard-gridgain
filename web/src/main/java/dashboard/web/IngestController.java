@@ -30,20 +30,32 @@ public class IngestController {
     public String post(HttpServletRequest request, ModelMap model) {
 
         final String minutes = request.getParameter("duration");
+        final String multiplierString = request.getParameter("multiplier");
+
+
+
         int duration = 10000;
 
         if (StringUtils.hasText(minutes)) {
             duration = Integer.parseInt(minutes) * 60 * 1000;
         }
 
+        int multiplier = 0;
+
+        if (StringUtils.hasText(multiplierString)) {
+            multiplier = Integer.parseInt(multiplierString);
+        }
+
+
         if (log.isDebugEnabled()) {
-            log.debug("will ingest twitter data for " + duration + " milliseconds.");
+            log.debug("will ingest twitter data for " + duration + " milliseconds with multiplier of " + multiplier);
         }
 
         request.getSession().setAttribute("startTime", new Date());
         request.getSession().setAttribute("duration", duration);
+        request.getSession().setAttribute("multiplier", multiplier);
 
-        twitterService.ingest(duration);
+        twitterService.ingest(duration, multiplier);
 
         return "redirect:/dashboard";
     }
