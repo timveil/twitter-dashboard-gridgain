@@ -6,7 +6,7 @@ SCRIPT_DIR=$(cd $(dirname "$0"); pwd)
 
 PATH=$PATH:$JAVA_HOME/bin
 
-for CLS in 'Harness' ; do
+for CLS in 'StartNode' ; do
     for X in `sudo jps | grep -i -G $CLS | awk {'print $1'}`; do
         sudo kill $@ $X
     done

@@ -39,7 +39,7 @@ CP="${GRIDGAIN_LIBS}":${TMP_PROJECT_HOME}/*:${TMP_PROJECT_HOME}/lib/*
 JVM_OPTS="-Xms10g -Xmx10g -Djava.net.preferIPv4Stack=true -XX:NewSize=64m -XX:MaxNewSize=64m -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+UseTLAB -XX:+CMSClassUnloadingEnabled -XX:MaxTenuringThreshold=0 -XX:SurvivorRatio=1024 -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=60"
 
 
-# # Call Test Harness
+# # Call dashboard.node.StartNode
 # 
 echo " "
 echo ">>> +---------------------------------------------------------------------------------+"
