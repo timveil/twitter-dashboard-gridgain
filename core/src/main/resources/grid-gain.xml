@@ -39,7 +39,7 @@
 
         <property name="marshaller">
             <bean class="org.gridgain.grid.marshaller.optimized.GridOptimizedMarshaller">
-                <property name="requireSerializable" value="false"/>
+                <property name="requireSerializable" value="true"/>
 
                 <property name="classNames">
                     <list>
@@ -166,6 +166,10 @@
                             <bean class="dashboard.core.streaming.stage.AddTweetToDatabaseStage"/>
                             <bean class="dashboard.core.streaming.stage.RemoveHashTagFromWindowsStage"/>
                         </list>
+                    </property>
+
+                    <property name="router">
+                        <bean class="org.gridgain.grid.streamer.router.GridStreamerLocalEventRouter"/>
                     </property>
 
                 </bean>

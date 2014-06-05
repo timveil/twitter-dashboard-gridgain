@@ -7,6 +7,7 @@ import org.gridgain.grid.streamer.GridStreamerWindow;
 import org.gridgain.grid.streamer.index.GridStreamerIndex;
 import org.gridgain.grid.streamer.index.GridStreamerIndexEntry;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class HashTagClosure implements GridClosure<GridStreamerContext, Collection<GridStreamerIndexEntry<HashTag, String, Long>>> {
@@ -24,6 +25,6 @@ public class HashTagClosure implements GridClosure<GridStreamerContext, Collecti
 
         final GridStreamerIndex<HashTag, String, Long> index = gridStreamerWindow.index();
 
-        return index.entries(0);
+        return new ArrayList<>(index.entries(0));
     }
 }

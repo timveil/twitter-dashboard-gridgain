@@ -8,6 +8,7 @@ import org.gridgain.grid.streamer.GridStreamerWindow;
 import org.gridgain.grid.streamer.index.GridStreamerIndex;
 import org.gridgain.grid.streamer.index.GridStreamerIndexEntry;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class TweetClosure implements GridClosure<GridStreamerContext, Collection<GridStreamerIndexEntry<Tweet, String, Long>>> {
@@ -18,6 +19,6 @@ public class TweetClosure implements GridClosure<GridStreamerContext, Collection
 
         final GridStreamerIndex<Tweet, String, Long> index = gridStreamerWindow.index();
 
-        return index.entries(0);
+        return new ArrayList<>(index.entries(0));
     }
 }
