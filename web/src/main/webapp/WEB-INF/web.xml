@@ -5,9 +5,7 @@
          metadata-complete="true"
          version="3.0">
 
-
     <display-name>GridGain Sample Dashboard</display-name>
-
 
     <context-param>
         <param-name>log4jConfigLocation</param-name>
