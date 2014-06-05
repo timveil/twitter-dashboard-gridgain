@@ -28,6 +28,7 @@
         <property name="smtpHost" value="${grid.smtpHost}"/>
         <property name="smtpPort" value="${grid.smtpPort}"/>
         <property name="adminEmails" value="${grid.adminEmails}"/>
+        <property name="lifeCycleEmailNotification" value="${grid.lifeCycleEmailNotification}"/>
         <property name="restTcpHost" value="${grid.restTcpHost}"/>
         <property name="restEnabled" value="${grid.restEnabled}"/>
         <property name="metricsLogFrequency" value="${grid.metricsLogFrequency}"/>
