@@ -1,7 +1,7 @@
 package dashboard.core.streaming.index.updater;
 
 import dashboard.core.model.Tweet;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.streamer.index.GridStreamerIndexEntry;
 import org.gridgain.grid.streamer.index.GridStreamerIndexUpdater;

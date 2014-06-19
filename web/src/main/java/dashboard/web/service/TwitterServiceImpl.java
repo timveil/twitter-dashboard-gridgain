@@ -11,7 +11,7 @@ import dashboard.core.twitter.TweetStreamListener;
 import dashboard.core.utils.GridConstants;
 import dashboard.core.utils.GridUtils;
 import dashboard.web.model.KeyValuePair;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.gridgain.grid.Grid;
 import org.gridgain.grid.GridException;
 import org.gridgain.grid.cache.GridCache;
