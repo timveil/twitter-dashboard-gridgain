@@ -40,9 +40,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="core" />
-    <orderEntry type="library" name="Maven: org.gridgain:gridgain-core-ent:6.1.8" level="project" />
-    <orderEntry type="library" name="Maven: org.gridgain:gridgain-slf4j:6.1.8" level="project" />
     <orderEntry type="library" name="Maven: org.gridgain:gridgain-core:6.1.8" level="project" />
+    <orderEntry type="library" name="Maven: org.gridgain:gridgain-slf4j:6.1.8" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.6" level="project" />
     <orderEntry type="library" name="Maven: org.gridgain:gridgain-spring:6.1.8" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-core:3.2.2.RELEASE" level="project" />

@@ -21,11 +21,4 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>GridGain External Repository</id>
-            <url>http://www.gridgainsystems.com:8085/nexus/content/repositories/external</url>
-        </repository>
-    </repositories>
-
 </project>
