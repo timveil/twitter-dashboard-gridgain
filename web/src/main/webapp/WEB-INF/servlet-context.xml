@@ -1,0 +1,43 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/task
+            http://www.springframework.org/schema/task/spring-task.xsd
+            http://www.springframework.org/schema/mvc
+            http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <mvc:annotation-driven>
+        <mvc:argument-resolvers>
+            <bean class="dashboard.web.AtmosphereArgumentResolver"/>
+        </mvc:argument-resolvers>
+    </mvc:annotation-driven>
+
+    <bean id="properties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="locations">
+            <list>
+                <value>classpath:twitter-dashboard.properties</value>
+                <value>file:${user.home}/twitter-dashboard.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <context:property-placeholder properties-ref="properties" ignore-unresolvable="true"/>
+
+    <mvc:resources mapping="/static/**" location="/static/"/>
+
+    <context:component-scan base-package="dashboard"/>
+
+    <task:annotation-driven executor="myExecutor" scheduler="myScheduler"/>
+
+    <task:executor id="myExecutor" pool-size="5"/>
+
+    <task:scheduler id="myScheduler" pool-size="10"/>
+
+</beans>

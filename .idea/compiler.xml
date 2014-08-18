@@ -22,13 +22,19 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="core" />
         <module name="dashboard" />
-        <module name="twitter-dashboard" />
+        <module name="node" />
+        <module name="parent" />
+        <module name="web" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="core" target="1.7" />
       <module name="dashboard" target="1.7" />
+      <module name="node" target="1.7" />
       <module name="twitter-dashboard" target="1.7" />
+      <module name="web" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="twitter-dashboard:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="twitter-dashboard-1.0-SNAPSHOT.war">
-      <element id="artifact" artifact-name="twitter-dashboard:war exploded" />
-    </root>
-  </artifact>
-</component>
