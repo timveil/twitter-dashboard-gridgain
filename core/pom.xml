@@ -4,6 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <properties>
+        <gridgain.version>6.1.9</gridgain.version>
+        <slf4j.version>1.7.6</slf4j.version>
+    </properties>
+
     <parent>
         <groupId>dashboard</groupId>
         <artifactId>twitter-dashboard</artifactId>
@@ -36,49 +41,49 @@
         <dependency>
             <groupId>org.gridgain</groupId>
             <artifactId>gridgain-core</artifactId>
-            <version>6.1.8</version>
+            <version>${gridgain.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.gridgain</groupId>
             <artifactId>gridgain-slf4j</artifactId>
-            <version>6.1.8</version>
+            <version>${gridgain.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.gridgain</groupId>
             <artifactId>gridgain-spring</artifactId>
-            <version>6.1.8</version>
+            <version>${gridgain.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.gridgain</groupId>
             <artifactId>gridgain-email</artifactId>
-            <version>6.1.8</version>
+            <version>${gridgain.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.gridgain</groupId>
             <artifactId>gridgain-rest-http</artifactId>
-            <version>6.1.8</version>
+            <version>${gridgain.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.6</version>
+            <version>${slf4j.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.7.6</version>
+            <version>${slf4j.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.6</version>
+            <version>${slf4j.version}</version>
         </dependency>
 
         <dependency>
