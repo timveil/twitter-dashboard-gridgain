@@ -46,6 +46,12 @@
 
         <dependency>
             <groupId>org.gridgain</groupId>
+            <artifactId>gridgain-indexing</artifactId>
+            <version>${gridgain.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.gridgain</groupId>
             <artifactId>gridgain-slf4j</artifactId>
             <version>${gridgain.version}</version>
         </dependency>

@@ -32,7 +32,6 @@
         <property name="restTcpHost" value="${grid.restTcpHost}"/>
         <property name="restEnabled" value="${grid.restEnabled}"/>
         <property name="metricsLogFrequency" value="${grid.metricsLogFrequency}"/>
-        <property name="licenseUrl" value="${grid.licenseUrl}"/>
 
         <property name="gridLogger">
             <bean class="org.gridgain.grid.logger.slf4j.GridSlf4jLogger"/>
